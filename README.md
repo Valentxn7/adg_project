@@ -9,4 +9,4 @@ Ce projet a pour objectif de développer un logiciel permettant de générer et 
 > - KNORST Valentin
 > - KORBAN Ryan
 > - GROS Geoffrey
-> - FOUX Thomas
+> - FUCHS Thomas
