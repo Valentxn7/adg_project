@@ -1,44 +1,86 @@
 package adg;
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
+import javafx.scene.control.Label;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class VueClasse extends HBox implements Vue{
+public class VueClasse extends VBox {
     private Classe classe;
-    public VueClasse(Classe classe){
+
+    public VueClasse(Classe classe) {
         this.classe = classe;
-        this.setId("classe-label");
+        this.setSpacing(10); // Espacement entre les éléments
+        this.setId("vue-classe");
+
+        // Génération de la vue
+        afficherClasse();
     }
-    @Override
-    public void actualiser(Sujet mod) {
-        // Réinitialiser les éléments visuels
-        this.getChildren().clear();
 
-        // Reconstruire l'affichage après modification
-        HBox header = new HBox();
-        Circle circle = new Circle(15, Color.LIGHTGREEN);
-        circle.setStroke(Color.BLACK);
-        Text className = new Text(classe.getNom());
-        header.getChildren().addAll(circle, className);
-        header.setSpacing(10);
+    private void afficherClasse() {
+        // Nom de la classe
+        Label nomClasse = new Label(classe.getClassName());
+        nomClasse.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-alignment: center;");
+        this.getChildren().add(nomClasse);
 
-        VBox body = new VBox();
-        body.setSpacing(5);
-        ArrayList<String> attributs = classe.getAttributs();
-        for (String attribut : attributs) {
-            body.getChildren().add(new Text(attribut));
-        }
-        ArrayList<String> methodes = classe.getMethodes();
-        for (String methode : methodes) {
-            body.getChildren().add(new Text(methode));
+        // Séparation
+        this.getChildren().add(new Label("----------------"));
+
+        // Affichage des attributs
+        List<String[]> fields = classe.getFields();
+        if (!fields.isEmpty()) {
+            for (String[] field : fields) {
+                String visibilite = getUMLVisibility(field[0]);
+                Label attribut = new Label(visibilite + " " + field[1] + " : " + field[2]);
+                this.getChildren().add(attribut);
+            }
+            this.getChildren().add(new Label("----------------"));
         }
 
-        this.getChildren().addAll(header, body);
+        // Affichage des constructeurs
+        List<Object[]> constructors = classe.getConstructors();
+        if (!constructors.isEmpty()) {
+            for (Object[] constructor : constructors) {
+                String visibilite = getUMLVisibility(constructor[0].toString());
+                @SuppressWarnings("unchecked")
+                List<String> params = (List<String>) constructor[1];
+                Label constructeur = new Label(visibilite + " " + classe.getClassName() + "(" + String.join(", ", params) + ")");
+                this.getChildren().add(constructeur);
+            }
+            this.getChildren().add(new Label("----------------"));
+        }
+
+        // Affichage des méthodes
+        List<Object[]> methods = classe.getMethods();
+        if (!methods.isEmpty()) {
+            for (Object[] method : methods) {
+                String visibilite = getUMLVisibility(method[0].toString());
+                @SuppressWarnings("unchecked")
+                List<String> params = (List<String>) method[2];
+                Label methode = new Label(visibilite + " " + method[1] + "(" + String.join(", ", params) + ") : " + method[3]);
+                this.getChildren().add(methode);
+            }
+        }
+    }
+
+    /**
+     * Convertit les modificateurs en symboles UML (+, -, #, ~)
+     * @param modifier le modificateur sous forme de chaîne
+     * @return un symbole UML correspondant
+     */
+    private String getUMLVisibility(String modifier) {
+        switch (modifier) {
+            case "public":
+                return "+";
+            case "private":
+                return "-";
+            case "protected":
+                return "#";
+            default:
+                return "~";
+        }
     }
 }
+
+
+
