@@ -22,8 +22,6 @@ public class ModelUML implements Sujet{
         for(Observateur o : observateurs) {
             o.switchHome2diag();
         }
-        if(classes!=null)classes.add(classe);
-        notifierObservateurs();
     }
 
     @Override
