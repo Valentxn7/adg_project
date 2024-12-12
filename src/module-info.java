@@ -1,4 +1,4 @@
-module org.example.adg_projet {
+module adg_project {
     requires javafx.controls;
 
     exports adg;
