@@ -13,34 +13,45 @@ public class ControllerDragDrop implements EventHandler<DragEvent> {
     private final ModelUML model;
 
     public ControllerDragDrop(ModelUML model) {
+
         this.model = model;
     }
 
-    public void enableDragAndDrop(StackPane root) {
+    public void activerDragAndDrop(StackPane root) {
         root.setOnDragOver(this);
         root.setOnDragDropped(this);
     }
 
     @Override
     public void handle(DragEvent event) {
+
         if (event.getEventType() == DragEvent.DRAG_OVER) {
+
             if (event.getGestureSource() != event.getSource() && event.getDragboard().hasFiles()) {
+
                 event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
             }
+
             event.consume();
+
         } else if (event.getEventType() == DragEvent.DRAG_DROPPED) {
-            boolean success = false;
+
+            boolean succes = false;
+
             if (event.getDragboard().hasFiles()) {
+
                 List<File> files = event.getDragboard().getFiles();
+
                 for (File file : files) {
+
                     if (file.getName().endsWith(".java")) {
                         model.setFilePath(file.getAbsolutePath());
                         System.out.println("Fichier déposé : " + file.getAbsolutePath());
-                        success = true;
+                        succes = true;
                     }
                 }
             }
-            event.setDropCompleted(success);
+            event.setDropCompleted(succes);
             event.consume();
         }
     }
