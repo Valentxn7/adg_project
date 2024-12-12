@@ -81,7 +81,6 @@ public class MainUML extends Application {
 
 
 
-
         ModelUML model = new ModelUML();
         ControllerDragDrop controller = new ControllerDragDrop(model);
         controller.activerDragAndDrop(partieDroite);
@@ -95,7 +94,5 @@ public class MainUML extends Application {
         stage.setTitle("ADG - Home");
         stage.setResizable(false);
         stage.show();
-        System.out.println(partieGauche.getHeight());
-        System.out.println(partieGauche.getWidth());
     }
 }
