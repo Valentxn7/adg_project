@@ -19,7 +19,6 @@ public class MainUML extends Application {
     public void start(Stage stage) throws Exception {
 
         ModelUML modelUML = new ModelUML();
-
         VBox base = new VBox(0);
         Label titre = new Label("ADG - Home");
         HBox centre = new HBox(0);
@@ -28,16 +27,17 @@ public class MainUML extends Application {
 
         VBox partieGauche = new VBox(0);  // TreeView et MenuBar
         HBox partieDroite = new HBox(0);  // bouton add projet
+        ControleurProjet controleurProjet = new ControleurProjet(modelUML);
         Button addProjectButton = new Button("+");
         addProjectButton.setAlignment(javafx.geometry.Pos.CENTER);
-        ControleurProjet controleurProjet = new ControleurProjet(modelUML);
-        Button AddprojetButton = new Button("+");
-        AddprojetButton.setOnAction(controleurProjet);
+        addProjectButton.setOnAction(controleurProjet);
 
 
 
 
-        AddprojetButton.setAlignment(javafx.geometry.Pos.CENTER);
+
+
+
         partieDroite.setAlignment(javafx.geometry.Pos.CENTER);
 
         MenuBar menuBar = new MenuBar();  // barre menu contenante
