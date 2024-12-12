@@ -40,7 +40,8 @@ public class Analyser {
 
         // Super Class
         Class<?> superClass = row_class.getSuperclass();
-        classe.setSuperclass(superClass.getName());
+        if(superClass != null)
+            classe.setSuperclass(superClass.getName());
 
         // Interfaces
         Class<?>[] interfaces = row_class.getInterfaces();
