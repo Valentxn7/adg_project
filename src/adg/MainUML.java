@@ -78,6 +78,14 @@ public class MainUML extends Application {
         treeView.getStyleClass().add("treeView");
         fin.getStyleClass().add("label-fin");
 
+
+
+        ModelUML model = new ModelUML();
+        ControllerDragDrop controller = new ControllerDragDrop(model);
+        controller.activerDragAndDrop(partieDroite);
+
+
+
         Scene scene = new Scene(base, 922, 420);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         stage.setScene(scene);
