@@ -79,12 +79,8 @@ public class MainUML extends Application {
         fin.getStyleClass().add("label-fin");
 
 
-
-        ModelUML model = new ModelUML();
-        ControllerDragDrop controller = new ControllerDragDrop(model);
+        ControllerDragDrop controller = new ControllerDragDrop(modelUML);
         controller.activerDragAndDrop(partieDroite);
-
-
 
         Scene scene = new Scene(base, 922, 420);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
