@@ -1,0 +1,46 @@
+.label-titre {
+    -fx-font-size: 15px;
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-padding: 5px;
+}
+
+.partieDroite {
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    /*-fx-padding: 25px 35px 25px 35px;*/
+    -fx-padding: 500px;
+}
+
+.label-fin {
+    -fx-font-size: 10px;
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-padding: 5px;
+}
+
+.addButton {
+    -fx-font-size: 36px;
+    -fx-background-color: #d3d3d3;
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-padding: 50px; /* taille min dans notre cas */
+}
+
+.menuBar {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-padding: 2px;
+}
+
+.treeView{
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-padding: 5px;
+}
