@@ -5,11 +5,12 @@ import java.util.ArrayList;
 public class ModelUML implements Sujet{
     private ArrayList<Observateur> observateurs;
     private ArrayList<Classe> classes;
-    private String filePath;
+    private ArrayList<String> chemins;
 
     public ModelUML() {
         observateurs = new ArrayList<Observateur>();
         classes = new ArrayList<Classe>();
+        chemins = new ArrayList<String>();
     }
 
     public void ajouterClasse(Classe classe) {
@@ -42,11 +43,15 @@ public class ModelUML implements Sujet{
     }
 
     public void setFilePath(String filePath) {
-        this.filePath = filePath;
+        this.chemins.add(filePath);
         notifierObservateurs();
     }
 
     public String getFilePath() {
-        return filePath;
+        StringBuilder res = new StringBuilder();
+        for (String chemin : chemins) {
+            res.append(chemin).append("\n");
+        }
+        return res.toString();
     }
 }
