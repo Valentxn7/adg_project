@@ -13,24 +13,33 @@ public class ModelUML implements Sujet{
     }
 
     public void ajouterClasse(Classe classe) {
+        if(classes!=null)
+            classes.add(classe);
+    }
+
+    public void creerProjetVierge() {
+        System.out.println("Création d'un projet vierge");
+        for(Observateur o : observateurs) {
+            o.switchHome2diag();
+        }
         if(classes!=null)classes.add(classe);
         notifierObservateurs();
     }
 
     @Override
-    public void enregistrerObservateur(Observateur observateur) {
-        observateurs.add(observateur);
+    public void enregistrerObservateur(Observateur o) {
+        observateurs.add(o);
     }
 
     @Override
-    public void supprimerObservateur(Observateur observateur) {
-        observateurs.remove(observateur);
+    public void supprimerObservateur(Observateur o) {
+        observateurs.remove(o);
     }
 
     @Override
     public void notifierObservateurs() {
-        for (Observateur observateur : observateurs) {
-            observateur.actualiser(this);
+        for(Observateur o : observateurs) {
+            o.actualiser(this);
         }
     }
 

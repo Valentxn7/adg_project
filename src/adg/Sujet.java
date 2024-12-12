@@ -1,8 +1,8 @@
 package adg;
 
 public interface Sujet {
-    public void enregistrerObservateur(Observateur observateur);
-    public void supprimerObservateur(Observateur observateur);
+    public void enregistrerObservateur(Observateur o);
+    public void supprimerObservateur(Observateur o);
     public void notifierObservateurs();
 
 }
