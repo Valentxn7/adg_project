@@ -25,6 +25,7 @@ public class MainUML extends Application {
 
         VBox partieGauche = new VBox(0);  // TreeView et MenuBar
         VueDiagramme partieDroite = new VueDiagramme(modelUML);  // bouton add projet
+
         modelUML.enregistrerObservateur(partieDroite);
 
         ControleurCreateProject controleurCreateProject = new ControleurCreateProject(modelUML);
@@ -79,8 +80,12 @@ public class MainUML extends Application {
         fin.getStyleClass().add("label-fin");
 
 
-        ControllerDragDrop controller = new ControllerDragDrop(modelUML);
+
+        ModelUML model = new ModelUML();
+        ControllerDragDrop controller = new ControllerDragDrop(model);
         controller.activerDragAndDrop(partieDroite);
+
+
 
         Scene scene = new Scene(base, 922, 420);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
