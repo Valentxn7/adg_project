@@ -1,10 +1,8 @@
-package main.java.adg.main;
+package adg;
 
 import javafx.event.Event;
-import javafx.event.EventTarget;
 import javafx.event.EventType;
 import javafx.scene.input.DragEvent;
-import javafx.scene.input.InputEvent;
 
 public class ControllerDragDrop extends Event {
     public static final EventType<DragEvent> DRAG_STARTED = new EventType<>(Event.ANY, "DRAG_STARTED");

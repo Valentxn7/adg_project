@@ -1,4 +1,4 @@
-package main.java.adg.main;
+package adg;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

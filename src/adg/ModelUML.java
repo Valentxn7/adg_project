@@ -1,4 +1,4 @@
-package main.java.adg.main;
+package adg;
 
 import java.util.ArrayList;
 
