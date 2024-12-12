@@ -1,5 +1,5 @@
 package adg;
 
-public interface Vue {
+public interface Observateur {
     public void actualiser(Sujet mod);
 }
