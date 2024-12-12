@@ -3,6 +3,7 @@ package adg;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -22,7 +23,7 @@ public class MainUML extends Application {
         Vue vue = new VueClasse(maClasse);
         vue.actualiser(null);
         StackPane root = new StackPane();
-        root.getChildren().add((Label)vue);
+        root.getChildren().add((HBox)vue);
         Scene scene = new Scene(root, 800, 600);
 
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
