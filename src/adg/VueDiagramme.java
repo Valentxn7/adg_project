@@ -18,7 +18,7 @@ public class VueDiagramme extends StackPane implements Observateur {
     public void switchHome2diag() {
         this.getChildren().clear();
         this.setPrefSize(900, 400);
-        System.out.println("Switching to diagram");
+        System.out.println("VueDiagramme : Switching to diagram");
     }
 
 

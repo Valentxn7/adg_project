@@ -37,11 +37,43 @@ public class MainUML extends Application {
 
         partieDroite.setAlignment(javafx.geometry.Pos.CENTER);
 
-        MenuBar menuBar = new MenuBar();  // barre menu contenante
+        VueMenu menuBar = new VueMenu(modelUML);  // barre menu contenante
+        modelUML.enregistrerObservateur(menuBar);
+
         Menu fileMenu = new Menu("Fichier");  // contenue
+
+        MenuItem nouveau = new MenuItem("Nouveau");
+        MenuItem ourvir = new MenuItem("Ouvrir");
+        MenuItem renommer = new MenuItem("Renommer");
+        MenuItem supprimer = new MenuItem("Supprimer");
+        MenuItem enregistrer = new MenuItem("Enregistrer");
+        MenuItem enregistrerSous = new MenuItem("Enregistrer sous");
+        MenuItem exporterUml = new MenuItem("Exporter en UML");
+        MenuItem exporterPng = new MenuItem("Exporter en PNG");
+        MenuItem personnalisation = new MenuItem("Personnalisation");
+        MenuItem accueil = new MenuItem("Accueil");
+
+        renommer.setDisable(true);
+        supprimer.setDisable(true);
+        enregistrer.setDisable(true);
+        enregistrerSous.setDisable(true);
+        exporterUml.setDisable(true);
+        exporterPng.setDisable(true);
+        personnalisation.setDisable(true);
+        accueil.setDisable(true);
+
+        fileMenu.getItems().addAll(
+                nouveau, ourvir, new SeparatorMenuItem(),
+                renommer, supprimer, new SeparatorMenuItem(),
+                enregistrer, enregistrerSous, new SeparatorMenuItem(),
+                exporterUml, exporterPng, new SeparatorMenuItem(),
+                personnalisation, accueil);
+
         Menu viewMenu = new Menu("Affichage");
         Menu helpMenu = new Menu("Aide");
         menuBar.getMenus().addAll(fileMenu, viewMenu, helpMenu);
+
+        nouveau.setOnAction(e -> openCreateProjectWindow(stage, modelUML));
 
         TreeItem<String> projetR = new TreeItem<>("Projets récents:");  // l'item de base
         projetR.setExpanded(true);
