@@ -19,7 +19,7 @@ public class Save {
         return instance;
     }
 
-    public void saveUML() throws ClassNotFoundException {
+    public String getUML() throws ClassNotFoundException {
         StringBuilder sb = new StringBuilder();
 
         sb.append("@startuml\n");
@@ -31,10 +31,10 @@ public class Save {
 
         sb.append("@enduml");
 
-        System.out.println(sb.toString());
+        return sb.toString();
     }
 
-    public void saveADG() throws ClassNotFoundException {
+    public String getADG() throws ClassNotFoundException {
         StringBuilder sb = new StringBuilder();
 
         sb.append("@startadg\n");
@@ -46,10 +46,6 @@ public class Save {
 
         sb.append("@endadg\n");
 
-
-
-
+        return sb.toString();
     }
-
-
 }
