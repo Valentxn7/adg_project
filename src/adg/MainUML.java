@@ -50,7 +50,6 @@ public class MainUML extends Application {
 
         TreeView<String> treeView = new TreeView<>(projetR);  // la TreeView affiche les TreeItem
 
-
         base.getChildren().addAll(titre, centre, fin);  // VBox
         centre.getChildren().addAll(partieGauche, partieDroite);  // HBox
         partieGauche.getChildren().addAll(menuBar, treeView);  // VBox
