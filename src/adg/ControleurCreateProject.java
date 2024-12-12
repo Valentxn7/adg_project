@@ -1,14 +1,13 @@
 package adg;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
-public class ControleurProjet implements EventHandler<ActionEvent> {
+public class ControleurCreateProject implements EventHandler<ActionEvent> {
     private ModelUML modelUML;
 
-    public ControleurProjet(ModelUML modelUML) {
+    public ControleurCreateProject(ModelUML modelUML) {
         this.modelUML = modelUML;
     }
 

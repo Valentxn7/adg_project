@@ -5,8 +5,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -26,17 +24,13 @@ public class MainUML extends Application {
         fin.setAlignment(javafx.geometry.Pos.CENTER);
 
         VBox partieGauche = new VBox(0);  // TreeView et MenuBar
-        HBox partieDroite = new HBox(0);  // bouton add projet
-        ControleurProjet controleurProjet = new ControleurProjet(modelUML);
+        VueDiagramme partieDroite = new VueDiagramme(modelUML);  // bouton add projet
+        modelUML.enregistrerObservateur(partieDroite);
+
+        ControleurCreateProject controleurCreateProject = new ControleurCreateProject(modelUML);
         Button addProjectButton = new Button("+");
         addProjectButton.setAlignment(javafx.geometry.Pos.CENTER);
-        addProjectButton.setOnAction(controleurProjet);
-
-
-
-
-
-
+        addProjectButton.setOnAction(controleurCreateProject);
 
         partieDroite.setAlignment(javafx.geometry.Pos.CENTER);
 
@@ -85,7 +79,6 @@ public class MainUML extends Application {
         fin.getStyleClass().add("label-fin");
 
         Scene scene = new Scene(base, 922, 420);
-        //scene.getStylesheets().add(getClass().getResource("/ressources/style.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         stage.setScene(scene);
         stage.setAlwaysOnTop(true);

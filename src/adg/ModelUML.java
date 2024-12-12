@@ -12,26 +12,25 @@ public class ModelUML implements Sujet{
     }
 
     public void ajouterClasse(Classe classe) {
-        if(classes!=null)classes.add(classe);
-
+        if(classes!=null)
+            classes.add(classe);
     }
-
 
     public void creerProjetVierge() {
         System.out.println("Création d'un projet vierge");
-
+        for(Observateur o : observateurs) {
+            o.switchHome2diag();
+        }
     }
 
     @Override
     public void enregistrerObservateur(Observateur o) {
         observateurs.add(o);
-
     }
 
     @Override
     public void supprimerObservateur(Observateur o) {
         observateurs.remove(o);
-
     }
 
     @Override
@@ -40,4 +39,5 @@ public class ModelUML implements Sujet{
             o.actualiser(this);
         }
     }
+
 }
