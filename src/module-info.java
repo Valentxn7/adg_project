@@ -3,6 +3,5 @@ module adg_project {
     requires javafx.fxml;
     requires javafx.graphics;
 
-    opens ressources;
     exports adg;
 }
