@@ -1,22 +1,47 @@
 package adg;
 
-import javafx.event.Event;
-import javafx.event.EventType;
+import javafx.event.EventHandler;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.StackPane;
 
-public class ControllerDragDrop extends Event {
-    public static final EventType<DragEvent> DRAG_STARTED = new EventType<>(Event.ANY, "DRAG_STARTED");
-    public static final EventType<DragEvent> DRAG_OVER = new EventType<>(Event.ANY, "DRAG_OVER");
-    public static final EventType<DragEvent> DRAG_DROPPED = new EventType<>(Event.ANY, "DRAG_DROPPED");
+import java.io.File;
+import java.util.List;
 
-    private final Object dragContent;
+public class ControllerDragDrop implements EventHandler<DragEvent> {
 
-    public ControllerDragDrop(EventType<? extends Event> eventType, Object dragContent) {
-        super(eventType);
-        this.dragContent = dragContent;
+    private final ModelUML model;
+
+    public ControllerDragDrop(ModelUML model) {
+        this.model = model;
     }
 
-    public Object getDragContent() {
-        return dragContent;
+    public void enableDragAndDrop(StackPane root) {
+        root.setOnDragOver(this);
+        root.setOnDragDropped(this);
+    }
+
+    @Override
+    public void handle(DragEvent event) {
+        if (event.getEventType() == DragEvent.DRAG_OVER) {
+            if (event.getGestureSource() != event.getSource() && event.getDragboard().hasFiles()) {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            }
+            event.consume();
+        } else if (event.getEventType() == DragEvent.DRAG_DROPPED) {
+            boolean success = false;
+            if (event.getDragboard().hasFiles()) {
+                List<File> files = event.getDragboard().getFiles();
+                for (File file : files) {
+                    if (file.getName().endsWith(".java")) {
+                        model.setFilePath(file.getAbsolutePath());
+                        System.out.println("Fichier déposé : " + file.getAbsolutePath());
+                        success = true;
+                    }
+                }
+            }
+            event.setDropCompleted(success);
+            event.consume();
+        }
     }
 }

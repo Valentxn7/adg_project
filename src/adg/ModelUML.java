@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class ModelUML implements Sujet{
     private ArrayList<Observateur> observateurs;
     private ArrayList<Classe> classes;
+    private String filePath;
 
     public ModelUML() {
         observateurs = new ArrayList<Observateur>();
@@ -16,16 +17,14 @@ public class ModelUML implements Sujet{
         notifierObservateurs();
     }
 
-
-
     @Override
     public void enregistrerObservateur(Observateur observateur) {
-
+        observateurs.add(observateur);
     }
 
     @Override
     public void supprimerObservateur(Observateur observateur) {
-
+        observateurs.remove(observateur);
     }
 
     @Override
@@ -33,5 +32,14 @@ public class ModelUML implements Sujet{
         for (Observateur observateur : observateurs) {
             observateur.actualiser(this);
         }
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+        notifierObservateurs();
+    }
+
+    public String getFilePath() {
+        return filePath;
     }
 }

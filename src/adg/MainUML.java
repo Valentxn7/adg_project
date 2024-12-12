@@ -13,6 +13,11 @@ public class MainUML extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         StackPane root = new StackPane();
+
+        ModelUML model = new ModelUML();
+        ControllerDragDrop controller = new ControllerDragDrop(model);
+        controller.enableDragAndDrop(root);
+
         Scene scene = new Scene(root, 800, 600);
         stage.setScene(scene);
         stage.show();
