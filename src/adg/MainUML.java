@@ -25,6 +25,7 @@ public class MainUML extends Application {
 
         VBox partieGauche = new VBox(0);  // TreeView et MenuBar
         VueDiagramme partieDroite = new VueDiagramme(modelUML);  // bouton add projet
+
         modelUML.enregistrerObservateur(partieDroite);
 
         ControleurCreateProject controleurCreateProject = new ControleurCreateProject(modelUML);
@@ -80,6 +81,7 @@ public class MainUML extends Application {
 
 
 
+
         ModelUML model = new ModelUML();
         ControllerDragDrop controller = new ControllerDragDrop(model);
         controller.activerDragAndDrop(partieDroite);
@@ -93,5 +95,7 @@ public class MainUML extends Application {
         stage.setTitle("ADG - Home");
         stage.setResizable(false);
         stage.show();
+        System.out.println(partieGauche.getHeight());
+        System.out.println(partieGauche.getWidth());
     }
 }
