@@ -22,7 +22,8 @@ public class MainSave {
             }
 
             Save save = Save.getInstance(classes, null);
-            System.out.println(save.getUML());
+            save.save("exports/", "project_name");
+
         } else {
             System.out.println("Aucun fichier .java trouvé dans le répertoire spécifié.");
         }

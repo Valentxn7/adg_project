@@ -1,5 +1,7 @@
 package adg;
 
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Save {
@@ -39,13 +41,27 @@ public class Save {
 
         sb.append("@startadg\n");
 
+        /*
         for (VueClasse vue : vues) {
             sb.append(vue.toADGString());
-
         }
+        */
 
         sb.append("@endadg\n");
 
         return sb.toString();
+    }
+
+    public void save(String dir, String project_name) {
+        FileWriter writer;
+        try {
+            writer = new FileWriter(dir + "/" + project_name + ".adg");
+            writer.write(getUML());
+            writer.write(getADG());
+            writer.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
