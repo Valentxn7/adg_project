@@ -21,13 +21,13 @@ public class MainUML extends Application {
         VBox base = new VBox(0);
         Label titre = new Label("ADG - Home");
         HBox centre = new HBox(0);
-        Label fin = new Label("Tout droits réservés");
+        Label fin = new Label("Tous droits réservés");
         fin.setAlignment(javafx.geometry.Pos.CENTER);
 
         VBox partieGauche = new VBox(0);  // TreeView et MenuBar
         HBox partieDroite = new HBox(0);  // bouton add projet
-        Button AddprojetButton = new Button("+");
-        AddprojetButton.setAlignment(javafx.geometry.Pos.CENTER);
+        Button addProjectButton = new Button("+");
+        addProjectButton.setAlignment(javafx.geometry.Pos.CENTER);
         partieDroite.setAlignment(javafx.geometry.Pos.CENTER);
 
         MenuBar menuBar = new MenuBar();  // barre menu contenante
@@ -50,7 +50,7 @@ public class MainUML extends Application {
         base.getChildren().addAll(titre, centre, fin);  // VBox
         centre.getChildren().addAll(partieGauche, partieDroite);  // HBox
         partieGauche.getChildren().addAll(menuBar, treeView);  // VBox
-        partieDroite.getChildren().add(AddprojetButton);  // HBox
+        partieDroite.getChildren().add(addProjectButton);  // HBox
 
         base.setPrefSize(900, 400);
         base.setMinSize(400, 200);
@@ -65,10 +65,10 @@ public class MainUML extends Application {
         treeView.setPrefSize(400, 360);
 
         partieDroite.setPrefSize(500, 380);
-        AddprojetButton.setPrefSize(370, 270);
+        addProjectButton.setPrefSize(370, 270);
 
         titre.getStyleClass().add("label-titre");
-        AddprojetButton.getStyleClass().add("addButton");
+        addProjectButton.getStyleClass().add("addButton");
         menuBar.getStyleClass().add("menuBar");
         partieDroite.getStyleClass().add("menuBar");
         treeView.getStyleClass().add("treeView");
