@@ -3,33 +3,41 @@ package adg;
 import java.util.ArrayList;
 
 public class ModelUML implements Sujet{
-    private ArrayList<Vue> vues;
+    private ArrayList<Observateur> observateurs;
     private ArrayList<Classe> classes;
 
     public ModelUML() {
-        vues = new ArrayList<Vue>();
+        observateurs = new ArrayList<Observateur>();
         classes = new ArrayList<Classe>();
     }
 
     public void ajouterClasse(Classe classe) {
         if(classes!=null)classes.add(classe);
-        notifierVue();
+
+    }
+
+
+    public void creerProjetVierge() {
+        System.out.println("Création d'un projet vierge");
+
     }
 
     @Override
-    public void notifierVue() {
-        for (Vue vue : vues) {
-            vue.actualiser(this);
+    public void enregistrerObservateur(Observateur o) {
+        observateurs.add(o);
+
+    }
+
+    @Override
+    public void supprimerObservateur(Observateur o) {
+        observateurs.remove(o);
+
+    }
+
+    @Override
+    public void notifierObservateurs() {
+        for(Observateur o : observateurs) {
+            o.actualiser(this);
         }
-    }
-
-    @Override
-    public void ajouterVue(Vue vue) {
-        if(vue!=null)vues.add(vue);
-    }
-
-    @Override
-    public void supprimerVue(Vue vue) {
-
     }
 }

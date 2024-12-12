@@ -2,7 +2,6 @@ module adg_project {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
-
-    opens ressources;
+    requires java.desktop;
     exports adg;
 }
