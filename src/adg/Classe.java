@@ -24,4 +24,13 @@ public class Classe {
     public void ajouterListeMethodes(ArrayList methodes) {
         this.methodes = methodes;
     }
+    public String getNom(){
+        return this.nom;
+    }
+    public ArrayList getAttributs(){
+        return attributs;
+    }
+    public ArrayList getMethodes(){
+        return methodes;
+    }
 }
