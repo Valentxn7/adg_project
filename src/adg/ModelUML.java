@@ -63,4 +63,13 @@ public class ModelUML implements Sujet{
         }
         return res.toString();
     }
+
+    public void annalyseFichier(String absolutePath) throws ClassNotFoundException {
+        Analyser analyse = new Analyser(absolutePath);
+        Classe classe = analyse.analyse();
+        ajouterClasse(classe);
+        System.out.println(classe.UMLString());
+        System.out.println("Analyse terminée");
+        notifierObservateurs();
+    }
 }

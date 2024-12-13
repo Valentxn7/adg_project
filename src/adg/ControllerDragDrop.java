@@ -55,6 +55,11 @@ public class ControllerDragDrop implements EventHandler<DragEvent> {
                         model.setFilePath(file.getAbsolutePath());
                         System.out.println("Fichier déposé : " + file.getAbsolutePath());
                         succes = true;
+                        try {
+                            model.annalyseFichier(file.getAbsolutePath());
+                        } catch (ClassNotFoundException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
             }
