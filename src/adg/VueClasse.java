@@ -8,7 +8,7 @@ import javafx.scene.shape.Circle;
 
 import java.util.List;
 
-public class VueClasse extends VBox implements Vue {
+public class VueClasse extends VBox implements Observateur {
     /**
      * La classe à afficher
      */
@@ -120,6 +120,13 @@ public class VueClasse extends VBox implements Vue {
                 break;
         }
         return circle;
+    }
+
+    @Override
+    public void switchHome2diag() {
+        this.getChildren().clear();
+        this.setPrefSize(900, 400);
+        System.out.println("VueDiagramme : Switching to diagram");
     }
 }
 
