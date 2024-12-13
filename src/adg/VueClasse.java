@@ -1,7 +1,10 @@
 package adg;
 
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 import java.util.List;
 
@@ -20,66 +23,82 @@ public class VueClasse extends VBox {
     private void afficherClasse() {
         // Nom de la classe
         Label nomClasse = new Label(classe.getClassName());
+        nomClasse.setId("separation");
         this.getChildren().add(nomClasse);
 
-        // Séparation
-        this.getChildren().add(new Label("----------------"));
 
         // Affichage des attributs
         List<String[]> fields = classe.getFields();
         if (!fields.isEmpty()) {
+            VBox attributsBox = new VBox();
+            attributsBox.setId("separation");
             for (String[] field : fields) {
-                String visibilite = getUMLVisibility(field[0]);
-                Label attribut = new Label(visibilite + " " + field[1] + " : " + field[2]);
-                this.getChildren().add(attribut);
+                HBox attributBox = new HBox(5);// Espacement entre le cercle et le texte
+                Circle visibilite = getVisibilityCircle(field[0]);
+                Label attribut = new Label(field[1] + " : " + field[2]);
+                attributBox.getChildren().addAll(visibilite, attribut);
+                attributsBox.getChildren().add(attributBox);
             }
-            this.getChildren().add(new Label("----------------"));
+            this.getChildren().add(attributsBox);
         }
 
         // Affichage des constructeurs
         List<Object[]> constructors = classe.getConstructors();
         if (!constructors.isEmpty()) {
+            VBox constructeursBox = new VBox();
+            constructeursBox.setId("separation");
             for (Object[] constructor : constructors) {
-                String visibilite = getUMLVisibility(constructor[0].toString());
-                @SuppressWarnings("unchecked")
+                HBox constructeurBox = new HBox(5);
+                Circle visibilite = getVisibilityCircle(constructor[0].toString());
                 List<String> params = (List<String>) constructor[1];
-                Label constructeur = new Label(visibilite + " " + classe.getClassName() + "(" + String.join(", ", params) + ")");
-                this.getChildren().add(constructeur);
+                Label constructeur = new Label(classe.getClassName() + "(" + String.join(", ", params) + ")");
+                constructeurBox.getChildren().addAll(visibilite, constructeur);
+                constructeursBox.getChildren().add(constructeurBox);
             }
-            this.getChildren().add(new Label("----------------"));
+            this.getChildren().add(constructeursBox);
         }
 
         // Affichage des méthodes
         List<Object[]> methods = classe.getMethods();
         if (!methods.isEmpty()) {
+            VBox methodesBox = new VBox();
             for (Object[] method : methods) {
-                String visibilite = getUMLVisibility(method[0].toString());
-                @SuppressWarnings("unchecked")
+                HBox methodeBox = new HBox(5);
+                Circle visibilite = getVisibilityCircle(method[0].toString());
                 List<String> params = (List<String>) method[2];
-                Label methode = new Label(visibilite + " " + method[1] + "(" + String.join(", ", params) + ") : " + method[3]);
-                this.getChildren().add(methode);
+                Label methode = new Label(method[1] + "(" + String.join(", ", params) + ") : " + method[3]);
+                methodeBox.getChildren().addAll(visibilite, methode);
+                methodesBox.getChildren().add(methodeBox);
             }
+            this.getChildren().add(methodesBox);
         }
     }
 
     /**
-     * Convertit les modificateurs en symboles UML (+, -, #, ~)
+     * Crée un cercle de couleur correspondant au modificateur de visibilité
      * @param modifier le modificateur sous forme de chaîne
-     * @return un symbole UML correspondant
+     * @return un cercle coloré correspondant
      */
-    private String getUMLVisibility(String modifier) {
+    private Circle getVisibilityCircle(String modifier) {
+        Circle circle = new Circle(5); // Rayon du cercle
         switch (modifier) {
             case "public":
-                return "+";
+                circle.setFill(Color.GREEN); // Vert pour public
+                break;
             case "private":
-                return "-";
+                circle.setFill(Color.RED); // Rouge pour private
+                break;
             case "protected":
-                return "#";
+                circle.setFill(Color.BLUE); // Bleu pour protected
+                break;
             default:
-                return "~";
+                circle.setFill(Color.GRAY); // Gris pour package-private
+                break;
         }
+        return circle;
     }
 }
+
 
 
 
