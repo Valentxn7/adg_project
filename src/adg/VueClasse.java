@@ -20,7 +20,6 @@ public class VueClasse extends VBox {
     private void afficherClasse() {
         // Nom de la classe
         Label nomClasse = new Label(classe.getClassName());
-        nomClasse.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-alignment: center;");
         this.getChildren().add(nomClasse);
 
         // Séparation

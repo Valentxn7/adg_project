@@ -42,7 +42,8 @@ public class MainUML extends Application {
         root.getChildren().add(vueClasse);
 
         Scene scene = new Scene(root, 400, 600);
-        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm()); // Optionnel : ajout d'un CSS
+        System.out.println(getClass().getResource("/style.css"));
+        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.setTitle("Représentation UML de la classe");
         primaryStage.show();
