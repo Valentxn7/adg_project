@@ -50,7 +50,7 @@ public class MainUML extends Application {
         MenuItem enregistrerSous = new MenuItem("Enregistrer sous");
         MenuItem exporterUml = new MenuItem("Exporter en UML");
         MenuItem exporterPng = new MenuItem("Exporter en PNG");
-        MenuItem personnalisation = new MenuItem("Personnalisation");
+        Menu personnalisation = new Menu("Personnalisation");
         MenuItem accueil = new MenuItem("Accueil");
 
         renommer.setDisable(true);
