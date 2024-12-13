@@ -13,12 +13,9 @@
     -fx-min-width: 100px;  /* Largeur minimale */
     -fx-max-width: 300px;  /* Largeur maximale */
 }
-.hbox {
-    -fx-font-size: 14px;
-    -fx-text-fill: #333333;
-    -fx-padding: 5px 10px; /* Ajoute un peu d'espace autour du texte */
-    -fx-border-width: 0 0 1px 0; /* Bordure uniquement en bas */
-    -fx-border-color: #2a9d8f; /* Couleur de la bordure */
-    -fx-border-style: solid; /* Style de la bordure */
-    -fx-background-color: transparent; /* Fond transparent */
+#separation {
+    -fx-border-color: gray;
+    -fx-border-width: 0 0 1 0; /* Ligne horizontale fine en bas */
+    -fx-min-height: 5px;      /* Hauteur minimale pour espacement */
+    -fx-background-color: transparent;
 }
