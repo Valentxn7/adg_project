@@ -6,6 +6,7 @@ public class ModelUML implements Sujet{
     private ArrayList<Observateur> observateurs;
     private ArrayList<Classe> classes;
     private ArrayList<String> chemins;
+    private String WindowsTitle = "Home";
 
     public ModelUML() {
         observateurs = new ArrayList<Observateur>();
@@ -40,6 +41,14 @@ public class ModelUML implements Sujet{
         for(Observateur o : observateurs) {
             o.actualiser(this);
         }
+    }
+
+    public String getWindowsTitle() {
+        return WindowsTitle;
+    }
+
+    public void setWindowsTitle(String title) {
+        WindowsTitle = title;
     }
 
     public void setFilePath(String filePath) {
