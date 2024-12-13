@@ -120,6 +120,11 @@ public class MainUML extends Application {
         stage.show();
     }
 
+    /**
+     * Ouvre une fenêtre de dialogue pour la création d'un nouveau projet.
+     * @param stage la fenêtre principale
+     * @param mod le modèle
+     */
     private void openCreateProjectWindow(Stage stage, ModelUML mod) {
         Stage createProjetWind = new Stage();
         createProjetWind.initModality(Modality.APPLICATION_MODAL);  // empêche les intéractions avec la grande fenêtre
@@ -152,6 +157,10 @@ public class MainUML extends Application {
         createProjetWind.show();
     }
 
+    /**
+     * Permet l'affichage d'un message d'erreur par une fenêtre de dialogue.
+     * @param message
+     */
     private void showErrorMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
