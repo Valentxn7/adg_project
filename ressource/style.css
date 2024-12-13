@@ -1,0 +1,24 @@
+#vue-classe {
+    -fx-font-size: 16px;
+    -fx-line-spacing: 5px; /* Espacement entre les lignes */
+    -fx-text-fill: #333333;
+    -fx-border-color: #2a9d8f;
+    -fx-border-width: 2px;
+    -fx-padding: 10px;
+    -fx-background-color: lightblue;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+
+    /* Limiter uniquement la largeur */
+    -fx-min-width: 100px;  /* Largeur minimale */
+    -fx-max-width: 300px;  /* Largeur maximale */
+}
+.hbox {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+    -fx-padding: 5px 10px; /* Ajoute un peu d'espace autour du texte */
+    -fx-border-width: 0 0 1px 0; /* Bordure uniquement en bas */
+    -fx-border-color: #2a9d8f; /* Couleur de la bordure */
+    -fx-border-style: solid; /* Style de la bordure */
+    -fx-background-color: transparent; /* Fond transparent */
+}
