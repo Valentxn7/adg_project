@@ -69,7 +69,6 @@ public class ModelUML implements Sujet{
         Classe classe = analyse.analyse();
         ajouterClasse(classe);
         System.out.println(classe.UMLString());
-        System.out.println("Analyse terminée");
         notifierObservateurs();
     }
 }

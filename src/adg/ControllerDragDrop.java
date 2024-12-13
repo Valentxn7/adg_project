@@ -58,7 +58,7 @@ public class ControllerDragDrop implements EventHandler<DragEvent> {
                         try {
                             model.annalyseFichier(file.getAbsolutePath());
                         } catch (ClassNotFoundException e) {
-                            throw new RuntimeException(e);
+                            System.out.println("Erreur lors de l'analyse du fichier");
                         }
                     }
                 }
