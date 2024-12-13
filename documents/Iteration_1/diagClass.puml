@@ -1,0 +1,130 @@
+@startuml
+ skinparam classAttributeIconSize 0
+
+ interface Sujet {
+   + enregistrerObservateur(observateur: Observateur)
+   + supprimerObservateur(observateur: Observateur)
+   + notifierObservateurs()
+ }
+ class ModelUml implements Sujet{
+
+   + ModelUml()
+   + ajouterClasse(classe : ModelClasse)
+   + supprimerClasse(classe : ModelClasse)
+   + getClasses() : List<Classe>
+   + enregistrerObservateur(observateur : Observateur)
+   + supprimerObservateur(observateur : Observateur)
+   + notifierObservateurs()
+ }
+
+ interface Observateur {
+   + actualiser(model : Model)
+ }
+
+ class VueClasse implements Observateur {
+   - modelUml : ModelUml
+   + VueClasse(modelClasse : ModelClasse)
+   + actualiser(model : Model)
+ }
+
+ abstract class DecorateurClass extends Classe {
+    + DecorateurClass(DecorateurClass : Classe)
+   +afficher()
+ }
+
+ abstract class Fleche {
+   +setPosition(position: Point)
+   +afficher()
+   + masquer()
+ }
+
+ class FlecheExterne extends Fleche {
+   +afficher()
+   + masquer()
+ }
+
+ class FlecheImplementation extends Fleche{
+   +afficher()
+   + masquer()
+ }
+
+ class FlecheUtilisation extends Fleche{
+   +afficher()
+   + masquer()
+ }
+
+ class Singleton {
+   -Singleton(nomFichier : String)
+   +getInstance(): Singleton
+   + ecrireFichier()
+   + suprimerFichier()
+ }
+
+ class ControllerDragDrop {
+   +handle()
+ }
+
+ class ControllerButtons {
+   +handle()
+ }
+
+ class ControllerParametres {
+   +handle()
+ }
+
+ class ControllerClasse {
+   +handle()
+ }
+
+ class VueProjet implements Observateur{
+   - ModelUml : ModelUml
+   + VueProjet(modelUml : ModelUml)
+   + actualiser(model : Model)
+ }
+
+ class VueParametre implements Observateur {
+ 	- modelUml : ModelUml
+ 	+ VueParametre(modelUml : ModelUml)
+ 	+ actualiser(model : Model)
+ }
+
+ class Projet {
+   -dossiers: List<String>
+   -fichiers: List<String>
+   +ajouterDossier(dossier: String)
+   +ajouterFichier(fichier: String)
+   +getDossiers(): List<String>
+   +getFichiers(): List<String>
+ }
+
+ class Classe {
+   -nom: String
+   -attributs: List<String>
+   -methodes: List<String>
+   +toString(): String
+   +getNom(): String
+   +getAttributs(): List<String>
+   +getMethodes(): List<String>
+ }
+
+ class Point {
+   -x: int
+   -y: int
+   +getX(): int
+   +getY(): int
+   +setX(x: int)
+   +setY(y: int)
+   + deplacer(dx: int, dy: int)
+ }
+ Fleche "1" --> "1" Point : -positions
+ ControllerDragDrop "1" --> "1" Sujet : mod
+ ControllerButtons "1" --> "1" Sujet : mod
+ ControllerParametres "1" --> "1" Sujet : mod
+ ControllerClasse "1" --> "1" Sujet : mod
+ ModelUml "1" --> "0..*" Classe : -classes : List<Classe>
+ DecorateurClass "1" o--> "1" Classe : classe
+ Fleche "0..*" <-- "1" DecorateurClass : -ListFleches
+ Classe "1" <-- "1" Singleton : -instance
+ ModelUml "1" --> "0..*" Observateur : -observateurs : List<Observateur>
+ Projet "1" <-- "1" ModelUml : -projet
+ @enduml
