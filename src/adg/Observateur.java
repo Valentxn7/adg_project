@@ -8,15 +8,14 @@ package adg;
 public interface Observateur {
 
     /**
-     * Méthode appelée pour mettre à jour l'observateur en réponse à une modification du sujet.
-     *
-     * @param mod le sujet qui a été modifié.
+     * Permet de mettre à jour les vues
+     * @param mod le sujet à observer
      */
     public void actualiser(Sujet mod);
 
     /**
-     * Méthode appelée pour effectuer une transition de l'écran d'accueil (Home)
-     * vers une vue de diagramme (Diagram).
+     * Permet le changement des vues de l'état d'accueil à l'état d'affichage diagramme
      */
     public void switchHome2diag();
+
 }
