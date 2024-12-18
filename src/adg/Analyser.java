@@ -1,11 +1,17 @@
 package adg;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.net.URLClassLoader;
 
 public class Analyser {
     public static final int FIELD_NAME = 0; // Nom de l'attribut
@@ -23,8 +29,8 @@ public class Analyser {
 
     private Class<?> row_class;
 
-    public Analyser(String className) throws ClassNotFoundException {
-        this.row_class = Class.forName(className);
+    public Analyser(Class<?> c) throws Exception {
+        row_class = c;
     }
 
     /**

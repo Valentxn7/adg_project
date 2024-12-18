@@ -14,7 +14,7 @@ public class TestAnalyser {
 
     @BeforeEach
     public void setUp() throws Exception {
-        Analyser analyser = new Analyser(className);
+        Analyser analyser = new Analyser(ExempleClasse.class);
         classe = analyser.analyse();
     }
 

@@ -1,36 +1,32 @@
 package adg;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
-public class Save {
-    private static Save instance = null;
+public class Export {
+    private static Export instance = null;
     private List<Classe> classes;
     private List<VueClasse> vues;
 
-    private Save(List<Classe> classes, List<VueClasse> vues) {
+    private Export(List<Classe> classes, List<VueClasse> vues) {
         this.classes = classes;
         this.vues = vues;
     }
 
-    public static Save getInstance(List<Classe> classes, List<VueClasse> vues) {
+    public static Export getInstance(List<Classe> classes, List<VueClasse> vues) {
         if (instance == null) {
-            instance = new Save(classes, vues);
+            instance = new Export(classes, vues);
         }
         return instance;
     }
 
-    public String getUML() throws ClassNotFoundException {
+    public String getUML() throws Exception {
         StringBuilder sb = new StringBuilder();
 
         sb.append("@startuml\n");
-
         for (Classe classe : classes) {
-            Analyser analyser = new Analyser(classe.getClassName());
-            sb.append(analyser.analyse().UMLString());
+            sb.append(classe.UMLString());
         }
-
         sb.append("@enduml");
 
         return sb.toString();

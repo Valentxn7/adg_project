@@ -7,14 +7,16 @@ import java.util.List;
 
 public class Classe {
     private String class_name;
+    private String class_path;
     private String superclass;
     private List<String> interfaces;
     private List<String[]>  fields;
     private List<Object[]> constructors;
     private List<Object[]> methods;
 
-    public Classe(String c) {
-        this.class_name = c;
+    public Classe(String path) {
+        this.class_path = path;
+        this.class_name = null;
 
         this.superclass = null;
         this.interfaces = new ArrayList<>();
@@ -104,7 +106,13 @@ public class Classe {
         }
     }
 
+    public void setClassPath(String path) {
+        this.class_path = path;
+    }
 
+    public String getClassPath() {
+        return this.class_path;
+    }
     public void setClassName(String className) {
         this.class_name = className;
     }
