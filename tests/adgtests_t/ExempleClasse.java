@@ -1,4 +1,4 @@
-package adgtests;
+package adgtests_t;
 
 import adgtest.ExempleClasse2;
 

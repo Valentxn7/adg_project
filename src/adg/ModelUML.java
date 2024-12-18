@@ -1,5 +1,3 @@
-
-
 package adg;
 
 import java.net.MalformedURLException;
