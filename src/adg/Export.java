@@ -28,7 +28,7 @@ public class Export {
     public void export(String dir, String project_name) {
         FileWriter writer;
         try {
-            writer = new FileWriter(dir + "/" + project_name + ".adg");
+            writer = new FileWriter(dir + "/" + project_name + ".puml");
             writer.write(getUML());
             writer.close();
 
