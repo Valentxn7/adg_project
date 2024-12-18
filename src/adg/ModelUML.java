@@ -1,6 +1,8 @@
 package adg;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 
 /**
  * Classe représentant le modèle UML. Cette classe gère les classes UML,
@@ -12,6 +14,7 @@ public class ModelUML implements Sujet {
     private ArrayList<Classe> classes;          // Liste des classes UML
     private ArrayList<String> chemins;          // Liste des chemins de fichiers
     private String WindowsTitle = "Home";       // Titre de la fenêtre
+    private HashMap<String, VueClasse> vues;  // hashmap qui associe le nom de la classe à sa vue
 
     /**
      * Constructeur par défaut. Initialise les listes d'observateurs,
@@ -21,6 +24,7 @@ public class ModelUML implements Sujet {
         observateurs = new ArrayList<>();
         classes = new ArrayList<>();
         chemins = new ArrayList<>();
+        vues = new HashMap<>();
     }
 
     /**
@@ -129,5 +133,14 @@ public class ModelUML implements Sujet {
         ajouterClasse(classe);
         System.out.println(classe.UMLString());
         notifierObservateurs();
+    }
+
+    /**
+     * Retourne liste de classes avec leur vue
+     *
+     * @return vues
+     */
+    public HashMap<String, VueClasse> getVues() {
+        return vues;
     }
 }

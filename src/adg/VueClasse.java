@@ -5,7 +5,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VueClasse extends VBox implements Observateur {
@@ -13,6 +15,7 @@ public class VueClasse extends VBox implements Observateur {
      * La classe à afficher
      */
     private Classe classe;
+    private List<Fleche> fleches;
     /**
      * Constructeur de la vue
      * @param classe la classe à afficher
@@ -21,6 +24,7 @@ public class VueClasse extends VBox implements Observateur {
         this.classe = classe;
         this.setSpacing(10); // Espacement entre les éléments
         this.setId("vue-classe");
+        this.fleches = new ArrayList<>();
 
         // Génération de la vue
         afficherClasse();
@@ -32,6 +36,34 @@ public class VueClasse extends VBox implements Observateur {
     public void actualiser(Sujet mod) {
             this.getChildren().clear();
             afficherClasse();
+    }
+
+    /**
+     * Ajoute une flèche à la liste des flèches
+     * @param f la flèche à ajouter
+     */
+    public void ajouterFleche(Fleche f, ModelUML m) {
+        List<String[]> attributs = classe.getFields();
+        if (m.getVues().containsKey(classe.getClassName()) && !(classe.getSuperclass().isEmpty() && classe.getInterfaces().isEmpty())) {
+            for (String[] attribut : attributs) {
+                if (f instanceof FlecheAttri && attribut[1].equals(((FlecheAttri) f).getAttribut().getText())) {
+                    this.fleches.add(f);
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Retire une flèche de la liste des flèches
+     * @param f la flèche à retirer
+     */
+    public void retirerFleches(Fleche f) {
+        this.fleches.remove(f);
+    }
+
+    public List<Fleche> getFleches() {
+        return this.fleches;
     }
 
     private void afficherClasse() {

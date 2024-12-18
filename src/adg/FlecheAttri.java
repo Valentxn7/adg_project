@@ -26,4 +26,8 @@ public class FlecheAttri extends Fleche {
         attribut.setLayoutX((this.getStartX()+this.getEndX())/2);
         attribut.setLayoutY((this.getStartY()+this.getEndY())/2);
     }
+
+    public Text getAttribut(){
+        return attribut;
+    }
 }
