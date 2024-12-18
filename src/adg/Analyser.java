@@ -1,17 +1,11 @@
 package adg;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.net.URLClassLoader;
 
 public class Analyser {
     public static final int FIELD_NAME = 0; // Nom de l'attribut
@@ -85,6 +79,7 @@ public class Analyser {
         List<Object[]> methods = new ArrayList<>();
         for (Method method : row_class.getDeclaredMethods()) {
             Object[] methodeInfo = new Object[4];
+
             methodeInfo[METHOD_NAME] = method.getName();
             methodeInfo[METHOD_RETURN_TYPE] = method.getReturnType().getName();
             methodeInfo[METHOD_MODIFIER] = Modifier.toString(method.getModifiers());
@@ -92,6 +87,21 @@ public class Analyser {
 
             methods.add(methodeInfo);
         }
+
+        for(Object[] method : methods) {
+            System.out.println(method[METHOD_NAME] + " " + method[METHOD_RETURN_TYPE] + " " + method[METHOD_MODIFIER] + " " + method[METHOD_PARAMETERS]);
+        }
+
+        methods.sort((o1, o2) -> {
+            String name1 = (String) o1[METHOD_NAME];
+            String name2 = (String) o2[METHOD_NAME];
+            return name1.compareTo(name2);
+        });
+
+        for(Object[] method : methods) {
+            System.out.println(method[METHOD_NAME] + " " + method[METHOD_RETURN_TYPE] + " " + method[METHOD_MODIFIER] + " " + method[METHOD_PARAMETERS]);
+        }
+
         classe.setMethods(methods);
 
         return classe;
