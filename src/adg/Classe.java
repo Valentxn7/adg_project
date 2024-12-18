@@ -1,10 +1,9 @@
 package adg;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
-import com.google.gson.Gson;
 
 public class Classe {
     private String class_name;
@@ -98,9 +97,6 @@ public class Classe {
         Gson gson = new Gson();
         return gson.toJson(this);
     }
-
-
-
 
     /**
      * Convertit les modificateurs en symboles UML (+, -, #, ~)
