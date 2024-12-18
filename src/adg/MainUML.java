@@ -15,6 +15,7 @@ import java.io.File;
 
 public class MainUML extends Application {
     private ModelUML modelUML;
+    private Stage rootStage;
 
     public static void main(String[] args) {
         Application.launch();
@@ -22,6 +23,7 @@ public class MainUML extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        rootStage = stage;
         modelUML = new ModelUML();
         VBox base = new VBox(0);
         VueTitre titre = new VueTitre(modelUML);
@@ -38,7 +40,7 @@ public class MainUML extends Application {
 //        ControleurCreateProject controleurCreateProject = new ControleurCreateProject(modelUML);
         Button addProjectButton = new Button("+");
         addProjectButton.setAlignment(javafx.geometry.Pos.CENTER);
-        addProjectButton.setOnAction(e -> openCreateProjectWindow(stage));
+        addProjectButton.setOnAction(e -> openCreateProjectWindow());
 
         partieDroite.setAlignment(javafx.geometry.Pos.CENTER);
 
@@ -79,31 +81,32 @@ public class MainUML extends Application {
         Menu helpMenu = new Menu("Aide");
         menuBar.getMenus().addAll(fileMenu, viewMenu, helpMenu);
 
-        nouveau.setOnAction(e -> openCreateProjectWindow(stage));
-        ouvrirP.setOnAction(e -> openProject(stage));
+        nouveau.setOnAction(e -> openCreateProjectWindow());
+        ouvrirP.setOnAction(e -> openProject());
         ouvrirS.setOnAction(e -> {
-            String path = openSaveFile(stage);
+            String path = openSaveFile();
             if (path != null) {
                 System.out.println("Ouverture de la sauvegarde : " + path);
             }
         });
 
-
         VueArborescence vueArborescence = new VueArborescence(modelUML);  // l'item de base
         modelUML.enregistrerObservateur(vueArborescence);
-        vueArborescence.setValue("Projets récents:");
+        vueArborescence.setValue("Projets ADG:");
         vueArborescence.setExpanded(true);
-        vueArborescence.getChildren().addAll(  // ses fils
-                new TreeItem<>("Projet 1"),
-                new TreeItem<>("Projet 2"),
-                new TreeItem<>("Projet 3")
-        );
-
+        vueArborescence.actualiser(modelUML);
         TreeView<String> treeView = new TreeView<>(vueArborescence);  // la TreeView affiche les TreeItem
+
+        VueRecent vueRecent = new VueRecent(modelUML);  // l'item de base
+        modelUML.enregistrerObservateur(vueRecent);
+        vueRecent.setValue("Projets récents:");
+        vueRecent.setExpanded(true);
+        vueRecent.actualiser(modelUML);
+        TreeView<String> treeView2 = new TreeView<>(vueRecent);  // la TreeView affiche les TreeItem
 
         base.getChildren().addAll(titre, centre, fin);  // VBox
         centre.getChildren().addAll(partieGauche, partieDroite);  // HBox
-        partieGauche.getChildren().addAll(menuBar, treeView);  // VBox
+        partieGauche.getChildren().addAll(menuBar, treeView, treeView2);  // VBox
         partieDroite.getChildren().add(addProjectButton);  // HBox
 
         base.setPrefSize(900, 400);
@@ -126,6 +129,7 @@ public class MainUML extends Application {
         menuBar.getStyleClass().add("menuBar");
         partieDroite.getStyleClass().add("menuBar");
         treeView.getStyleClass().add("treeView");
+        treeView2.getStyleClass().add("treeView");
         fin.getStyleClass().add("label-fin");
 
         Scene scene = new Scene(base, 922, 420);
@@ -138,10 +142,8 @@ public class MainUML extends Application {
 
     /**
      * Ouvre une fenêtre de dialogue pour la création d'un nouveau projet.
-     *
-     * @param stage la fenêtre principale
      */
-    private void openCreateProjectWindow(Stage stage) {
+    private void openCreateProjectWindow() {
         Stage createProjetWind = new Stage();
         createProjetWind.initModality(Modality.APPLICATION_MODAL);  // empêche les intéractions avec la grande fenêtre
         createProjetWind.setTitle("Créer un nouveau projet");
@@ -153,11 +155,23 @@ public class MainUML extends Application {
         TextField projectNameField = new TextField();
         Button createButton = new Button("Créer");
 
+        projectNameField.setOnAction(e -> {
+            String projectName = projectNameField.getText().trim();  // on récupère le texte du champ
+            if (!projectName.isEmpty()) {  // si le champ n'est pas vide
+                if (modelUML.creerProjetVierge(projectName)){
+                    rootStage.setTitle("ADG - " + projectName);
+                    modelUML.setWindowsTitle(projectName);
+                }
+                createProjetWind.close(); // Ferme la fenêtre
+            } else {
+                showErrorMessage("Le nom du projet ne peut pas être vide.");
+            }
+        });
         createButton.setOnAction(e -> {
             String projectName = projectNameField.getText().trim();  // on récupère le texte du champ
             if (!projectName.isEmpty()) {  // si le champ n'est pas vide
                 if (modelUML.creerProjetVierge(projectName)){
-                    stage.setTitle("ADG - " + projectName);
+                    rootStage.setTitle("ADG - " + projectName);
                     modelUML.setWindowsTitle(projectName);
                 }
                 createProjetWind.close(); // Ferme la fenêtre
@@ -176,17 +190,16 @@ public class MainUML extends Application {
     /**
      * Ouvre un explorateur pour sélectionner un dossier (projet).
      *
-     * @param stage La fenêtre parent pour le dialogue.
      * @return Le chemin du dossier sélectionné, ou null si aucun dossier n'a été sélectionné.
      */
-    private void openProject(Stage stage) {
+    private void openProject() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Ouvrir un projet");
-        File selectedDirectory = directoryChooser.showDialog(stage);
+        File selectedDirectory = directoryChooser.showDialog(rootStage);
         if (selectedDirectory != null) {
             String path = selectedDirectory.getAbsolutePath();
             System.out.println("Ouverture du projet : " + path);
-            stage.setTitle("ADG - " + selectedDirectory.getName());
+            rootStage.setTitle("ADG - " + selectedDirectory.getName());
             modelUML.ouvrirProjet(selectedDirectory);
         }
     }
@@ -194,14 +207,13 @@ public class MainUML extends Application {
     /**
      * Ouvre un explorateur pour sélectionner un fichier .adg (sauvegarde).
      *
-     * @param stage La fenêtre parente pour le dialogue.
      * @return Le chemin du fichier sélectionné, ou null si aucun fichier n'a été sélectionné.
      */
-    private String openSaveFile(Stage stage) {
+    private String openSaveFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Ouvrir une sauvegarde");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers ADG", "*.adg"));
-        File selectedFile = fileChooser.showOpenDialog(stage);
+        File selectedFile = fileChooser.showOpenDialog(rootStage);
         if (selectedFile != null) {
 
             return selectedFile.getAbsolutePath();

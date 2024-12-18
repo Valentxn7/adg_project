@@ -13,4 +13,6 @@ public interface Observateur {
      */
     public void switchHome2diag();
 
+
+
 }
