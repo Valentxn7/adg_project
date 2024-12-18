@@ -8,16 +8,21 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+
+import java.io.File;
 
 public class MainUML extends Application {
+    private ModelUML modelUML;
+
     public static void main(String[] args) {
         Application.launch();
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-
-        ModelUML modelUML = new ModelUML();
+        modelUML = new ModelUML();
         VBox base = new VBox(0);
         VueTitre titre = new VueTitre(modelUML);
         titre.setText("ADG - Home");
@@ -33,7 +38,7 @@ public class MainUML extends Application {
 //        ControleurCreateProject controleurCreateProject = new ControleurCreateProject(modelUML);
         Button addProjectButton = new Button("+");
         addProjectButton.setAlignment(javafx.geometry.Pos.CENTER);
-        addProjectButton.setOnAction(e -> openCreateProjectWindow(stage, modelUML));
+        addProjectButton.setOnAction(e -> openCreateProjectWindow(stage));
 
         partieDroite.setAlignment(javafx.geometry.Pos.CENTER);
 
@@ -43,7 +48,8 @@ public class MainUML extends Application {
         Menu fileMenu = new Menu("Fichier");  // contenue
 
         MenuItem nouveau = new MenuItem("Nouveau");
-        MenuItem ourvir = new MenuItem("Ouvrir");
+        MenuItem ouvrirP = new MenuItem("Ouvrir un projet");
+        MenuItem ouvrirS = new MenuItem("Ouvrir une sauvegarde");
         MenuItem renommer = new MenuItem("Renommer");
         MenuItem supprimer = new MenuItem("Supprimer");
         MenuItem enregistrer = new MenuItem("Enregistrer");
@@ -63,7 +69,7 @@ public class MainUML extends Application {
         accueil.setDisable(true);
 
         fileMenu.getItems().addAll(
-                nouveau, ourvir, new SeparatorMenuItem(),
+                nouveau, ouvrirP, ouvrirS, new SeparatorMenuItem(),
                 renommer, supprimer, new SeparatorMenuItem(),
                 enregistrer, enregistrerSous, new SeparatorMenuItem(),
                 exporterUml, exporterPng, new SeparatorMenuItem(),
@@ -73,17 +79,27 @@ public class MainUML extends Application {
         Menu helpMenu = new Menu("Aide");
         menuBar.getMenus().addAll(fileMenu, viewMenu, helpMenu);
 
-        nouveau.setOnAction(e -> openCreateProjectWindow(stage, modelUML));
+        nouveau.setOnAction(e -> openCreateProjectWindow(stage));
+        ouvrirP.setOnAction(e -> openProject(stage));
+        ouvrirS.setOnAction(e -> {
+            String path = openSaveFile(stage);
+            if (path != null) {
+                System.out.println("Ouverture de la sauvegarde : " + path);
+            }
+        });
 
-        TreeItem<String> projetR = new TreeItem<>("Projets récents:");  // l'item de base
-        projetR.setExpanded(true);
-        projetR.getChildren().addAll(  // ses fils
+
+        VueArborescence vueArborescence = new VueArborescence(modelUML);  // l'item de base
+        modelUML.enregistrerObservateur(vueArborescence);
+        vueArborescence.setValue("Projets récents:");
+        vueArborescence.setExpanded(true);
+        vueArborescence.getChildren().addAll(  // ses fils
                 new TreeItem<>("Projet 1"),
                 new TreeItem<>("Projet 2"),
                 new TreeItem<>("Projet 3")
         );
 
-        TreeView<String> treeView = new TreeView<>(projetR);  // la TreeView affiche les TreeItem
+        TreeView<String> treeView = new TreeView<>(vueArborescence);  // la TreeView affiche les TreeItem
 
         base.getChildren().addAll(titre, centre, fin);  // VBox
         centre.getChildren().addAll(partieGauche, partieDroite);  // HBox
@@ -122,10 +138,10 @@ public class MainUML extends Application {
 
     /**
      * Ouvre une fenêtre de dialogue pour la création d'un nouveau projet.
+     *
      * @param stage la fenêtre principale
-     * @param mod le modèle
      */
-    private void openCreateProjectWindow(Stage stage, ModelUML mod) {
+    private void openCreateProjectWindow(Stage stage) {
         Stage createProjetWind = new Stage();
         createProjetWind.initModality(Modality.APPLICATION_MODAL);  // empêche les intéractions avec la grande fenêtre
         createProjetWind.setTitle("Créer un nouveau projet");
@@ -142,8 +158,8 @@ public class MainUML extends Application {
             if (!projectName.isEmpty()) {
                 System.out.println("Nouveau projet créé : " + projectName);  // ICI ON DOIT SEND LES DONNEES AU MODEL
                 stage.setTitle("ADG - " + projectName);
-                mod.setWindowsTitle(projectName);
-                mod.creerProjetVierge();
+                modelUML.setWindowsTitle(projectName);
+                modelUML.creerProjetVierge();
                 createProjetWind.close(); // Ferme la fenêtre
             } else {
                 showErrorMessage("Le nom du projet ne peut pas être vide.");
@@ -158,8 +174,44 @@ public class MainUML extends Application {
     }
 
     /**
+     * Ouvre un explorateur pour sélectionner un dossier (projet).
+     *
+     * @param stage La fenêtre parent pour le dialogue.
+     * @return Le chemin du dossier sélectionné, ou null si aucun dossier n'a été sélectionné.
+     */
+    private void openProject(Stage stage) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Ouvrir un projet");
+        File selectedDirectory = directoryChooser.showDialog(stage);
+        if (selectedDirectory != null) {
+            String path = selectedDirectory.getAbsolutePath();
+            System.out.println("Ouverture du projet : " + path);
+            modelUML.ouvrirProjet(selectedDirectory);
+        }
+    }
+
+    /**
+     * Ouvre un explorateur pour sélectionner un fichier .adg (sauvegarde).
+     *
+     * @param stage La fenêtre parent pour le dialogue.
+     * @return Le chemin du fichier sélectionné, ou null si aucun fichier n'a été sélectionné.
+     */
+    private String openSaveFile(Stage stage) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Ouvrir une sauvegarde");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers ADG", "*.adg"));
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile != null) {
+
+            return selectedFile.getAbsolutePath();
+        }
+        return null;
+    }
+
+    /**
      * Permet l'affichage d'un message d'erreur par une fenêtre de dialogue.
-     * @param message
+     *
+     * @param message le message d'erreur
      */
     private void showErrorMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

@@ -1,11 +1,14 @@
 package adg;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ModelUML implements Sujet{
     private ArrayList<Observateur> observateurs;
     private ArrayList<Classe> classes;
-    private String WindowsTitle = "Home";
+    private String windowsTitle = "Home";
+    private String folderPath = null;
+    private File folder = null;
 
     public ModelUML() {
         observateurs = new ArrayList<Observateur>();
@@ -19,6 +22,14 @@ public class ModelUML implements Sujet{
 
     public void creerProjetVierge() {
         System.out.println("Création d'un projet vierge");
+        for(Observateur o : observateurs) {
+            o.switchHome2diag();
+        }
+    }
+
+    public void ouvrirProjet(File folder) {
+        this.folder = folder;
+        System.out.println("Ouverture du projet : " + folder.getName() + "...");
         for(Observateur o : observateurs) {
             o.switchHome2diag();
         }
@@ -42,11 +53,27 @@ public class ModelUML implements Sujet{
     }
 
     public String getWindowsTitle() {
-        return WindowsTitle;
+        return windowsTitle;
     }
 
     public void setWindowsTitle(String title) {
-        WindowsTitle = title;
+        windowsTitle = title;
+    }
+
+    public void setFolderPath(String path) {
+        folderPath = path;
+    }
+
+    public String getFolderPath() {
+        return folderPath;
+    }
+
+    public void setFolder(File folder) {
+        this.folder = folder;
+    }
+
+    public File getFolder() {
+        return folder;
     }
 
 }
