@@ -154,12 +154,12 @@ public class MainUML extends Application {
         Button createButton = new Button("Créer");
 
         createButton.setOnAction(e -> {
-            String projectName = projectNameField.getText().trim();
-            if (!projectName.isEmpty()) {
-                System.out.println("Nouveau projet créé : " + projectName);  // ICI ON DOIT SEND LES DONNEES AU MODEL
-                stage.setTitle("ADG - " + projectName);
-                modelUML.setWindowsTitle(projectName);
-                modelUML.creerProjetVierge();
+            String projectName = projectNameField.getText().trim();  // on récupère le texte du champ
+            if (!projectName.isEmpty()) {  // si le champ n'est pas vide
+                if (modelUML.creerProjetVierge(projectName)){
+                    stage.setTitle("ADG - " + projectName);
+                    modelUML.setWindowsTitle(projectName);
+                }
                 createProjetWind.close(); // Ferme la fenêtre
             } else {
                 showErrorMessage("Le nom du projet ne peut pas être vide.");
@@ -186,6 +186,7 @@ public class MainUML extends Application {
         if (selectedDirectory != null) {
             String path = selectedDirectory.getAbsolutePath();
             System.out.println("Ouverture du projet : " + path);
+            stage.setTitle("ADG - " + selectedDirectory.getName());
             modelUML.ouvrirProjet(selectedDirectory);
         }
     }
@@ -193,7 +194,7 @@ public class MainUML extends Application {
     /**
      * Ouvre un explorateur pour sélectionner un fichier .adg (sauvegarde).
      *
-     * @param stage La fenêtre parent pour le dialogue.
+     * @param stage La fenêtre parente pour le dialogue.
      * @return Le chemin du fichier sélectionné, ou null si aucun fichier n'a été sélectionné.
      */
     private String openSaveFile(Stage stage) {
@@ -213,7 +214,7 @@ public class MainUML extends Application {
      *
      * @param message le message d'erreur
      */
-    private void showErrorMessage(String message) {
+    public static void showErrorMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
         alert.setHeaderText(null);
