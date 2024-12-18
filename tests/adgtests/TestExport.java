@@ -3,12 +3,15 @@ package adgtests;
 import adg.Analyser;
 import adg.Classe;
 import adg.Export;
+import adgtests_t.ExempleClasse;
+import adgtests_t.ExempleClasse2;
+import adgtests_t.ExempleInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class TestExport {
@@ -38,7 +41,7 @@ public class TestExport {
         classe3 = analyser3.analyse();
         classes.add(classe3);
 
-        exp = Export.getInstance(classes, null);
+        exp = new Export(classes);
     }
 
     @Test
@@ -47,22 +50,22 @@ public class TestExport {
 
         String expected = """
         @startuml
-        class adgtests.ExempleClasse {
+        class adgtests_t.ExempleClasse {
             + exemple1 : int
             - exemple2 : java.lang.String
-            # exemple3 : adgtests.ExempleClasse
+            # exemple3 : adgtests_t.ExempleClasse
         '----------------
-            + adgtests.ExempleClasse(int, int)
+            + adgtests_t.ExempleClasse(int, int)
             + ExempleMethode1(int) : void
             - ExempleMethode2(java.lang.String) : java.lang.String
         }
-        adgtests.ExempleClasse --|> adgtests.ExempleClasse2
-        adgtests.ExempleClasse ..|> adgtests.ExempleInterface
-        class adgtests.ExempleClasse2 {
+        adgtests_t.ExempleClasse --|> adgtests_t.ExempleClasse2
+        adgtests_t.ExempleClasse ..|> adgtests_t.ExempleInterface
+        class adgtests_t.ExempleClasse2 {
         '----------------
-            + adgtests.ExempleClasse2()
+            + adgtests_t.ExempleClasse2()
         }
-        class adgtests.ExempleInterface {
+        class adgtests_t.ExempleInterface {
         '----------------
         }
         @enduml""";
