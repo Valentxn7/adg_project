@@ -6,18 +6,12 @@ import java.util.List;
 public class Export {
     private static Export instance = null;
     private List<Classe> classes;
-    private List<VueClasse> vues;
 
-    private Export(List<Classe> classes, List<VueClasse> vues) {
+    /**
+     * @param classes List of classes to export
+     */
+    public Export(List<Classe> classes) {
         this.classes = classes;
-        this.vues = vues;
-    }
-
-    public static Export getInstance(List<Classe> classes, List<VueClasse> vues) {
-        if (instance == null) {
-            instance = new Export(classes, vues);
-        }
-        return instance;
     }
 
     public String getUML() throws Exception {
@@ -32,28 +26,11 @@ public class Export {
         return sb.toString();
     }
 
-    public String getADG() throws ClassNotFoundException {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("@startadg\n");
-
-        /*
-        for (VueClasse vue : vues) {
-            sb.append(vue.toADGString());
-        }
-        */
-
-        sb.append("@endadg\n");
-
-        return sb.toString();
-    }
-
-    public void save(String dir, String project_name) {
+    public void export(String dir, String project_name) {
         FileWriter writer;
         try {
             writer = new FileWriter(dir + "/" + project_name + ".adg");
             writer.write(getUML());
-            writer.write(getADG());
             writer.close();
 
         } catch (Exception e) {
