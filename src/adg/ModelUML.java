@@ -123,6 +123,8 @@ public class ModelUML implements Sujet {
         return res.toString();
     }
 
+
+
     /**
      * Analyse un fichier UML donné et ajoute la classe analysée au modèle.
      * Notifie ensuite les observateurs.
@@ -158,10 +160,12 @@ public class ModelUML implements Sujet {
     }
 
     private String extraireNomClasse(String cheminAbsolu) {
-        return cheminAbsolu
-                .substring(cheminAbsolu.lastIndexOf("Desktop") + 8) // +8 pour ignorer "Desktop\\"
+        String res =  cheminAbsolu
+                .substring(cheminAbsolu.lastIndexOf("C:") + 3) // +8 pour ignorer "Desktop\\"
                 .replace(".class", "")
                 .replace("\\", ".");
+        System.out.println(res);
+        return res;
     }
 
     private Class<?> chargerClasse(URLClassLoader chargeurClasse, String nomClasse, String cheminAbsolu) throws Exception {
@@ -187,10 +191,6 @@ public class ModelUML implements Sujet {
         }
         return cheminAbsolu;
     }
-
-
-
-
 
 
 
