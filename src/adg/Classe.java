@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gson.Gson;
 
 public class Classe {
     private String class_name;
@@ -14,6 +15,8 @@ public class Classe {
     private List<Object[]> constructors;
     private List<Object[]> methods;
 
+    private double[] coords = new double[2];
+
     public Classe(String path) {
         this.class_path = path;
         this.class_name = null;
@@ -23,6 +26,9 @@ public class Classe {
         this.fields = new ArrayList<>();
         this.constructors = new ArrayList<>();
         this.methods = new ArrayList<>();
+
+        this.coords[0] = 0; // x
+        this.coords[1] = 0; // y
     }
 
     /**
@@ -87,6 +93,14 @@ public class Classe {
 
         return uml.toString();
     }
+
+    public String save() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+
+
+
 
     /**
      * Convertit les modificateurs en symboles UML (+, -, #, ~)
