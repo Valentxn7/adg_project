@@ -3,7 +3,7 @@ package adgtests;
 import adg.Analyser;
 import adg.Classe;
 import adg.Save;
-import javafx.scene.control.ContextMenu;
+import adgtest.ExempleClasse2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

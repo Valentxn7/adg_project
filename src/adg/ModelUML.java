@@ -1,7 +1,16 @@
+
+
 package adg;
 
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
 /**
  * Classe représentant le modèle UML. Cette classe gère les classes UML,
  * les chemins de fichiers, et la communication avec les observateurs.
@@ -120,14 +129,72 @@ public class ModelUML implements Sujet {
      * Analyse un fichier UML donné et ajoute la classe analysée au modèle.
      * Notifie ensuite les observateurs.
      *
-     * @param absolutePath le chemin absolu du fichier à analyser.
+     * @param cheminAbsolu le chemin absolu du fichier à analyser.
      * @throws ClassNotFoundException si une classe dans le fichier est introuvable.
      */
-    public void annalyseFichier(String absolutePath) throws ClassNotFoundException {
-        Analyser analyse = new Analyser(absolutePath);
-        Classe classe = analyse.analyse();
-        ajouterClasse(classe);
-        System.out.println(classe.UMLString());
+    public void analyseFichier(String cheminAbsolu) throws Exception {
+        // Extrait le nom de la classe à partir du chemin absolu
+        String nomClasse = extraireNomClasse(cheminAbsolu);
+
+        File fichier = new File(cheminAbsolu);
+        String cheminClasse = fichier.getParentFile().toURI().toString();
+
+        // Crée un URLClassLoader pour charger la classe
+        URLClassLoader chargeurClasse = new URLClassLoader(new URL[]{new URL(cheminClasse)});
+
+        // Charge la classe
+        Class<?> classe = chargerClasse(chargeurClasse, nomClasse, cheminAbsolu);
+
+        // Analyse la classe
+        Analyser analyse = new Analyser(classe);
+        Classe classeAnalysée = analyse.analyse();
+
+        // Ajoute la classe au modèle
+        ajouterClasse(classeAnalysée);
+
+        // Affiche la représentation UML de la classe
+        System.out.println(classeAnalysée.UMLString());
+
+        // Notifie les observateurs
         notifierObservateurs();
     }
+
+    private String extraireNomClasse(String cheminAbsolu) {
+        return cheminAbsolu
+                .substring(cheminAbsolu.lastIndexOf("Desktop") + 8) // +8 pour ignorer "Desktop\\"
+                .replace(".class", "")
+                .replace("\\", ".");
+    }
+
+    private Class<?> chargerClasse(URLClassLoader chargeurClasse, String nomClasse, String cheminAbsolu) throws Exception {
+        try {
+            return chargeurClasse.loadClass(nomClasse);
+        } catch (ClassNotFoundException e) {
+            // Modifie le chemin absolu pour remplacer le dernier backslash par un point
+            cheminAbsolu = remplacerDernierBackslashParPoint(cheminAbsolu);
+
+            File fichier = new File(cheminAbsolu);
+            nomClasse = fichier.getName().replace(".class", "");
+            String cheminClasse = fichier.getParentFile().toURI().toString();
+            chargeurClasse = new URLClassLoader(new URL[]{new URL(cheminClasse)});
+
+            return chargeurClasse.loadClass(nomClasse);
+        }
+    }
+
+    private String remplacerDernierBackslashParPoint(String cheminAbsolu) {
+        int dernierIndexBackslash = cheminAbsolu.lastIndexOf('\\');
+        if (dernierIndexBackslash != -1) {
+            return cheminAbsolu.substring(0, dernierIndexBackslash) + '.' + cheminAbsolu.substring(dernierIndexBackslash + 1);
+        }
+        return cheminAbsolu;
+    }
+
+
+
+
+
+
+
+
 }

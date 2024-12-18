@@ -72,7 +72,7 @@ public class TestAnalyser {
 
     @Test
     public void test_class_superclass() throws Exception {
-        assertEquals("adgtests.ExempleClasse2", classe.getSuperclass());
+        assertEquals("adgtest.ExempleClasse2", classe.getSuperclass());
     }
 
     @Test

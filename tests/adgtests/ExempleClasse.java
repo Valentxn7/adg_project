@@ -1,5 +1,7 @@
 package adgtests;
 
+import adgtest.ExempleClasse2;
+
 public class ExempleClasse extends ExempleClasse2 implements ExempleInterface {
 
     public int exemple1;
