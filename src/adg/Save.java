@@ -8,9 +8,14 @@ public class Save {
     private String project_name;
     private List<Classe> classes;
 
-    public Save (String path, String project_name, List<Classe> classes) {
-        this.path = path;
-        this.project_name = project_name;
+    /**
+     * @param p Path to save the file
+     * @param pn Project name
+     * @param classes List of classes to save
+     */
+    public Save (String p, String pn, List<Classe> classes) {
+        this.path = p;
+        this.project_name = pn;
         this.classes = classes;
     }
 
@@ -29,11 +34,12 @@ public class Save {
             }
         }
 
-
         try {
-            java.io.FileWriter writer = new java.io.FileWriter(this.project_name + ".json");
+            java.io.FileWriter writer = new java.io.FileWriter(path + project_name + ".adg");
             writer.write(String.valueOf(sb));
             writer.close();
+
+            System.out.println("File saved");
         } catch (Exception e) {
             e.printStackTrace();
         }
