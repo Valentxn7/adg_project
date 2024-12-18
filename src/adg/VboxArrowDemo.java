@@ -25,10 +25,11 @@ public class VboxArrowDemo extends Application {
         c2.setLayoutX(300);
         c2.setLayoutY(100);
         // Création d'une flèche
-        Fleche arrow = new FlecheAttri();
+        Text a = new Text("Attribut");
+        Fleche arrow = new FlecheAttri(a);
         arrow.setPos(c2, c1);
         root.getChildren().add(arrow);
-        root.getChildren().addAll(c1, c2);
+        root.getChildren().addAll(c1, c2, a);
         Polygon arrowHead = arrow.getTete();
         root.getChildren().add(arrowHead);
         c1.setOnDragDetected(e -> {

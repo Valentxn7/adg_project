@@ -1,8 +1,10 @@
 package adg;
 
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 public class FlecheExt extends Fleche {
+
     public FlecheExt(){
         super();
 
@@ -15,6 +17,6 @@ public class FlecheExt extends Fleche {
     public void setLine(){
         this.setStrokeWidth(2);
         this.setStroke(Color.BLACK);
-
     }
+
 }
