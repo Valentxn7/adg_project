@@ -160,12 +160,26 @@ public class ModelUML implements Sujet {
     }
 
     private String extraireNomClasse(String cheminAbsolu) {
-        String res =  cheminAbsolu
-                .substring(cheminAbsolu.lastIndexOf("C:") + 3) // +8 pour ignorer "Desktop\\"
-                .replace(".class", "")
-                .replace("\\", ".");
-        System.out.println(res);
-        return res;
+        int ind = 0;
+        int indbefore = 0;
+
+        for (int i = 0; i < cheminAbsolu.length(); i++) {
+            if (cheminAbsolu.charAt(i) == '\\') {
+                indbefore = ind;
+                ind = i;
+            }
+        }
+        if (indbefore == 0) {
+            indbefore = ind;
+        }
+
+        // Retourner tout après le deuxième dernier séparateur
+
+        System.out.println(indbefore);
+        String chemin = cheminAbsolu.substring(indbefore + 1);
+        System.out.println( "Bonjour " + chemin);
+
+        return chemin;
     }
 
     private Class<?> chargerClasse(URLClassLoader chargeurClasse, String nomClasse, String cheminAbsolu) throws Exception {
