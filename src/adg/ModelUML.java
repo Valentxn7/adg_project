@@ -175,9 +175,7 @@ public class ModelUML implements Sujet {
 
         // Retourner tout après le deuxième dernier séparateur
 
-        System.out.println(indbefore);
         String chemin = cheminAbsolu.substring(indbefore + 1);
-        System.out.println( "Bonjour " + chemin);
 
         return chemin;
     }
