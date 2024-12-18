@@ -55,6 +55,7 @@ public class Analyser {
         List<String[]> fields = new ArrayList<>();
         for (Field field : row_class.getDeclaredFields()) {
             String[] attributInfo = new String[3];
+
             attributInfo[FIELD_NAME] = field.getName();
             attributInfo[FIELD_TYPE] = field.getType().getName();
             attributInfo[FIELD_MODIFIER] = Modifier.toString(field.getModifiers());
@@ -88,19 +89,12 @@ public class Analyser {
             methods.add(methodeInfo);
         }
 
-        for(Object[] method : methods) {
-            System.out.println(method[METHOD_NAME] + " " + method[METHOD_RETURN_TYPE] + " " + method[METHOD_MODIFIER] + " " + method[METHOD_PARAMETERS]);
-        }
-
         methods.sort((o1, o2) -> {
             String name1 = (String) o1[METHOD_NAME];
             String name2 = (String) o2[METHOD_NAME];
             return name1.compareTo(name2);
         });
 
-        for(Object[] method : methods) {
-            System.out.println(method[METHOD_NAME] + " " + method[METHOD_RETURN_TYPE] + " " + method[METHOD_MODIFIER] + " " + method[METHOD_PARAMETERS]);
-        }
 
         classe.setMethods(methods);
 

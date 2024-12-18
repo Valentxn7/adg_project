@@ -123,8 +123,8 @@ public class ModelUML implements Sujet {
      * @param absolutePath le chemin absolu du fichier à analyser.
      * @throws ClassNotFoundException si une classe dans le fichier est introuvable.
      */
-    public void annalyseFichier(String absolutePath) throws ClassNotFoundException {
-        Analyser analyse = new Analyser(absolutePath);
+    public void annalyseFichier(String absolutePath) throws Exception {
+        Analyser analyse = new Analyser(absolutePath.getClass()); // /!\ pb ici faut mettre un Class<?>
         Classe classe = analyse.analyse();
         ajouterClasse(classe);
         System.out.println(classe.UMLString());

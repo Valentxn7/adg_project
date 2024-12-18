@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.List;
 
 public class Export {
-    private static Export instance = null;
     private List<Classe> classes;
 
     /**
