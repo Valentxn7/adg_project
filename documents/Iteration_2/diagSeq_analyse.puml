@@ -1,0 +1,43 @@
+@startuml
+participant ModelUML
+activate ModelUML
+ModelUML -> Analyser : analyse()
+activate Analyser
+create "Classe : classe" as Classe
+Analyser -> Classe : new
+activate Classe
+Classe --> Analyser : classe
+deactivate Classe
+participant "Class : class " as Class
+
+Analyser -> Class : getName()
+activate Class
+Class --> Analyser
+deactivate Class
+
+Analyser -> Class : getSuperclass()
+activate Class
+Class --> Analyser
+deactivate Class
+
+Analyser -> Class : getParameterTypeNames()
+activate Class
+Class --> Analyser
+deactivate Class
+
+Analyser -> Class : getDeclaredConstructors()
+activate Class
+Class --> Analyser
+deactivate Class
+
+Analyser -> Class : getDeclaredFields()
+activate Class
+Class --> Analyser
+deactivate Class
+
+
+deactivate Class
+Analyser -> Analyser : getParameterTypeNames()
+
+Analyser --> ModelUML :  classe
+@enduml

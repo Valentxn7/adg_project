@@ -1,0 +1,122 @@
+@startuml
+
+
+top to bottom direction
+skinparam linetype ortho
+
+class Analyser {
+  + Analyser(Class<?>): 
+  - getParameterTypeNames(Class<?>[]): List<String>
+  + analyse(): Classe
+}
+class Classe {
+  + Classe(String): 
+  + UMLString(): String
+  + save(): String
+  - getUMLVisibility(String): String
+   superclass: String
+   classPath: String
+   constructors: List<Object[]>
+   methods: List<Object[]>
+   interfaces: List<String>
+   className: String
+   fields: List<String[]>
+}
+class ControleurCreateProject {
+  + ControleurCreateProject(ModelUML): 
+  + handle(ActionEvent): void
+}
+class ControllerDragDrop {
+  + ControllerDragDrop(ModelUML): 
+  + activerDragAndDrop(StackPane): void
+  + handle(DragEvent): void
+}
+class Export #lightblue {
+  + Export(List<Classe>): 
+  + export(String, String): void
+   UML: String
+}
+class Load #lightblue {
+  + Load(String, String): 
+  + load(): List<Classe>
+}
+class MainUML {
+  + MainUML(): 
+  + start(Stage): void
+  - showErrorMessage(String): void
+  + main(String[]): void
+  - openCreateProjectWindow(Stage, ModelUML): void
+}
+class ModelUML {
+  + ModelUML(): 
+  + creerProjetVierge(): void
+  - extraireNomClasse(String): String
+  - remplacerDernierBackslashParPoint(String): String
+  + supprimerObservateur(Observateur): void
+  + analyseFichier(String): void
+  + enregistrerObservateur(Observateur): void
+  - chargerClasse(URLClassLoader, String, String): Class<?>
+  + ajouterClasse(Classe): void
+  + notifierObservateurs(): void
+   WindowsTitle: String
+   filePath: String
+}
+interface Observateur << interface >> {
+  + switchHome2diag(): void
+  + actualiser(Sujet): void
+}
+class Save {
+  + Save(String, String, List<Classe>): 
+  + save(): void
+}
+interface Sujet << interface >> {
+  + supprimerObservateur(Observateur): void
+  + enregistrerObservateur(Observateur): void
+  + notifierObservateurs(): void
+}
+class VueClasse {
+  + VueClasse(Classe): 
+  + actualiser(Sujet): void
+  - getVisibilityCircle(String): Circle
+  - creerAttribut(String[]): HBox
+  - creerMethode(Object[]): HBox
+  - creerHBox(Circle, Label): HBox
+  - ajouterElements(List<T>, Function<T, HBox>): void
+  - creerConstructeur(Object[]): HBox
+  - afficherClasse(): void
+  + switchHome2diag(): void
+}
+class VueDiagramme {
+  + VueDiagramme(ModelUML): 
+  + actualiser(Sujet): void
+  + switchHome2diag(): void
+}
+class VueMenu {
+  + VueMenu(ModelUML): 
+  + switchHome2diag(): void
+  + actualiser(Sujet): void
+}
+class VueTitre {
+  + VueTitre(ModelUML): 
+  + switchHome2diag(): void
+  + actualiser(Sujet): void
+}
+
+
+ControleurCreateProject "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                
+ControllerDragDrop      "1" *-[#595959,plain]-> "model\n1" ModelUML                
+Export                  "1" *-[#595959,plain]-> "classes\n*" Classe
+
+ModelUML                "1" *-[#595959,plain]-> "classes\n*" Classe                  
+ModelUML                "1" *-[#595959,plain]-> "observateurs\n*" Observateur             
+ModelUML                 -[#008200,dashed]-^  Sujet                   
+Save                    "1" *-[#595959,plain]-> "classes\n*" Classe                  
+VueClasse               "1" *-[#595959,plain]-> "classe\n1" Classe                  
+VueClasse                -[#008200,dashed]-^  Observateur             
+VueDiagramme            "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                
+VueDiagramme             -[#008200,dashed]-^  Observateur             
+VueMenu                 "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                
+VueMenu                  -[#008200,dashed]-^  Observateur             
+VueTitre                "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                
+VueTitre                 -[#008200,dashed]-^  Observateur             
+@enduml
