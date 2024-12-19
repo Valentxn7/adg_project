@@ -1,8 +1,8 @@
 package adgtests;
 
-import adg.Analyser;
-import adg.Classe;
-import adg.Export;
+import adg.data.Analyser;
+import adg.data.Classe;
+import adg.data.Export;
 import adgtests_t.ExempleClasse;
 import adgtests_t.ExempleClasse2;
 import adgtests_t.ExempleInterface;

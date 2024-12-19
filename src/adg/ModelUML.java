@@ -1,12 +1,10 @@
 package adg;
 
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import adg.data.Analyser;
+import adg.data.Classe;
+
 import java.util.ArrayList;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 /**

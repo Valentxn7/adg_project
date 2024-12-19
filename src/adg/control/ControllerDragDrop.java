@@ -1,5 +1,6 @@
-package adg;
+package adg.control;
 
+import adg.ModelUML;
 import javafx.event.EventHandler;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;

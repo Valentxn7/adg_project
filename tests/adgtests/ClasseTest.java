@@ -1,4 +1,4 @@
-/*import adg.Classe;
+/*import adg.data.Classe;
 
 import java.util.ArrayList;
 

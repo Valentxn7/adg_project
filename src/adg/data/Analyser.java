@@ -1,4 +1,4 @@
-package adg;
+package adg.data;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

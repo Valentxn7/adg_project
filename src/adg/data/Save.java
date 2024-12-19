@@ -1,4 +1,4 @@
-package adg;
+package adg.data;
 
 import java.util.List;
 

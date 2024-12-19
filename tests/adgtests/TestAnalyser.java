@@ -1,7 +1,7 @@
 package adgtests;
 
-import adg.Analyser;
-import adg.Classe;
+import adg.data.Analyser;
+import adg.data.Classe;
 import adgtests_t.ExempleClasse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

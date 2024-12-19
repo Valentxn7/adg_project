@@ -1,7 +1,7 @@
 package adgtests;
 
-import adg.Classe;
-import adg.Load;
+import adg.data.Classe;
+import adg.data.Load;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;

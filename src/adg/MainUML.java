@@ -1,5 +1,9 @@
 package adg;
 
+import adg.control.ControllerDragDrop;
+import adg.vues.VueDiagramme;
+import adg.vues.VueMenu;
+import adg.vues.VueTitre;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
