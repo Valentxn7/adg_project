@@ -154,5 +154,32 @@ public class Classe {
     }
 
 
+    public List<String[]> getConstrutorsInStrings() {
+        List<String[]> constructors = new ArrayList<>();
 
+        for (Object[] constructor : this.constructors) {
+            String[] new_constructor = new String[3];
+            new_constructor[Analyser.CONSTRUCTOR_NAME] = (String) constructor[Analyser.CONSTRUCTOR_NAME];
+            new_constructor[Analyser.CONSTRUCTOR_MODIFIER] = (String) constructor[Analyser.CONSTRUCTOR_MODIFIER];
+            new_constructor[Analyser.CONSTRUCTOR_PARAMETERS] = String.join(", ", (List<String>) constructor[Analyser.CONSTRUCTOR_PARAMETERS]);
+
+            constructors.add(new_constructor);
+        }
+        return constructors;
+    }
+
+    public List<String[]> getMethodsInStrings() {
+        List<String[]> methods = new ArrayList<>();
+
+        for (Object[] method : this.methods) {
+            String[] new_method = new String[4];
+            new_method[Analyser.METHOD_NAME] = (String) method[Analyser.METHOD_NAME];
+            new_method[Analyser.METHOD_RETURN_TYPE] = (String) method[Analyser.METHOD_RETURN_TYPE];
+            new_method[Analyser.METHOD_MODIFIER] = (String) method[Analyser.METHOD_MODIFIER];
+            new_method[Analyser.METHOD_PARAMETERS] = String.join(", ", (List<String>) method[Analyser.METHOD_PARAMETERS]);
+
+            methods.add(new_method);
+        }
+        return methods;
+    }
 }
