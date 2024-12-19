@@ -1,0 +1,45 @@
+@startuml
+
+participant Actor
+
+Actor -> ModelUML : analyseFichier(chemin : String)
+activate Actor
+activate "ModelUML"
+ModelUML -> ModelUML : extraireNomClasse(chemin : String)
+activate ModelUML
+ModelUML --> ModelUML : nomClass
+deactivate ModelUML
+create "URLClassLoader : urlClass" as URLClassLoader
+ModelUML -> URLClassLoader : new
+activate URLClassLoader
+URLClassLoader --> ModelUML : urlClass
+deactivate URLClassLoader
+ModelUML -> ModelUML : chargerClasse(urlClass,nomClass,chemin)
+activate ModelUML
+ModelUML -> ModelUML : remplacerDernierBackslashParPoint(chemin)
+activate ModelUML
+ModelUML --> ModelUML : chemin
+deactivate ModelUML
+ModelUML --> ModelUML : URLClassLoader
+deactivate ModelUML
+create Analyser
+ModelUML -> Analyser : new
+activate Analyser
+Analyser --> ModelUML
+deactivate Analyser
+ModelUML -> Analyser : analyse()
+activate Analyser
+create "Classe : classe" as Classe
+
+Analyser -> Classe : new
+activate Classe
+Classe --> Analyser
+deactivate Classe
+Analyser --> ModelUML :  classe
+deactivate Analyser
+ModelUML -> ModelUML : ajouterClasse(classe)
+
+deactivate Classe
+ModelUML -> ModelUML : notifierObservateurs
+return
+@enduml

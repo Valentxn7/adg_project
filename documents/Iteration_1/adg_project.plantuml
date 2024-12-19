@@ -1,0 +1,111 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class Analyser {
+  + Analyser(String): 
+  + analyse(): Classe
+  - getParameterTypeNames(Class<?>[]): List<String>
+}
+class Classe {
+  + Classe(String): 
+  - getUMLVisibility(String): String
+  + UMLString(): String
+   superclass: String
+   className: String
+   fields: List<String[]>
+   constructors: List<Object[]>
+   methods: List<Object[]>
+   interfaces: List<String>
+}
+
+class ControleurCreateProject {
+  + ControleurCreateProject(ModelUML): 
+  + handle(ActionEvent): void
+}
+class ControllerDragDrop {
+  + ControllerDragDrop(ModelUML): 
+  + activerDragAndDrop(StackPane): void
+  + handle(DragEvent): void
+}
+
+
+class MainUML {
+  + MainUML(): 
+  + main(String[]): void
+  - showErrorMessage(String): void
+  + start(Stage): void
+  - openCreateProjectWindow(Stage, ModelUML): void
+}
+class ModelUML {
+  + ModelUML(): 
+  + annalyseFichier(String): void
+  + enregistrerObservateur(Observateur): void
+  + ajouterClasse(Classe): void
+  + notifierObservateurs(): void
+  + creerProjetVierge(): void
+  + supprimerObservateur(Observateur): void
+   WindowsTitle: String
+   filePath: String
+}
+interface Observateur << interface >> {
+  + actualiser(Sujet): void
+  + switchHome2diag(): void
+}
+class Save {
+  - Save(List<Classe>, List<VueClasse>): 
+  + save(String, String): void
+  + getInstance(List<Classe>, List<VueClasse>): Save
+   ADG: String
+   UML: String
+}
+interface Sujet << interface >> {
+  + notifierObservateurs(): void
+  + enregistrerObservateur(Observateur): void
+  + supprimerObservateur(Observateur): void
+}
+
+class Class
+
+
+class VueClasse {
+  + VueClasse(Classe): 
+  - afficherClasse(): void
+  - getUMLVisibility(String): String
+}
+class VueDiagramme {
+  + VueDiagramme(ModelUML): 
+  + switchHome2diag(): void
+  + actualiser(Sujet): void
+}
+class VueMenu {
+  + VueMenu(ModelUML): 
+  + switchHome2diag(): void
+  + actualiser(Sujet): void
+}
+class VueTitre {
+  + VueTitre(ModelUML): 
+  + switchHome2diag(): void
+  + actualiser(Sujet): void
+}
+
+
+ControleurCreateProject "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                
+ControllerDragDrop      "1" *-[#595959,plain]-> "model\n1" ModelUML                
+
+ModelUML                "1" *-[#595959,plain]-> "classes\n*" Classe                  
+ModelUML                "1" *-[#595959,plain]-> "observateurs\n*" Observateur             
+ModelUML                 -[#008200,dashed]-^  Sujet                   
+
+Save                    "1" *-[#595959,plain]-> "classes\n*" Classe                  
+Save                    "1" *-[#595959,plain]-> "vues\n*" VueClasse               
+VueClasse               "1" *-[#595959,plain]-> "classe\n1" Classe                  
+VueDiagramme            "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                
+VueDiagramme             -[#008200,dashed]-^  Observateur             
+VueMenu                 "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                
+VueMenu                  -[#008200,dashed]-^  Observateur             
+VueTitre                "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                
+Analyser                --> Class   : lisstClass
+@enduml
