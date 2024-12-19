@@ -1,9 +1,9 @@
 @startuml
 
-participant Actor
+participant ControllerDragDrop
 
-Actor -> ModelUML : analyseFichier(chemin : String)
-activate Actor
+ControllerDragDrop -> ModelUML : analyseFichier(chemin : String)
+activate ControllerDragDrop
 activate "ModelUML"
 ModelUML -> ModelUML : extraireNomClasse(chemin : String)
 activate ModelUML
