@@ -196,6 +196,9 @@ public class ModelUML implements Sujet {
 
     private String remplacerDernierBackslashParPoint(String cheminAbsolu) {
         int dernierIndexBackslash = cheminAbsolu.lastIndexOf('\\');
+        if(dernierIndexBackslash == -1) {
+            dernierIndexBackslash = cheminAbsolu.lastIndexOf('/');
+        }
         if (dernierIndexBackslash != -1) {
             return cheminAbsolu.substring(0, dernierIndexBackslash) + '.' + cheminAbsolu.substring(dernierIndexBackslash + 1);
         }
