@@ -1,16 +1,16 @@
 @startuml
 
-!theme plain
+
 top to bottom direction
 skinparam linetype ortho
 
-class Analyser {
-  + Analyser(String): 
+class Analyser #lightblue {
+  + Analyser(String):
   + analyse(): Classe
   - getParameterTypeNames(Class<?>[]): List<String>
 }
-class Classe {
-  + Classe(String): 
+class Classe  #lightblue {
+  + Classe(String):
   - getUMLVisibility(String): String
   + UMLString(): String
    superclass: String
@@ -21,26 +21,26 @@ class Classe {
    interfaces: List<String>
 }
 
-class ControleurCreateProject {
-  + ControleurCreateProject(ModelUML): 
+class ControleurCreateProject  #lightblue {
+  + ControleurCreateProject(ModelUML):
   + handle(ActionEvent): void
 }
-class ControllerDragDrop {
-  + ControllerDragDrop(ModelUML): 
+class ControllerDragDrop  #lightblue{
+  + ControllerDragDrop(ModelUML):
   + activerDragAndDrop(StackPane): void
   + handle(DragEvent): void
 }
 
 
-class MainUML {
-  + MainUML(): 
+class MainUML  #lightblue {
+  + MainUML():
   + main(String[]): void
   - showErrorMessage(String): void
   + start(Stage): void
   - openCreateProjectWindow(Stage, ModelUML): void
 }
-class ModelUML {
-  + ModelUML(): 
+class ModelUML  #lightblue{
+  + ModelUML():
   + annalyseFichier(String): void
   + enregistrerObservateur(Observateur): void
   + ajouterClasse(Classe): void
@@ -50,42 +50,40 @@ class ModelUML {
    WindowsTitle: String
    filePath: String
 }
-interface Observateur << interface >> {
+interface Observateur << interface >>  #lightblue {
   + actualiser(Sujet): void
   + switchHome2diag(): void
 }
-class Save {
-  - Save(List<Classe>, List<VueClasse>): 
+class Save  #lightblue{
+  - Save(List<Classe>, List<VueClasse>):
   + save(String, String): void
   + getInstance(List<Classe>, List<VueClasse>): Save
    ADG: String
    UML: String
 }
-interface Sujet << interface >> {
+interface Sujet << interface >>  #lightblue{
   + notifierObservateurs(): void
   + enregistrerObservateur(Observateur): void
   + supprimerObservateur(Observateur): void
 }
 
-class Class
 
-
-class VueClasse {
-  + VueClasse(Classe): 
+class VueClasse  #lightblue {
+  + VueClasse(Classe):
   - afficherClasse(): void
   - getUMLVisibility(String): String
 }
-class VueDiagramme {
-  + VueDiagramme(ModelUML): 
+class VueDiagramme  #lightblue{
+  + VueDiagramme(ModelUML):
   + switchHome2diag(): void
   + actualiser(Sujet): void
 }
-class VueMenu {
-  + VueMenu(ModelUML): 
+class VueMenu  #lightblue{
+  + VueMenu(ModelUML):
   + switchHome2diag(): void
   + actualiser(Sujet): void
 }
-class VueTitre {
+class VueTitre  #lightblue {
   + VueTitre(ModelUML): 
   + switchHome2diag(): void
   + actualiser(Sujet): void
