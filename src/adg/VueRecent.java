@@ -3,7 +3,6 @@ package adg;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class VueRecent extends TreeView<String> implements Observateur {
@@ -29,11 +28,15 @@ public class VueRecent extends TreeView<String> implements Observateur {
     @Override
     public void switchHome2diag() {
         this.setVisible(false);
+        this.getStyleClass().add("treeView_hidden");
+        this.setPrefSize(0, 0);
     }
 
     @Override
     public void switchDiag2Home() {
         this.setVisible(true);
+        this.getStyleClass().add("treeView");
+        this.setPrefSize(400, 180);  // (380 - 20) / 2
     }
 
 

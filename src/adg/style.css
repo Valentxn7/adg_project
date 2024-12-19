@@ -43,3 +43,10 @@
     -fx-border-style: solid;
     -fx-padding: 5px;
 }
+
+.treeView_hidden{
+    -fx-border-color: none;
+    -fx-border-width: 0px;
+    -fx-border-style: solid;
+    -fx-padding: 0px;
+}

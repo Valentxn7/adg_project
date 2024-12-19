@@ -1,11 +1,11 @@
 package adg;
 
 import javafx.scene.control.TreeItem;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.TreeView;
 
 import java.io.File;
 
-public class VueArborescence extends TreeItem<String> implements Observateur {
+public class VueArborescence extends TreeView<String> implements Observateur {
     private ModelUML modelUML;
 
     public VueArborescence(ModelUML modelUML) {
@@ -16,11 +16,11 @@ public class VueArborescence extends TreeItem<String> implements Observateur {
     public void actualiser(Sujet mod) {
         ModelUML model = (ModelUML) mod;
         File root = model.getFolder();
-        this.setValue(root.getName());
-        this.getChildren().clear();
+        this.getRoot().setValue(root.getName());
+        this.getRoot().getChildren().clear();
 
         for (File child : root.listFiles()) {
-            this.getChildren().add(RefreshArboresence(child));
+            this.getRoot().getChildren().add(RefreshArboresence(child));
         }
     }
 
@@ -47,11 +47,13 @@ public class VueArborescence extends TreeItem<String> implements Observateur {
 
     @Override
     public void switchHome2diag() {
+        this.setPrefSize(380, 450);  // (400 - 20)
         this.actualiser(this.modelUML);
     }
 
     @Override
     public void switchDiag2Home() {
+        this.setPrefSize(400, 180);  // (380 - 20) / 2
         this.actualiser(this.modelUML);
     }
 

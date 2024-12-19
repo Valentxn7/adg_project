@@ -101,19 +101,23 @@ public class MainUML extends Application {
                 System.out.println("Ouverture de la sauvegarde : " + path);
             }
         });
+
         accueil.setOnAction(e -> {
             modelUML.switchDiag2Home();
             rootStage.setTitle("ADG - Home");
         });
 
-        VueArborescence vueArborescence = new VueArborescence(modelUML);  // l'item de base
-        modelUML.enregistrerObservateur(vueArborescence);
-        vueArborescence.setValue("Projets ADG:");
-        vueArborescence.setExpanded(true);
-        vueArborescence.actualiser(modelUML);
-        TreeView<String> treeView = new TreeView<>(vueArborescence);  // la TreeView affiche les TreeItem
 
-        TreeItem<String> rootRecent = new TreeItem<>();  // l'item de base
+        TreeItem<String> rootArborescence = new TreeItem<String>();  // l'item de base
+        rootArborescence.setValue("Projets ADG:");
+        rootArborescence.setExpanded(true);
+
+        VueArborescence vueArborescence = new VueArborescence(modelUML);  // l'item de base
+        vueArborescence.setRoot(rootArborescence);
+        modelUML.enregistrerObservateur(vueArborescence);
+        vueArborescence.actualiser(modelUML);
+
+        TreeItem<String> rootRecent = new TreeItem<String>();  // l'item de base
         rootRecent.setValue("Projets récents:");
         rootRecent.setExpanded(true);
 
@@ -124,7 +128,7 @@ public class MainUML extends Application {
 
         base.getChildren().addAll(titre, centre, fin);  // VBox
         centre.getChildren().addAll(partieGauche, partieDroite);  // HBox
-        partieGauche.getChildren().addAll(menuBar, treeView, vueRecent);  // VBox
+        partieGauche.getChildren().addAll(menuBar, vueArborescence, vueRecent);  // VBox
         partieDroite.getChildren().add(addProjectButton);  // HBox
 
         base.setPrefSize(900, 400);
@@ -137,7 +141,8 @@ public class MainUML extends Application {
 
         partieGauche.setPrefSize(400, 380);
         menuBar.setPrefSize(400, 20);
-        treeView.setPrefSize(400, 360);
+        vueArborescence.setPrefSize(400, 180);  // (380 - 20) / 2
+        vueRecent.setPrefSize(400, 180);  // (380 - 20) / 2
 
         partieDroite.setPrefSize(500, 380);
         addProjectButton.setPrefSize(370, 270);
@@ -146,7 +151,7 @@ public class MainUML extends Application {
         addProjectButton.getStyleClass().add("addButton");
         menuBar.getStyleClass().add("menuBar");
         partieDroite.getStyleClass().add("menuBar");
-        treeView.getStyleClass().add("treeView");
+        vueArborescence.getStyleClass().add("treeView");
         vueRecent.getStyleClass().add("treeView");
         fin.getStyleClass().add("label-fin");
 
