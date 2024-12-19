@@ -19,5 +19,10 @@ public class VueTitre extends Label implements Observateur {
         this.actualiser(this.modelUML);
     }
 
+    @Override
+    public void switchDiag2Home() {
+        this.actualiser(this.modelUML);
+    }
+
 
 }

@@ -77,6 +77,18 @@ public class MainUML extends Application {
                 exporterUml, exporterPng, new SeparatorMenuItem(),
                 personnalisation, accueil);
 
+        personnalisation.getItems().addAll(
+                new MenuItem("Masquer les dépendances pour tous"),
+                new MenuItem("Masquer les héritages pour tous"),
+                new MenuItem("Masquer les attributs pour tous"),
+                new MenuItem("Masquer les méthodes pour tous"),
+                new SeparatorMenuItem(),
+                new MenuItem("Afficher les dépendances pour tous"),
+                new MenuItem("Afficher les héritages pour tous"),
+                new MenuItem("Afficher les attributs pour tous"),
+                new MenuItem("Afficher les méthodes pour tous")
+        );
+
         Menu viewMenu = new Menu("Affichage");
         Menu helpMenu = new Menu("Aide");
         menuBar.getMenus().addAll(fileMenu, viewMenu, helpMenu);
@@ -88,6 +100,10 @@ public class MainUML extends Application {
             if (path != null) {
                 System.out.println("Ouverture de la sauvegarde : " + path);
             }
+        });
+        accueil.setOnAction(e -> {
+            modelUML.switchDiag2Home();
+            rootStage.setTitle("ADG - Home");
         });
 
         VueArborescence vueArborescence = new VueArborescence(modelUML);  // l'item de base
@@ -158,7 +174,7 @@ public class MainUML extends Application {
         projectNameField.setOnAction(e -> {
             String projectName = projectNameField.getText().trim();  // on récupère le texte du champ
             if (!projectName.isEmpty()) {  // si le champ n'est pas vide
-                if (modelUML.creerProjetVierge(projectName)){
+                if (modelUML.creerProjetVierge(projectName)) {
                     rootStage.setTitle("ADG - " + projectName);
                     modelUML.setWindowsTitle(projectName);
                 }
@@ -170,7 +186,7 @@ public class MainUML extends Application {
         createButton.setOnAction(e -> {
             String projectName = projectNameField.getText().trim();  // on récupère le texte du champ
             if (!projectName.isEmpty()) {  // si le champ n'est pas vide
-                if (modelUML.creerProjetVierge(projectName)){
+                if (modelUML.creerProjetVierge(projectName)) {
                     rootStage.setTitle("ADG - " + projectName);
                     modelUML.setWindowsTitle(projectName);
                 }

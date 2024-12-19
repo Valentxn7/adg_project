@@ -1,5 +1,6 @@
 package adg;
 
+import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 
 public class VueDiagramme extends StackPane implements Observateur {
@@ -19,6 +20,13 @@ public class VueDiagramme extends StackPane implements Observateur {
         this.getChildren().clear();
         this.setPrefSize(900, 400);
         System.out.println("VueDiagramme : Switching to diagram");
+    }
+
+    @Override
+    public void switchDiag2Home() {
+        this.getChildren().clear();
+        this.setPrefSize(500, 380);
+        System.out.println("VueDiagramme : Switching to home");
     }
 
 

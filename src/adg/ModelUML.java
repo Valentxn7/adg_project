@@ -92,6 +92,12 @@ public class ModelUML implements Sujet{
         }
     }
 
+    public void switchDiag2Home() {
+        isHome = true;
+        for(Observateur o : observateurs) {
+            o.switchDiag2Home();
+        }
+    }
 
     public String getWindowsTitle() {
         return windowsTitle;

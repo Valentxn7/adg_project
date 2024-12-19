@@ -1,6 +1,7 @@
 package adg;
 
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -52,6 +53,13 @@ public class VueRecent extends TreeItem<String> implements Observateur {
         this.getChildren().clear();
         this.setValue("");
         this.setExpanded(false);
+    }
+
+    @Override
+    public void switchDiag2Home() {
+        this.setValue("Projets récents:");
+        this.setExpanded(true);
+        this.actualiser(this.modelUML);
     }
 
 

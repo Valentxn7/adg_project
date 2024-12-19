@@ -50,5 +50,10 @@ public class VueArborescence extends TreeItem<String> implements Observateur {
         this.actualiser(this.modelUML);
     }
 
+    @Override
+    public void switchDiag2Home() {
+        this.actualiser(this.modelUML);
+    }
+
 
 }
