@@ -23,8 +23,8 @@ public class Analyser {
 
     private Class<?> row_class;
 
-    public Analyser(String className) throws ClassNotFoundException {
-        this.row_class = Class.forName(className);
+    public Analyser(Class<?> c) throws Exception {
+        row_class = c;
     }
 
     /**
@@ -55,6 +55,7 @@ public class Analyser {
         List<String[]> fields = new ArrayList<>();
         for (Field field : row_class.getDeclaredFields()) {
             String[] attributInfo = new String[3];
+
             attributInfo[FIELD_NAME] = field.getName();
             attributInfo[FIELD_TYPE] = field.getType().getName();
             attributInfo[FIELD_MODIFIER] = Modifier.toString(field.getModifiers());
@@ -79,6 +80,7 @@ public class Analyser {
         List<Object[]> methods = new ArrayList<>();
         for (Method method : row_class.getDeclaredMethods()) {
             Object[] methodeInfo = new Object[4];
+
             methodeInfo[METHOD_NAME] = method.getName();
             methodeInfo[METHOD_RETURN_TYPE] = method.getReturnType().getName();
             methodeInfo[METHOD_MODIFIER] = Modifier.toString(method.getModifiers());
@@ -86,6 +88,14 @@ public class Analyser {
 
             methods.add(methodeInfo);
         }
+
+        methods.sort((o1, o2) -> {
+            String name1 = (String) o1[METHOD_NAME];
+            String name2 = (String) o2[METHOD_NAME];
+            return name1.compareTo(name2);
+        });
+
+
         classe.setMethods(methods);
 
         return classe;

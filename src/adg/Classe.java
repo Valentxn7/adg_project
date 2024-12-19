@@ -1,26 +1,33 @@
 package adg;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Classe {
     private String class_name;
+    private String class_path;
     private String superclass;
     private List<String> interfaces;
     private List<String[]>  fields;
     private List<Object[]> constructors;
     private List<Object[]> methods;
 
-    public Classe(String c) {
-        this.class_name = c;
+    private double[] coords = new double[2];
+
+    public Classe(String path) {
+        this.class_path = path;
+        this.class_name = null;
 
         this.superclass = null;
         this.interfaces = new ArrayList<>();
         this.fields = new ArrayList<>();
         this.constructors = new ArrayList<>();
         this.methods = new ArrayList<>();
+
+        this.coords[0] = 0; // x
+        this.coords[1] = 0; // y
     }
 
     /**
@@ -86,6 +93,11 @@ public class Classe {
         return uml.toString();
     }
 
+    public String save() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+
     /**
      * Convertit les modificateurs en symboles UML (+, -, #, ~)
      *
@@ -104,7 +116,13 @@ public class Classe {
         }
     }
 
+    public void setClassPath(String path) {
+        this.class_path = path;
+    }
 
+    public String getClassPath() {
+        return this.class_path;
+    }
     public void setClassName(String className) {
         this.class_name = className;
     }
