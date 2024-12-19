@@ -113,16 +113,18 @@ public class MainUML extends Application {
         vueArborescence.actualiser(modelUML);
         TreeView<String> treeView = new TreeView<>(vueArborescence);  // la TreeView affiche les TreeItem
 
-        VueRecent vueRecent = new VueRecent(modelUML);  // l'item de base
+        TreeItem<String> rootRecent = new TreeItem<>();  // l'item de base
+        rootRecent.setValue("Projets récents:");
+        rootRecent.setExpanded(true);
+
+        VueRecent vueRecent = new VueRecent(modelUML);  // la TreeView affiche les TreeItem
+        vueRecent.setRoot(rootRecent);
         modelUML.enregistrerObservateur(vueRecent);
-        vueRecent.setValue("Projets récents:");
-        vueRecent.setExpanded(true);
         vueRecent.actualiser(modelUML);
-        TreeView<String> treeView2 = new TreeView<>(vueRecent);  // la TreeView affiche les TreeItem
 
         base.getChildren().addAll(titre, centre, fin);  // VBox
         centre.getChildren().addAll(partieGauche, partieDroite);  // HBox
-        partieGauche.getChildren().addAll(menuBar, treeView, treeView2);  // VBox
+        partieGauche.getChildren().addAll(menuBar, treeView, vueRecent);  // VBox
         partieDroite.getChildren().add(addProjectButton);  // HBox
 
         base.setPrefSize(900, 400);
@@ -145,7 +147,7 @@ public class MainUML extends Application {
         menuBar.getStyleClass().add("menuBar");
         partieDroite.getStyleClass().add("menuBar");
         treeView.getStyleClass().add("treeView");
-        treeView2.getStyleClass().add("treeView");
+        vueRecent.getStyleClass().add("treeView");
         fin.getStyleClass().add("label-fin");
 
         Scene scene = new Scene(base, 922, 420);

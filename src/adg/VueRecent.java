@@ -6,7 +6,7 @@ import javafx.scene.control.TreeView;
 import java.io.File;
 import java.util.ArrayList;
 
-public class VueRecent extends TreeItem<String> implements Observateur {
+public class VueRecent extends TreeView<String> implements Observateur {
     private ModelUML modelUML;
 
     public VueRecent(ModelUML modelUML) {
@@ -20,46 +20,20 @@ public class VueRecent extends TreeItem<String> implements Observateur {
             ArrayList<String> recentFiles = model.getRecentFolders();
             this.getChildren().clear();
 
-            for (String fold : recentFiles) {
-                this.getChildren().add(new TreeItem<String>(fold));
+            for (String recentfold : recentFiles) { // on parcours la liste des fichiers récents
+                this.getRoot().getChildren().add(new TreeItem<String>(recentfold));
             }
         }
-    }
-
-    /**
-     * Crée un TreeItem pour un fichier/dossier.
-     *
-     * @param file le fichier/dossier
-     * @return le TreeItem
-     */
-    private TreeItem<String> RefreshArboresence(File file) {
-        // Nœud principal avec le nom du fichier/dossier
-        TreeItem<String> treeItem = new TreeItem<>(file.getName());
-
-        if (file.isDirectory()) {
-            File[] files = file.listFiles(); // Liste des fichiers/sous-dossiers
-            if (files != null) {
-                for (File child : files) {
-                    treeItem.getChildren().add(RefreshArboresence(child));
-                }
-            }
-        }
-        return treeItem;
     }
 
     @Override
     public void switchHome2diag() {
-        // masque cette vue devenue inutile
-        this.getChildren().clear();
-        this.setValue("");
-        this.setExpanded(false);
+        this.setVisible(false);
     }
 
     @Override
     public void switchDiag2Home() {
-        this.setValue("Projets récents:");
-        this.setExpanded(true);
-        this.actualiser(this.modelUML);
+        this.setVisible(true);
     }
 
 
