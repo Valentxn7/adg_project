@@ -8,16 +8,23 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+
+import java.io.File;
 
 public class MainUML extends Application {
+    private ModelUML modelUML;
+    private Stage rootStage;
+
     public static void main(String[] args) {
         Application.launch();
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-
-        ModelUML modelUML = new ModelUML();
+        rootStage = stage;
+        modelUML = new ModelUML();
         VBox base = new VBox(0);
         VueTitre titre = new VueTitre(modelUML);
         titre.setText("ADG - Home");
@@ -35,8 +42,9 @@ public class MainUML extends Application {
 
 //        ControleurCreateProject controleurCreateProject = new ControleurCreateProject(modelUML);
         Button addProjectButton = new Button("+");
+        addProjectButton.setId("bouton");
         addProjectButton.setAlignment(javafx.geometry.Pos.CENTER);
-        addProjectButton.setOnAction(e -> openCreateProjectWindow(stage, modelUML));
+        addProjectButton.setOnAction(e -> openCreateProjectWindow());
 
         partieDroite.setAlignment(javafx.geometry.Pos.CENTER);
 
@@ -46,7 +54,8 @@ public class MainUML extends Application {
         Menu fileMenu = new Menu("Fichier");  // contenue
 
         MenuItem nouveau = new MenuItem("Nouveau");
-        MenuItem ourvir = new MenuItem("Ouvrir");
+        MenuItem ouvrirP = new MenuItem("Ouvrir un projet");
+        MenuItem ouvrirS = new MenuItem("Ouvrir une sauvegarde");
         MenuItem renommer = new MenuItem("Renommer");
         MenuItem supprimer = new MenuItem("Supprimer");
         MenuItem enregistrer = new MenuItem("Enregistrer");
@@ -66,31 +75,64 @@ public class MainUML extends Application {
         accueil.setDisable(true);
 
         fileMenu.getItems().addAll(
-                nouveau, ourvir, new SeparatorMenuItem(),
+                nouveau, ouvrirP, ouvrirS, new SeparatorMenuItem(),
                 renommer, supprimer, new SeparatorMenuItem(),
                 enregistrer, enregistrerSous, new SeparatorMenuItem(),
                 exporterUml, exporterPng, new SeparatorMenuItem(),
                 personnalisation, accueil);
 
+        personnalisation.getItems().addAll(
+                new MenuItem("Masquer les dépendances pour tous"),
+                new MenuItem("Masquer les héritages pour tous"),
+                new MenuItem("Masquer les attributs pour tous"),
+                new MenuItem("Masquer les méthodes pour tous"),
+                new SeparatorMenuItem(),
+                new MenuItem("Afficher les dépendances pour tous"),
+                new MenuItem("Afficher les héritages pour tous"),
+                new MenuItem("Afficher les attributs pour tous"),
+                new MenuItem("Afficher les méthodes pour tous")
+        );
+
         Menu viewMenu = new Menu("Affichage");
         Menu helpMenu = new Menu("Aide");
         menuBar.getMenus().addAll(fileMenu, viewMenu, helpMenu);
 
-        nouveau.setOnAction(e -> openCreateProjectWindow(stage, modelUML));
+        nouveau.setOnAction(e -> openCreateProjectWindow());
+        ouvrirP.setOnAction(e -> openProject());
+        ouvrirS.setOnAction(e -> {
+            String path = openSaveFile();
+            if (path != null) {
+                System.out.println("Ouverture de la sauvegarde : " + path);
+            }
+        });
 
-        TreeItem<String> projetR = new TreeItem<>("Projets récents:");  // l'item de base
-        projetR.setExpanded(true);
-        projetR.getChildren().addAll(  // ses fils
-                new TreeItem<>("Projet 1"),
-                new TreeItem<>("Projet 2"),
-                new TreeItem<>("Projet 3")
-        );
+        accueil.setOnAction(e -> {
+            modelUML.switchDiag2Home();
+            rootStage.setTitle("ADG - Home");
+        });
 
-        TreeView<String> treeView = new TreeView<>(projetR);  // la TreeView affiche les TreeItem
+
+        TreeItem<String> rootArborescence = new TreeItem<String>();  // l'item de base
+        rootArborescence.setValue("Projets ADG:");
+        rootArborescence.setExpanded(true);
+
+        VueArborescence vueArborescence = new VueArborescence(modelUML);  // l'item de base
+        vueArborescence.setRoot(rootArborescence);
+        modelUML.enregistrerObservateur(vueArborescence);
+        vueArborescence.actualiser(modelUML);
+
+        TreeItem<String> rootRecent = new TreeItem<String>();  // l'item de base
+        rootRecent.setValue("Projets récents:");
+        rootRecent.setExpanded(true);
+
+        VueRecent vueRecent = new VueRecent(modelUML);  // la TreeView affiche les TreeItem
+        vueRecent.setRoot(rootRecent);
+        modelUML.enregistrerObservateur(vueRecent);
+        vueRecent.actualiser(modelUML);
 
         base.getChildren().addAll(titre, centre, fin);  // VBox
         centre.getChildren().addAll(partieGauche, partieDroite);  // HBox
-        partieGauche.getChildren().addAll(menuBar, treeView);  // VBox
+        partieGauche.getChildren().addAll(menuBar, vueArborescence, vueRecent);  // VBox
         partieDroite.getChildren().add(addProjectButton);  // HBox
 
         base.setPrefSize(900, 400);
@@ -103,7 +145,8 @@ public class MainUML extends Application {
 
         partieGauche.setPrefSize(400, 380);
         menuBar.setPrefSize(400, 20);
-        treeView.setPrefSize(400, 360);
+        vueArborescence.setPrefSize(400, 180);  // (380 - 20) / 2
+        vueRecent.setPrefSize(400, 180);  // (380 - 20) / 2
 
         partieDroite.setPrefSize(500, 380);
         addProjectButton.setPrefSize(370, 270);
@@ -112,7 +155,8 @@ public class MainUML extends Application {
         addProjectButton.getStyleClass().add("addButton");
         menuBar.getStyleClass().add("menuBar");
         partieDroite.getStyleClass().add("menuBar");
-        treeView.getStyleClass().add("treeView");
+        vueArborescence.getStyleClass().add("treeView");
+        vueRecent.getStyleClass().add("treeView");
         fin.getStyleClass().add("label-fin");
 
 
@@ -133,10 +177,8 @@ public class MainUML extends Application {
 
     /**
      * Ouvre une fenêtre de dialogue pour la création d'un nouveau projet.
-     * @param stage la fenêtre principale
-     * @param mod le modèle
      */
-    private void openCreateProjectWindow(Stage stage, ModelUML mod) {
+    private void openCreateProjectWindow() {
         Stage createProjetWind = new Stage();
         createProjetWind.initModality(Modality.APPLICATION_MODAL);  // empêche les intéractions avec la grande fenêtre
         createProjetWind.setTitle("Créer un nouveau projet");
@@ -148,13 +190,25 @@ public class MainUML extends Application {
         TextField projectNameField = new TextField();
         Button createButton = new Button("Créer");
 
+        projectNameField.setOnAction(e -> {
+            String projectName = projectNameField.getText().trim();  // on récupère le texte du champ
+            if (!projectName.isEmpty()) {  // si le champ n'est pas vide
+                if (modelUML.creerProjetVierge(projectName)) {
+                    rootStage.setTitle("ADG - " + projectName);
+                    modelUML.setWindowsTitle(projectName);
+                }
+                createProjetWind.close(); // Ferme la fenêtre
+            } else {
+                showErrorMessage("Le nom du projet ne peut pas être vide.");
+            }
+        });
         createButton.setOnAction(e -> {
-            String projectName = projectNameField.getText().trim();
-            if (!projectName.isEmpty()) {
-                System.out.println("Nouveau projet créé : " + projectName);  // ICI ON DOIT SEND LES DONNEES AU MODEL
-                stage.setTitle("ADG - " + projectName);
-                mod.setWindowsTitle(projectName);
-                mod.creerProjetVierge();
+            String projectName = projectNameField.getText().trim();  // on récupère le texte du champ
+            if (!projectName.isEmpty()) {  // si le champ n'est pas vide
+                if (modelUML.creerProjetVierge(projectName)) {
+                    rootStage.setTitle("ADG - " + projectName);
+                    modelUML.setWindowsTitle(projectName);
+                }
                 createProjetWind.close(); // Ferme la fenêtre
             } else {
                 showErrorMessage("Le nom du projet ne peut pas être vide.");
@@ -169,10 +223,45 @@ public class MainUML extends Application {
     }
 
     /**
-     * Permet l'affichage d'un message d'erreur par une fenêtre de dialogue.
-     * @param message
+     * Ouvre un explorateur pour sélectionner un dossier (projet).
+     *
+     * @return Le chemin du dossier sélectionné, ou null si aucun dossier n'a été sélectionné.
      */
-    private void showErrorMessage(String message) {
+    private void openProject() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Ouvrir un projet");
+        File selectedDirectory = directoryChooser.showDialog(rootStage);
+        if (selectedDirectory != null) {
+            String path = selectedDirectory.getAbsolutePath();
+            System.out.println("Ouverture du projet : " + path);
+            rootStage.setTitle("ADG - " + selectedDirectory.getName());
+            modelUML.ouvrirProjet(selectedDirectory);
+        }
+    }
+
+    /**
+     * Ouvre un explorateur pour sélectionner un fichier .adg (sauvegarde).
+     *
+     * @return Le chemin du fichier sélectionné, ou null si aucun fichier n'a été sélectionné.
+     */
+    private String openSaveFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Ouvrir une sauvegarde");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers ADG", "*.adg"));
+        File selectedFile = fileChooser.showOpenDialog(rootStage);
+        if (selectedFile != null) {
+
+            return selectedFile.getAbsolutePath();
+        }
+        return null;
+    }
+
+    /**
+     * Permet l'affichage d'un message d'erreur par une fenêtre de dialogue.
+     *
+     * @param message le message d'erreur
+     */
+    public static void showErrorMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
         alert.setHeaderText(null);

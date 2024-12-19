@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
  * Elle est utilisée pour afficher et mettre à jour le titre de la fenêtre en fonction de l'état du modèle.
  */
 public class VueTitre extends Label implements Observateur {
+    private ModelUML modelUML;
 
     private ModelUML modelUML; // Référence au modèle UML associé
 
@@ -43,4 +44,6 @@ public class VueTitre extends Label implements Observateur {
     public void switchHome2diag() {
         this.actualiser(this.modelUML);
     }
+
+
 }

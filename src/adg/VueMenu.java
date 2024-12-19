@@ -3,7 +3,6 @@ package adg;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.SeparatorMenuItem;
 
 /**
  * Classe représentant la barre de menu de l'application.
@@ -51,29 +50,26 @@ public class VueMenu extends MenuBar implements Observateur {
             for (MenuItem mi : m.getItems()) {
                 mi.setDisable(false);
             }
+            System.out.println("Vue Menu : Switching to diagram");
+        }
+    }
+
+    @Override
+    public void switchDiag2Home() {
+        for (Menu m : this.getMenus()) {  // On parcourt les menus (Fichier, Affichage, ...)
             if (m.getText().equals("Fichier")) {
-                for (MenuItem mi : m.getItems()) {
-                    // On remet en Menu pour trouver Personnalisation
-                    if (mi instanceof Menu sousMenu) {
-                        if (sousMenu.getText().equals("Personnalisation")) {
-                            sousMenu.getItems().addAll(
-                                    new MenuItem("Masquer les dépendances pour tous"),
-                                    new MenuItem("Masquer les héritages pour tous"),
-                                    new MenuItem("Masquer les attributs pour tous"),
-                                    new MenuItem("Masquer les méthodes pour tous"),
-                                    new SeparatorMenuItem(),
-                                    new MenuItem("Afficher les dépendances pour tous"),
-                                    new MenuItem("Afficher les héritages pour tous"),
-                                    new MenuItem("Afficher les attributs pour tous"),
-                                    new MenuItem("Afficher les méthodes pour tous")
-                            );
-                        }
+                for (MenuItem mi : m.getItems()) {  // On parcourt les items du menu Fichier
+
+                    // On désactive tous les items sauf Nouveau, Ouvrir un projet et Ouvrir une sauvegarde
+                    if (mi.getText() != null) { // nécessaire car les barre de séparation ont leur getText = null et ça fait crash les .equals
+                        if (mi.getText().equals("Nouveau") || mi.getText().equals("Ouvrir un projet") || mi.getText().equals("Ouvrir une sauvegarde"))
+                            mi.setDisable(false);
+                        else
+                            mi.setDisable(true);
                     }
                 }
             }
             System.out.println("Vue Menu : Switching to diagram");
         }
-
-
     }
 }
