@@ -172,7 +172,7 @@ public class Classe {
     }
 
 
-    public List<String[]> getConstrutorsInStrings() {
+    public List<String[]> getConstructorsInStrings() {
         List<String[]> constructors = new ArrayList<>();
 
         for (Object[] constructor : this.constructors) {

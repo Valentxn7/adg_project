@@ -29,6 +29,8 @@ public class MainUML extends Application {
         VBox partieGauche = new VBox(0);  // TreeView et MenuBar
         VueDiagramme partieDroite = new VueDiagramme(modelUML);  // bouton add projet
 
+
+        modelUML.setVueDiagramme(partieDroite);
         modelUML.enregistrerObservateur(partieDroite);
 
 //        ControleurCreateProject controleurCreateProject = new ControleurCreateProject(modelUML);

@@ -1,5 +1,7 @@
 package adg;
 
+import javafx.scene.layout.VBox;
+
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,7 +19,7 @@ import java.net.URLClassLoader;
  * les chemins de fichiers, et la communication avec les observateurs.
  */
 public class ModelUML implements Sujet {
-
+    private VueDiagramme vueDiagramme;
     private ArrayList<Observateur> observateurs; // Liste des observateurs
     private ArrayList<Classe> classes;          // Liste des classes UML
     private ArrayList<String> chemins;          // Liste des chemins de fichiers
@@ -41,8 +43,15 @@ public class ModelUML implements Sujet {
      * @param classe la classe à ajouter.
      */
     public void ajouterClasse(Classe classe) {
+        System.out.println(vueDiagramme == null);
         if (classes != null) {
             classes.add(classe);
+            System.out.println(1);
+            Observateur vue = new VueClasse(classe);
+            System.out.println(2);
+            observateurs.add(vue);
+            System.out.println(3);
+            vueDiagramme.getChildren().add((VBox) vue);
         }
     }
 
@@ -139,6 +148,7 @@ public class ModelUML implements Sujet {
      */
     public void analyseFichier(String cheminAbsolu) throws Exception {
         // Extrait le nom de la classe à partir du chemin absolu
+        System.out.println("Analyse du fichier : " + cheminAbsolu);
         String nomClasse = extraireNomClasse(cheminAbsolu);
 
         File fichier = new File(cheminAbsolu);
@@ -172,7 +182,7 @@ public class ModelUML implements Sujet {
     public HashMap<String, VueClasse> getVues() {
         return vues;
     }
-}
+
 
     private String extraireNomClasse(String cheminAbsolu) {
         int ind = 0;
@@ -201,25 +211,31 @@ public class ModelUML implements Sujet {
         } catch (ClassNotFoundException e) {
             // Modifie le chemin absolu pour remplacer le dernier backslash par un point
             cheminAbsolu = remplacerDernierBackslashParPoint(cheminAbsolu);
-
+            System.out.println("Chargement de la classe1 : " + nomClasse);
             File fichier = new File(cheminAbsolu);
             nomClasse = fichier.getName().replace(".class", "");
             String cheminClasse = fichier.getParentFile().toURI().toString();
             chargeurClasse = new URLClassLoader(new URL[]{new URL(cheminClasse)});
-
+            System.out.println("Chargement de la classe : " + nomClasse);
+            System.out.println("Chemin de la classe : " + cheminClasse);
             return chargeurClasse.loadClass(nomClasse);
         }
     }
 
     private String remplacerDernierBackslashParPoint(String cheminAbsolu) {
-        int dernierIndexBackslash = cheminAbsolu.lastIndexOf('\\');
+        int dernierIndexBackslash = cheminAbsolu.lastIndexOf('/');
+        System.out.println("dernier index backslash : " + dernierIndexBackslash);
         if (dernierIndexBackslash != -1) {
-            return cheminAbsolu.substring(0, dernierIndexBackslash) + '.' + cheminAbsolu.substring(dernierIndexBackslash + 1);
+            String n=  cheminAbsolu.substring(0, dernierIndexBackslash) + '.' + cheminAbsolu.substring(dernierIndexBackslash + 1);
+            System.out.println("nouveau chemin : " + n);
+            return n;
         }
         return cheminAbsolu;
     }
 
-
-
+    public void setVueDiagramme(VueDiagramme vueDiagramme) {
+        System.out.println("VueDiagramme set");
+        this.vueDiagramme = vueDiagramme;
+    }
 
 }

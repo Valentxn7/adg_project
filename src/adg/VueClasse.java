@@ -25,7 +25,7 @@ public class VueClasse extends VBox implements Observateur {
         this.setSpacing(10); // Espacement entre les éléments
         this.setId("vue-classe");
         this.fleches = new ArrayList<>();
-
+        System.out.println("VueClasse : Création de la vue pour la classe " + classe.getClassName());
         // Génération de la vue
         afficherClasse();
     }
@@ -69,15 +69,15 @@ public class VueClasse extends VBox implements Observateur {
     private void afficherClasse() {
         // Affiche le nom de la classe
         this.getChildren().add(new Label(classe.getClassName()));
-
+        System.out.println(12);
         // Affichage des attributs
         ajouterElements(classe.getFields(), this::creerAttribut);
-
+        System.out.println(13);
         // Affichage des constructeurs
-        ajouterElements(classe.getConstructors(), this::creerConstructeur);
-
+       ajouterConstructeur();
+        System.out.println(14);
         // Affichage des méthodes
-        ajouterElements(classe.getMethods(), this::creerMethode);
+        ajouterMethodes();
     }
 
     /**
@@ -90,11 +90,41 @@ public class VueClasse extends VBox implements Observateur {
             VBox box = new VBox();// Espacement entre les éléments
             box.setId("separation");
             for (T element : elements) {
+                System.out.println(element);
                 box.getChildren().add(constructeur.apply(element));
             }
             this.getChildren().add(box);
         }
     }
+    private void ajouterConstructeur(){
+        List<String[]> constructors = classe.getConstructorsInStrings();
+        if (!constructors.isEmpty()) {
+            VBox box = new VBox();// Espacement entre les éléments
+            box.setId("separation");
+            for (String[] constructor : constructors) {
+                box.getChildren().add(creerConstructeur(constructor));
+            }
+            this.getChildren().add(box);
+        }
+    }
+
+    private void ajouterMethodes(){
+        List<String[]>methods = classe.getMethodsInStrings();
+        if (!methods.isEmpty()) {
+            VBox box = new VBox();// Espacement entre les éléments
+            box.setId("separation");
+            for (String[] method : methods) {
+                box.getChildren().add(creerMethode(method));
+            }
+            this.getChildren().add(box);
+        }
+    }
+
+
+
+
+
+
 
     /**
      * Crée une HBox pour un attribut.
@@ -105,16 +135,16 @@ public class VueClasse extends VBox implements Observateur {
     /**
      * Crée une HBox pour un constructeur.
      */
-    private HBox creerConstructeur(Object[] constructor) {
-        List<String> params = (List<String>) constructor[1];
-        return creerHBox(getVisibilityCircle(constructor[0].toString()), new Label(classe.getClassName() + "(" + String.join(", ", params) + ")"));
+    private HBox creerConstructeur(String[] constructor) {
+        String params = constructor[2];
+        return creerHBox(getVisibilityCircle(constructor[0]), new Label(classe.getClassName() + "(" + String.join(", ", params) + ")"));
     }
 
     /**
      * Crée une HBox pour une méthode.
      */
-    private HBox creerMethode(Object[] method) {
-        List<String> params = (List<String>) method[2];
+    private HBox creerMethode(String[] method) {
+        String params = method[2];
         return creerHBox(getVisibilityCircle(method[0].toString()), new Label(method[1] + "(" + String.join(", ", params) + ") : " + method[3]));
     }
 
