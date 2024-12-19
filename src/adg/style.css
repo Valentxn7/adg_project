@@ -29,6 +29,15 @@
     -fx-padding: 50px; /* taille min dans notre cas */
 }
 
+.addButton_hidden {
+    -fx-font-size: 0px;
+    -fx-background-color: #d3d3d3;
+    -fx-border-color: transparent;
+    -fx-border-width: 0px;
+    -fx-border-radius: 0px;
+    -fx-padding: 0px; /* taille min dans notre cas */
+}
+
 .menuBar {
     -fx-background-color: #f0f0f0;
     -fx-border-color: black;
@@ -45,7 +54,7 @@
 }
 
 .treeView_hidden{
-    -fx-border-color: none;
+    -fx-border-color: transparent;
     -fx-border-width: 0px;
     -fx-border-style: solid;
     -fx-padding: 0px;

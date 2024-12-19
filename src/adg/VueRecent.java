@@ -35,6 +35,7 @@ public class VueRecent extends TreeView<String> implements Observateur {
     @Override
     public void switchDiag2Home() {
         this.setVisible(true);
+        this.getStyleClass().remove("treeView_hidden");
         this.getStyleClass().add("treeView");
         this.setPrefSize(400, 180);  // (380 - 20) / 2
     }

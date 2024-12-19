@@ -39,6 +39,7 @@ public class MainUML extends Application {
 
 //        ControleurCreateProject controleurCreateProject = new ControleurCreateProject(modelUML);
         Button addProjectButton = new Button("+");
+        addProjectButton.setId("bouton");
         addProjectButton.setAlignment(javafx.geometry.Pos.CENTER);
         addProjectButton.setOnAction(e -> openCreateProjectWindow());
 
