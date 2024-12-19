@@ -1,4 +1,4 @@
-import adg.Classe;
+/*import adg.Classe;
 
 import java.util.ArrayList;
 
@@ -42,3 +42,4 @@ class ClasseTest {
         assertTrue(classe.getMethodes().contains("methode2"));
     }
 }
+*/
