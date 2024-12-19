@@ -20,10 +20,10 @@ ModelUML -> ModelUML : remplacerDernierBackslashParPoint(chemin)
 activate ModelUML
 ModelUML --> ModelUML : chemin
 deactivate ModelUML
-ModelUML --> ModelUML : URLClassLoader
+ModelUML --> ModelUML : class : Class<?>
 deactivate ModelUML
 create Analyser
-ModelUML -> Analyser : new
+ModelUML -> Analyser : new Analyser(class)
 activate Analyser
 Analyser --> ModelUML
 deactivate Analyser
