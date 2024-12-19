@@ -72,14 +72,16 @@ public class ControllerDragDrop implements EventHandler<DragEvent> {
 
                 for (File file : files) {
                     // Vérifie si le fichier est un fichier Java
-                    if (file.getName().endsWith(".java")) {
+                    if (file.getName().endsWith(".class")) {
                         model.setFilePath(file.getAbsolutePath());
                         System.out.println("Fichier déposé : " + file.getAbsolutePath());
                         succes = true;
                         try {
-                            model.annalyseFichier(file.getAbsolutePath());
+                            model.analyseFichier(file.getAbsolutePath());
                         } catch (ClassNotFoundException e) {
                             System.out.println("Erreur lors de l'analyse du fichier");
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
                         }
                     }
                 }

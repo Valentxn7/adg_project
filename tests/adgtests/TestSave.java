@@ -3,76 +3,57 @@ package adgtests;
 import adg.Analyser;
 import adg.Classe;
 import adg.Save;
-import javafx.scene.control.ContextMenu;
+import adgtests_t.ExempleClasse;
+import adgtests_t.ExempleClasse2;
+import adgtests_t.ExempleInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class TestSave {
-    Classe classe;
-    Classe classe2;
-    Classe classe3;
+    ArrayList<Classe> classes = new ArrayList<>();
 
-    String className = ExempleClasse.class.getName();
-    String className2 = ExempleClasse2.class.getName();
-    String className3 = ExempleInterface.class.getName();
+    String ppath = Paths.get("").toAbsolutePath().toString();
+    String path1 = ppath + "\\tests\\adgtests\\";
+    String pn1 = "exemple_project_save";
 
-    Save save;
+    File file;
 
     @BeforeEach
     public void setUp() throws Exception {
-        ArrayList<Classe> classes = new ArrayList<>();
-
-        Analyser analyser = new Analyser(className);
-        classe = analyser.analyse();
+        Analyser analyser = new Analyser(ExempleClasse.class);
+        Classe classe = analyser.analyse();
         classes.add(classe);
 
-        Analyser analyser2 = new Analyser(className2);
-        classe2 = analyser2.analyse();
+        Analyser analyser2 = new Analyser(ExempleClasse2.class);
+        Classe classe2 = analyser2.analyse();
         classes.add(classe2);
 
-        Analyser analyser3 = new Analyser(className3);
-        classe3 = analyser3.analyse();
+        Analyser analyser3 = new Analyser(ExempleInterface.class);
+        Classe classe3 = analyser3.analyse();
         classes.add(classe3);
 
-        save = Save.getInstance(classes, null);
+        file = new File(path1 + pn1 + ".adg");
+        if (file.exists()) {
+            file.delete();
+            System.out.println("File deleted");
+        }
     }
 
     @Test
-    public void test_uml() throws Exception {
-        String uml = save.getUML();
+    public void save1() throws Exception {
+        Save save = new Save(path1, pn1, classes);
+        save.save();
 
-        String expected = """
-        @startuml
-        class adgtests.ExempleClasse {
-            + exemple1 : int
-            - exemple2 : java.lang.String
-            # exemple3 : adgtests.ExempleClasse
-        '----------------
-            + adgtests.ExempleClasse(int, int)
-            + ExempleMethode1(int) : void
-            - ExempleMethode2(java.lang.String) : java.lang.String
-        }
-        adgtests.ExempleClasse --|> adgtests.ExempleClasse2
-        adgtests.ExempleClasse ..|> adgtests.ExempleInterface
-        class adgtests.ExempleClasse2 {
-        '----------------
-            + adgtests.ExempleClasse2()
-        }
-        class adgtests.ExempleInterface {
-        '----------------
-        }
-        @enduml""";
-
-        String normalizedUml = uml.replace("\r\n", "\n").strip();
-        String normalizedExpected = expected.replace("\r\n", "\n").strip();
-
-        assertEquals(normalizedExpected, normalizedUml);
-
+        File file = new File(path1 + pn1 + ".adg");
+        assertTrue(file.exists());
     }
 }
+
 
