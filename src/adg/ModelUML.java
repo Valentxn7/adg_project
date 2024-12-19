@@ -157,6 +157,12 @@ public class ModelUML implements Sujet {
         notifierObservateurs();
     }
 
+    /**
+     * Extrait le nom de la classe à partir d'un chemin absolu de fichier.
+     *
+     * @param cheminAbsolu le chemin absolu du fichier.
+     * @return le nom de la classe extraite du chemin.
+     */
     private String extraireNomClasse(String cheminAbsolu) {
         int ind = 0;
         int indbefore = 0;
@@ -178,6 +184,16 @@ public class ModelUML implements Sujet {
         return chemin;
     }
 
+    /**
+     * Charge une classe donnée à l'aide d'un URLClassLoader, en essayant de résoudre
+     * automatiquement son chemin si elle n'est pas trouvée au premier chargement.
+     *
+     * @param chargeurClasse l'instance de {@code URLClassLoader} utilisée pour charger la classe.
+     * @param nomClasse le nom de la classe à charger.
+     * @param cheminAbsolu le chemin absolu du fichier contenant la classe.
+     * @return l'objet {@code Class<?>} représentant la classe chargée.
+     * @throws Exception si la classe ne peut pas être chargée.
+     */
     private Class<?> chargerClasse(URLClassLoader chargeurClasse, String nomClasse, String cheminAbsolu) throws Exception {
         try {
             return chargeurClasse.loadClass(nomClasse);
@@ -194,6 +210,13 @@ public class ModelUML implements Sujet {
         }
     }
 
+    /**
+     * Remplace le dernier backslash dans un chemin absolu par un point.
+     * Utile pour reformater le chemin en respectant les conventions des noms de packages.
+     *
+     * @param cheminAbsolu le chemin absolu à modifier.
+     * @return le chemin modifié avec le dernier backslash remplacé par un point.
+     */
     private String remplacerDernierBackslashParPoint(String cheminAbsolu) {
         int dernierIndexBackslash = cheminAbsolu.lastIndexOf('\\');
         if(dernierIndexBackslash == -1) {
