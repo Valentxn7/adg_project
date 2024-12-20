@@ -1,15 +1,14 @@
 package adg;
 
+import javafx.stage.Stage;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.DosFileAttributeView;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-public class ModelUML implements Sujet{
+public class ModelUML implements Sujet {
     private ArrayList<Observateur> observateurs;
     private ArrayList<Classe> classes;
     private String windowsTitle = "Home";
@@ -19,18 +18,64 @@ public class ModelUML implements Sujet{
     private static final int MAX_RECENT_FOLDERS = 10;     // Limite du nombre de dossiers récents
     List<String> recentFolders;
     private boolean isHome = true;
+    private final Stage stage;
 
-    public ModelUML() {
+    public final static int PARTIE_GAUCHE_X = 400;
+    public final static int PARTIE_GAUCHE_Y = 380;
+    public final static int MENU_BAR_Y = 20;
+
+    private int vueArbo_x;
+    private int vueArbo_y;
+
+    private int vueRecent_x;
+    private int vueRecent_y;
+    private String vueRecent_style;
+    private boolean vueRecent_visible;
+
+    private int vueDiagramme_x;
+    private int vueDiagramme_y;
+    private int vueDiagramme_bouton_x;
+    private int vueDiagramme_bouton_y;
+    private String vueDiagramme_bouton_style;
+    private boolean vueDiagramme_bouton_visible;
+
+    private ArrayList<String> menuBar = new ArrayList<>(Arrays.asList("Fichier"));
+    // QUAND LE RESTE SERA DEVELOPPE
+    // private ArrayList<String> menuBar = new ArrayList<>(Arrays.asList("Fichier", "Affichage", "Aide"));
+    private HashMap<String, Boolean> menuFichier = new HashMap<String, Boolean>() {{
+        put("Nouveau", true);
+        put("Ouvrir un projet", true);
+        put("Ouvrir une sauvegarde", true);
+        put("Renommer", false);
+        put("Supprimer", false);
+        put("Enregistrer", false);
+        put("Enregistrer sous", false);
+        put("Exporter en UML", false);
+        put("Exporter en PNG", false);
+        put("Personnalisation", false);
+        put("Accueil", false);
+    }};
+
+
+    public ModelUML(Stage stage) {
         observateurs = new ArrayList<Observateur>();
         classes = new ArrayList<Classe>();
-        setADGFolder();
+        this.stage = stage;
+        this.setADGFolder();
+        this.switchState(true);
     }
 
     public void ajouterClasse(Classe classe) {
-        if(classes!=null)
+        if (classes != null)
             classes.add(classe);
     }
 
+    /**
+     * Crée un projet vierge, survient quand on clique sur Nouveau Projet
+     *
+     * @param nomProjet nom du projet
+     * @return true si le projet a été créé, false sinon
+     */
     public boolean creerProjetVierge(String nomProjet) {
         System.out.println("Création d'un projet vierge " + nomProjet + "...");
 
@@ -46,8 +91,8 @@ public class ModelUML implements Sujet{
                 System.out.println("Le fichier a été créé avec succès dans " + newProject.getAbsolutePath() + ".");
                 this.folderPath = appFolder.getAbsolutePath();
                 this.folder = new File(appFolder.getAbsolutePath());
-                this.windowsTitle = nomProjet;
-                switchHome2diag();
+                setWindowsTitle(nomProjet);
+                switchState(false);
                 addRecentFolder(newProject.getAbsolutePath());
                 return true;
             } else {
@@ -63,9 +108,9 @@ public class ModelUML implements Sujet{
     public void ouvrirProjet(File folder) {
         this.folder = folder;
         System.out.println("Ouverture du projet : " + folder.getName() + "...");
-        this.windowsTitle = folder.getName();
+        setWindowsTitle(folder.getName());
         addRecentFolder(folder.getAbsolutePath());
-        switchHome2diag();
+        switchState(false);
     }
 
     @Override
@@ -80,31 +125,70 @@ public class ModelUML implements Sujet{
 
     @Override
     public void notifierObservateurs() {
-        for(Observateur o : observateurs) {
+        for (Observateur o : observateurs) {
             o.actualiser(this);
         }
     }
 
-    public void switchHome2diag() {
-        isHome = false;
-        for(Observateur o : observateurs) {
-            o.switchHome2diag();
-        }
-    }
+    /**
+     * Change l'état de l'application
+     *
+     * @param isHome true si on est à l'accueil, false si on est dans un projet
+     */
+    public void switchState(boolean isHome) {
+        this.isHome = isHome;
+        if (isHome) {  // home
+            this.vueArbo_x = PARTIE_GAUCHE_X; // (400 (taille partie gauche) - 10 (marge) ) / 2
+            this.vueArbo_y = (PARTIE_GAUCHE_Y - MENU_BAR_Y) / 2; // 380 /2
 
-    public void switchDiag2Home() {
-        isHome = true;
-        for(Observateur o : observateurs) {
-            o.switchDiag2Home();
+            vueRecent_x = PARTIE_GAUCHE_X; // (400 (taille partie gauche) - 10 (marge) ) / 2
+            vueRecent_y = (PARTIE_GAUCHE_Y - MENU_BAR_Y) / 2; // 380 /2
+            vueRecent_style = "treeView";
+            vueRecent_visible = true;
+
+            vueDiagramme_x = 500;
+            vueDiagramme_y = 380;
+            vueDiagramme_bouton_x = 370;
+            vueDiagramme_bouton_y = 270;
+            vueDiagramme_bouton_style = "addButton";
+            vueDiagramme_bouton_visible = true;
+
+            menuFichier.replaceAll((key, value) -> false);
+
+            String[] entete = {"Nouveau", "Ouvrir un projet", "Ouvrir une sauvegarde"};
+            for (String item : entete)
+                menuFichier.put(item, true);
+
+        } else {  // diagramme
+            this.vueArbo_x = PARTIE_GAUCHE_X; // (400 (taille partie gauche) - 10 (marge) )
+            this.vueArbo_y = PARTIE_GAUCHE_Y - MENU_BAR_Y; // 20 = taille menuBar
+
+            vueRecent_x = 0;
+            vueRecent_y = 0;
+            vueRecent_style = "treeView_hidden";
+            vueRecent_visible = false;
+
+            vueDiagramme_x = 900;
+            vueDiagramme_y = 400;
+            vueDiagramme_bouton_x = 0;
+            vueDiagramme_bouton_y = 0;
+            vueDiagramme_bouton_style = "addButton_hidden";
+            vueDiagramme_bouton_visible = false;
+
+            menuFichier.replaceAll((key, value) -> true);
         }
+
+        notifierObservateurs();
     }
 
     public String getWindowsTitle() {
-        return windowsTitle;
+        return "ADG - " + windowsTitle;
     }
 
-    public void setWindowsTitle(String title) {
-        windowsTitle = title;
+    public void setWindowsTitle(String titre) {
+        this.windowsTitle = titre;
+        this.stage.setTitle(titre);
+        notifierObservateurs();
     }
 
     public void setFolderPath(String path) {
@@ -127,7 +211,72 @@ public class ModelUML implements Sujet{
         return isHome;
     }
 
-    public void setADGFolder(){
+    public int getVueArbo_x() {
+        return vueArbo_x;
+    }
+
+    public int getVueArbo_y() {
+        return vueArbo_y;
+    }
+
+    public int getVueRecent_x() {
+        return vueRecent_x;
+    }
+
+    public int getVueRecent_y() {
+        return vueRecent_y;
+    }
+
+    public String getVueRecent_style() {
+        return vueRecent_style;
+    }
+
+    public boolean getVueRecentVisibility() {
+        return vueRecent_visible;
+    }
+
+    public int getVueDiagramme_x() {
+        return vueDiagramme_x;
+    }
+
+    public int getVueDiagramme_y() {
+        return vueDiagramme_y;
+    }
+
+    public int getVueDiagramme_bouton_x() {
+        return vueDiagramme_bouton_x;
+    }
+
+    public int getVueDiagramme_bouton_y() {
+        return vueDiagramme_bouton_y;
+    }
+
+    public String getVueDiagramme_bouton_style() {
+        return vueDiagramme_bouton_style;
+    }
+
+    public boolean getVueDiagramme_bouton_visibility() {
+        return vueDiagramme_bouton_visible;
+    }
+
+    public ArrayList<String> getMenuBar() {
+        return menuBar;
+    }
+
+    public HashMap<String, Boolean> getMenuFichier() {
+        return menuFichier;
+    }
+
+    public HashMap<String, Boolean> getMenuItems(int index) {
+        String menu = menuBar.get(index);
+        System.out.println("Menu: " + menu);
+        if (menu.equals("Fichier")) {
+            return menuFichier;
+        }
+        return null;
+    }
+
+    public void setADGFolder() {
         String userHome = System.getProperty("user.home"); // C:\Users\NomUtilisateur sur Windows par ex
         File appFolder = new File(userHome, "ADGProjects"); // définie emplacement mais ne le créé pas encore
         if (!appFolder.exists()) {  // Si le dossier n'existe pas
@@ -137,7 +286,7 @@ public class ModelUML implements Sujet{
         this.folder = new File(appFolder.getAbsolutePath());
     }
 
-    private void ReadRecentProjects(){
+    private void ReadRecentProjects() {
         File[] files = folder.listFiles();
         for (File file : files) {
             if (file.isFile() && file.getName().endsWith(".adg")) {
@@ -146,7 +295,7 @@ public class ModelUML implements Sujet{
         }
     }
 
-    private void createADGfolder(){
+    private void createADGfolder() {
         String userHome = System.getProperty("user.home"); // C:\Users\NomUtilisateur sur Windows par ex
         File appFolder = new File(userHome, "ADGProjects"); // définie emplacement mais ne le créé pas encore
         if (!appFolder.exists()) {  // Si le dossier n'existe pas

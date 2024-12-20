@@ -11,17 +11,7 @@ public class VueTitre extends Label implements Observateur {
 
     @Override
     public void actualiser(Sujet mod) {
-        this.setText("ADG - " + modelUML.getWindowsTitle());
-    }
-
-    @Override
-    public void switchHome2diag() {
-        this.actualiser(this.modelUML);
-    }
-
-    @Override
-    public void switchDiag2Home() {
-        this.actualiser(this.modelUML);
+        this.setText(modelUML.getWindowsTitle());
     }
 
 

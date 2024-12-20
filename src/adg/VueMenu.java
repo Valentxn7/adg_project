@@ -4,6 +4,9 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class VueMenu extends MenuBar implements Observateur {
     private ModelUML modelUML;
 
@@ -13,34 +16,26 @@ public class VueMenu extends MenuBar implements Observateur {
 
     @Override
     public void actualiser(Sujet mod) {
-    }
+        ModelUML modelUML = (ModelUML) mod;
 
-    @Override
-    public void switchHome2diag() {
-        for (Menu m : this.getMenus()) {
-            for (MenuItem mi : m.getItems()) {
-                mi.setDisable(false);
-            }
-            System.out.println("Vue Menu : Switching to diagram");
-        }
-    }
+        ArrayList<String> menuBar = modelUML.getMenuBar();
+        for (Menu m : this.getMenus()) {  // on parcours les menus (Fichier, Affichage, ...)
 
-    @Override
-    public void switchDiag2Home() {
-        for (Menu m : this.getMenus()) {  // On parcourt les menus (Fichier, Affichage, ...)
-            if (m.getText().equals("Fichier")) {
-                for (MenuItem mi : m.getItems()) {  // On parcourt les items du menu Fichier
+            if (menuBar.contains(m.getText())) {  // Si le menu est dans la liste des menus à afficher
 
-                    // On désactive tous les items sauf Nouveau, Ouvrir un projet et Ouvrir une sauvegarde
-                    if (mi.getText() != null) { // nécessaire car les barre de séparation ont leur getText = null et ça fait crash les .equals
-                        if (mi.getText().equals("Nouveau") || mi.getText().equals("Ouvrir un projet") || mi.getText().equals("Ouvrir une sauvegarde"))
-                            mi.setDisable(false);
-                        else
-                            mi.setDisable(true);
+                HashMap<String, Boolean> menuItems = modelUML.getMenuItems(menuBar.indexOf(m.getText()));  // on récupère les items du menu correspondant
+
+                for (MenuItem mi : m.getItems()) {  // on parcours les items du menu
+                    if (!(mi.getText() == null)) {
+                        if (menuItems.containsKey(mi.getText())) {  // si l'item est dans la liste des items à afficher
+                            System.out.println("Item: " + mi.getText() + " | " + menuItems.get(mi.getText()));
+                            mi.setDisable(!menuItems.get(mi.getText()));  // on active ou désactive l'item
+                        }
                     }
                 }
+
             }
-            System.out.println("Vue Menu : Switching to diagram");
         }
     }
+
 }

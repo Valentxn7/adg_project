@@ -15,12 +15,18 @@ public class VueArborescence extends TreeView<String> implements Observateur {
     @Override
     public void actualiser(Sujet mod) {
         ModelUML model = (ModelUML) mod;
-        File root = model.getFolder();
-        this.getRoot().setValue(root.getName());
-        this.getRoot().getChildren().clear();
 
-        for (File child : root.listFiles()) {
-            this.getRoot().getChildren().add(RefreshArboresence(child));
+        // mon pdv = vaux mieux faire 2 test que changer des éléments graphiques (surtout que ça change pas souvent)
+        if (this.getWidth() != modelUML.getVueArbo_x() || this.getHeight() != modelUML.getVueArbo_y()) {
+            this.setPrefSize(modelUML.getVueArbo_x(), modelUML.getVueArbo_y());
+
+            File root = model.getFolder();
+            this.getRoot().setValue(root.getName());
+            this.getRoot().getChildren().clear();
+
+            for (File child : root.listFiles()) {
+                this.getRoot().getChildren().add(RefreshArboresence(child));
+            }
         }
     }
 
@@ -44,18 +50,5 @@ public class VueArborescence extends TreeView<String> implements Observateur {
         }
         return treeItem;
     }
-
-    @Override
-    public void switchHome2diag() {
-        this.setPrefSize(380, 450);  // (400 - 20)
-        this.actualiser(this.modelUML);
-    }
-
-    @Override
-    public void switchDiag2Home() {
-        this.setPrefSize(400, 180);  // (380 - 20) / 2
-        this.actualiser(this.modelUML);
-    }
-
-
 }
+

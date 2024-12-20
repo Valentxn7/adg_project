@@ -24,7 +24,7 @@ public class MainUML extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         rootStage = stage;
-        modelUML = new ModelUML();
+        modelUML = new ModelUML(stage);
         VBox base = new VBox(0);
         VueTitre titre = new VueTitre(modelUML);
         titre.setText("ADG - Home");
@@ -37,13 +37,14 @@ public class MainUML extends Application {
         VueDiagramme partieDroite = new VueDiagramme(modelUML);  // bouton add projet
         modelUML.enregistrerObservateur(partieDroite);
 
-//        ControleurCreateProject controleurCreateProject = new ControleurCreateProject(modelUML);
         Button addProjectButton = new Button("+");
         addProjectButton.setId("bouton");
         addProjectButton.setAlignment(javafx.geometry.Pos.CENTER);
         addProjectButton.setOnAction(e -> openCreateProjectWindow());
 
         partieDroite.setAlignment(javafx.geometry.Pos.CENTER);
+
+        /**     MENU       **/
 
         VueMenu menuBar = new VueMenu(modelUML);  // barre menu contenante
         modelUML.enregistrerObservateur(menuBar);
@@ -91,6 +92,30 @@ public class MainUML extends Application {
         );
 
         Menu viewMenu = new Menu("Affichage");
+
+        CheckMenuItem modeNuit = new CheckMenuItem("Mode nuit");
+
+        //MenuItem changerPolice = new MenuItem("Changer la police");
+
+        Label comboBoxLabel = new Label("Police :");
+        comboBoxLabel.setStyle("-fx-text-fill: black;"); // Définit la couleur du texte
+        ComboBox<String> comboBox = new ComboBox<>();
+        comboBox.getItems().addAll("Lexend", "Sans Serif", "...");
+        comboBox.setValue("Lexend");
+        comboBoxLabel.setLabelFor(comboBox);
+
+
+        HBox labeledComboBox = new HBox(10, comboBoxLabel, comboBox); // Espacement de 10px
+        labeledComboBox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        labeledComboBox.setStyle("-fx-padding: 5;"); // Ajout de marges internes
+
+        // Créer un CustomMenuItem pour contenir le HBox
+        CustomMenuItem customMenuItem = new CustomMenuItem(labeledComboBox);
+        customMenuItem.setHideOnClick(false); // Empêche la fermeture du menu lors de l'interaction
+
+        viewMenu.getItems().addAll(modeNuit, customMenuItem);
+
+
         Menu helpMenu = new Menu("Aide");
         menuBar.getMenus().addAll(fileMenu, viewMenu, helpMenu);
 
@@ -103,11 +128,9 @@ public class MainUML extends Application {
             }
         });
 
-        accueil.setOnAction(e -> {
-            modelUML.switchDiag2Home();
-            rootStage.setTitle("ADG - Home");
-        });
+        accueil.setOnAction(new ControllerAccueil(modelUML));
 
+        /**     ARBORESCENCE       **/
 
         TreeItem<String> rootArborescence = new TreeItem<String>();  // l'item de base
         rootArborescence.setValue("Projets ADG:");
@@ -118,6 +141,8 @@ public class MainUML extends Application {
         modelUML.enregistrerObservateur(vueArborescence);
         vueArborescence.actualiser(modelUML);
 
+        /**     RECENTS       **/
+
         TreeItem<String> rootRecent = new TreeItem<String>();  // l'item de base
         rootRecent.setValue("Projets récents:");
         rootRecent.setExpanded(true);
@@ -127,10 +152,14 @@ public class MainUML extends Application {
         modelUML.enregistrerObservateur(vueRecent);
         vueRecent.actualiser(modelUML);
 
+        /**     ORGANISATION       **/
+
         base.getChildren().addAll(titre, centre, fin);  // VBox
         centre.getChildren().addAll(partieGauche, partieDroite);  // HBox
         partieGauche.getChildren().addAll(menuBar, vueArborescence, vueRecent);  // VBox
         partieDroite.getChildren().add(addProjectButton);  // HBox
+
+        /**       SIZE       **/
 
         base.setPrefSize(900, 400);
         base.setMinSize(400, 200);
@@ -140,13 +169,15 @@ public class MainUML extends Application {
         centre.setPrefSize(900, 380);
         fin.setPrefSize(900, 20);
 
-        partieGauche.setPrefSize(400, 380);
-        menuBar.setPrefSize(400, 20);
+        partieGauche.setPrefSize(ModelUML.PARTIE_GAUCHE_X, ModelUML.PARTIE_GAUCHE_Y);
+        menuBar.setPrefSize(400, ModelUML.MENU_BAR_Y);
         vueArborescence.setPrefSize(400, 180);  // (380 - 20) / 2
         vueRecent.setPrefSize(400, 180);  // (380 - 20) / 2
 
         partieDroite.setPrefSize(500, 380);
         addProjectButton.setPrefSize(370, 270);
+
+        /**       STYLE       **/
 
         titre.getStyleClass().add("label-titre");
         addProjectButton.getStyleClass().add("addButton");
@@ -155,6 +186,8 @@ public class MainUML extends Application {
         vueArborescence.getStyleClass().add("treeView");
         vueRecent.getStyleClass().add("treeView");
         fin.getStyleClass().add("label-fin");
+
+        /**       lancement       **/
 
         Scene scene = new Scene(base, 922, 420);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
@@ -179,30 +212,8 @@ public class MainUML extends Application {
         TextField projectNameField = new TextField();
         Button createButton = new Button("Créer");
 
-        projectNameField.setOnAction(e -> {
-            String projectName = projectNameField.getText().trim();  // on récupère le texte du champ
-            if (!projectName.isEmpty()) {  // si le champ n'est pas vide
-                if (modelUML.creerProjetVierge(projectName)) {
-                    rootStage.setTitle("ADG - " + projectName);
-                    modelUML.setWindowsTitle(projectName);
-                }
-                createProjetWind.close(); // Ferme la fenêtre
-            } else {
-                showErrorMessage("Le nom du projet ne peut pas être vide.");
-            }
-        });
-        createButton.setOnAction(e -> {
-            String projectName = projectNameField.getText().trim();  // on récupère le texte du champ
-            if (!projectName.isEmpty()) {  // si le champ n'est pas vide
-                if (modelUML.creerProjetVierge(projectName)) {
-                    rootStage.setTitle("ADG - " + projectName);
-                    modelUML.setWindowsTitle(projectName);
-                }
-                createProjetWind.close(); // Ferme la fenêtre
-            } else {
-                showErrorMessage("Le nom du projet ne peut pas être vide.");
-            }
-        });
+        projectNameField.setOnAction(new ControllerNewProject(modelUML, createProjetWind));
+        createButton.setOnAction(new ControllerNewProject(modelUML, createProjetWind));
 
         vbox.getChildren().addAll(label, projectNameField, createButton);
 
