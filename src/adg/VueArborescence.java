@@ -44,7 +44,7 @@ public class VueArborescence extends TreeView<String> implements Observateur {
         }
         return treeItem;
     }
-
+    /*
     @Override
     public void switchHome2diag() {
         this.setPrefSize(380, 450);  // (400 - 20)
@@ -56,6 +56,6 @@ public class VueArborescence extends TreeView<String> implements Observateur {
         this.setPrefSize(400, 180);  // (380 - 20) / 2
         this.actualiser(this.modelUML);
     }
-
+    */
 
 }

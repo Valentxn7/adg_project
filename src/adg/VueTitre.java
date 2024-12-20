@@ -1,5 +1,6 @@
 package adg;
 
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 
 /**
@@ -8,7 +9,6 @@ import javafx.scene.control.Label;
  * Elle est utilisée pour afficher et mettre à jour le titre de la fenêtre en fonction de l'état du modèle.
  */
 public class VueTitre extends Label implements Observateur {
-    private ModelUML modelUML;
 
     private ModelUML modelUML; // Référence au modèle UML associé
 
@@ -33,17 +33,10 @@ public class VueTitre extends Label implements Observateur {
     public void actualiser(Sujet mod) {
         this.setText("ADG - " + modelUML.getWindowsTitle());
     }
-
     /**
      * Méthode pour mettre à jour le titre lors de la transition
      * de l'affichage d'accueil à celui du diagramme.
      * Implémentation de la méthode `switchHome2diag` définie dans l'interface {@link Observateur}.
      * Cette méthode appelle `actualiser` pour synchroniser le titre avec le modèle.
      */
-    @Override
-    public void switchHome2diag() {
-        this.actualiser(this.modelUML);
-    }
-
-
 }

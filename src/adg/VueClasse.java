@@ -38,21 +38,6 @@ public class VueClasse extends VBox implements Observateur {
             afficherClasse();
     }
 
-    /**
-     * Ajoute une flèche à la liste des flèches
-     * @param f la flèche à ajouter
-     */
-    public void ajouterFleche(Fleche f, ModelUML m) {
-        List<String[]> attributs = classe.getFields();
-        if (m.getVues().containsKey(classe.getClassName()) && !(classe.getSuperclass().isEmpty() && classe.getInterfaces().isEmpty())) {
-            for (String[] attribut : attributs) {
-                if (f instanceof FlecheAttri && attribut[1].equals(((FlecheAttri) f).getAttribut().getText())) {
-                    this.fleches.add(f);
-                    break;
-                }
-            }
-        }
-    }
 
     /**
      * Retire une flèche de la liste des flèches
@@ -182,13 +167,6 @@ public class VueClasse extends VBox implements Observateur {
                 break;
         }
         return circle;
-    }
-
-    @Override
-    public void switchHome2diag() {
-        this.getChildren().clear();
-        this.setPrefSize(900, 400);
-        System.out.println("VueDiagramme : Switching to diagram");
     }
 }
 

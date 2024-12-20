@@ -35,6 +35,12 @@ public class VueMenu extends MenuBar implements Observateur {
     @Override
     public void actualiser(Sujet mod) {
         // Actuellement sans implémentation.
+        ModelUML model = (ModelUML) mod;
+        if(model.getIsHome()) {
+            this.switchDiag2Home();
+        } else {
+            this.switchHome2diag();
+        }
     }
 
     /**
@@ -44,7 +50,8 @@ public class VueMenu extends MenuBar implements Observateur {
      * <p>
      * Cette méthode parcourt tous les menus et réactive leurs éléments.
      */
-    @Override
+
+
     public void switchHome2diag() {
         for (Menu m : this.getMenus()) {
             for (MenuItem mi : m.getItems()) {
@@ -54,7 +61,6 @@ public class VueMenu extends MenuBar implements Observateur {
         }
     }
 
-    @Override
     public void switchDiag2Home() {
         for (Menu m : this.getMenus()) {  // On parcourt les menus (Fichier, Affichage, ...)
             if (m.getText().equals("Fichier")) {

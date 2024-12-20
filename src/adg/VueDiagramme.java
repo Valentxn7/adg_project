@@ -1,5 +1,7 @@
 package adg;
 
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 
 /**
@@ -9,17 +11,9 @@ import javafx.scene.layout.StackPane;
  */
 public class VueDiagramme extends StackPane implements Observateur {
 
-    private ModelUML modelUML; // Référence au modèle UML associé
 
-    /**
-     * Constructeur de la classe VueDiagramme.
-     * Initialise la vue avec le modèle UML donné.
-     *
-     * @param modelUML Le modèle UML associé à cette vue.
-     */
-    public VueDiagramme(ModelUML modelUML) {
-        this.modelUML = modelUML;
-    }
+
+
 
     /**
      * Méthode appelée pour actualiser la vue lorsque le modèle est modifié.
@@ -29,7 +23,14 @@ public class VueDiagramme extends StackPane implements Observateur {
      */
     @Override
     public void actualiser(Sujet mod) {
-        System.out.println("Création d'un projet");
+
+        ModelUML model = (ModelUML) mod;
+        System.out.println(model.getIsHome());
+        if(model.getIsHome()) {
+            this.switchDiag2Home();
+        } else {
+            this.switchHome2diag();
+        }
     }
 
     /**
@@ -37,7 +38,7 @@ public class VueDiagramme extends StackPane implements Observateur {
      * Efface tous les éléments enfants de la vue et ajuste sa taille.
      * Implémentation de la méthode `switchHome2diag` définie dans l'interface {@link Observateur}.
      */
-    @Override
+
     public void switchHome2diag() {
         for (Node fils : this.getChildren()) {  // le bouton +
             if (fils.getId().equalsIgnoreCase("bouton")) {
@@ -51,7 +52,6 @@ public class VueDiagramme extends StackPane implements Observateur {
         System.out.println("VueDiagramme : Switching to diagram");
     }
 
-    @Override
     public void switchDiag2Home() {
         for (Node fils : this.getChildren()) {  // le bouton +
             if (fils.getId().equalsIgnoreCase("bouton")) {
@@ -60,8 +60,6 @@ public class VueDiagramme extends StackPane implements Observateur {
                 b.getStyleClass().add("addButton");
                 b.setVisible(true);
                 b.setPrefSize(370, 270);
-            } else {
-                this.getChildren().clear();
             }
         }
         this.setPrefSize(500, 380);

@@ -1,5 +1,7 @@
 package adg;
 
+import javafx.scene.layout.VBox;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,29 +28,34 @@ public class ModelUML implements Sujet {
     private ArrayList<String> chemins;          // Liste des chemins de fichiers
     private String WindowsTitle = "Home";       // Titre de la fenêtre
     private HashMap<String, VueClasse> vues;  // hashmap qui associe le nom de la classe à sa vue
-public class ModelUML implements Sujet{
-    private ArrayList<Observateur> observateurs;
-    private ArrayList<Classe> classes;
     private String windowsTitle = "Home";
     private String folderPath = null;
     private File folder = null;
     private static final String DATA_FILE = ".data.json"; // Nom du fichier des données
     private static final int MAX_RECENT_FOLDERS = 10;     // Limite du nombre de dossiers récents
     List<String> recentFolders;
-    private boolean isHome = true;
+    private boolean isHome;
 
     /**
      * Constructeur par défaut. Initialise les listes d'observateurs,
      * de classes UML et de chemins.
      */
     public ModelUML() {
-        observateurs = new ArrayList<>();
-        classes = new ArrayList<>();
         chemins = new ArrayList<>();
         vues = new HashMap<>();
         observateurs = new ArrayList<Observateur>();
         classes = new ArrayList<Classe>();
         setADGFolder();
+        isHome = true;
+    }
+
+    public void setHome(){
+        if (!isHome) {
+            isHome = true;
+        }else {
+            isHome = false;
+        }
+        notifierObservateurs();
     }
 
     /**
@@ -73,12 +80,8 @@ public class ModelUML implements Sujet{
      * Crée un projet vierge et notifie les observateurs pour basculer
      * à la vue diagramme.
      */
-    public void creerProjetVierge() {
-        System.out.println("Création d'un projet vierge");
-        for (Observateur o : observateurs) {
-            o.switchHome2diag();
     public boolean creerProjetVierge(String nomProjet) {
-        System.out.println("Création d'un projet vierge " + nomProjet + "...");
+        System.out.println("Création d'un projet vierge");
 
         String userHome = System.getProperty("user.home"); // C:\Users\NomUtilisateur sur Windows par ex
         File appFolder = new File(userHome, "ADGProjects"); // définie emplacement mais ne le créé pas encore
@@ -93,12 +96,11 @@ public class ModelUML implements Sujet{
                 this.folderPath = appFolder.getAbsolutePath();
                 this.folder = new File(appFolder.getAbsolutePath());
                 this.windowsTitle = nomProjet;
-                switchHome2diag();
                 addRecentFolder(newProject.getAbsolutePath());
                 return true;
             } else {
                 System.out.println("Le fichier existe déjà.");
-                MainUML.showErrorMessage("Le fichier existe déjà.");
+                //MainUML.showErrorMessage("Le fichier existe déjà.");
             }
         } catch (IOException e) {
             System.err.println("Erreur lors de la création du fichier : " + e.getMessage());
@@ -111,7 +113,6 @@ public class ModelUML implements Sujet{
         System.out.println("Ouverture du projet : " + folder.getName() + "...");
         this.windowsTitle = folder.getName();
         addRecentFolder(folder.getAbsolutePath());
-        switchHome2diag();
     }
 
     /**
@@ -144,24 +145,6 @@ public class ModelUML implements Sujet{
         }
     }
 
-    /**
-     * Retourne le titre de la fenêtre.
-     *
-     * @return le titre de la fenêtre.
-     */
-    public void switchHome2diag() {
-        isHome = false;
-        for(Observateur o : observateurs) {
-            o.switchHome2diag();
-        }
-    }
-
-    public void switchDiag2Home() {
-        isHome = true;
-        for(Observateur o : observateurs) {
-            o.switchDiag2Home();
-        }
-    }
 
     public String getWindowsTitle() {
         return windowsTitle;
@@ -221,7 +204,7 @@ public class ModelUML implements Sujet{
         if (!appFolder.exists()) {  // Si le dossier n'existe pas
             if (!appFolder.mkdirs()) { // Crée le dossier s'il n'existe pas
                 System.err.println("Erreur lors de la création du dossier.");
-                MainUML.showErrorMessage("Erreur lors de la création du dossier.");
+                //MainUML.showErrorMessage("Erreur lors de la création du dossier.");
             } else {
                 System.out.println("Dossier ADG créé avec succès dans " + appFolder.getAbsolutePath() + ".");
             }
@@ -371,3 +354,67 @@ public class ModelUML implements Sujet{
         // Notifie les observateurs
         notifierObservateurs();
     }
+
+    public void setVueDiagramme(VueDiagramme vueDiagramme) {
+        this.vueDiagramme = vueDiagramme;
+    }
+
+    /**
+     * Retourne liste de classes avec leur vue
+     *
+     * @return vues
+     */
+    public HashMap<String, VueClasse> getVues() {
+        return vues;
+    }
+
+
+    private String extraireNomClasse(String cheminAbsolu) {
+        int ind = 0;
+        int indbefore = 0;
+
+        for (int i = 0; i < cheminAbsolu.length(); i++) {
+            if (cheminAbsolu.charAt(i) == '\\') {
+                indbefore = ind;
+                ind = i;
+            }
+        }
+        if (indbefore == 0) {
+            indbefore = ind;
+        }
+
+        // Retourner tout après le deuxième dernier séparateur
+
+        String chemin = cheminAbsolu.substring(indbefore + 1);
+
+        return chemin;
+    }
+
+    private Class<?> chargerClasse(URLClassLoader chargeurClasse, String nomClasse, String cheminAbsolu) throws Exception {
+        try {
+            return chargeurClasse.loadClass(nomClasse);
+        } catch (ClassNotFoundException e) {
+            // Modifie le chemin absolu pour remplacer le dernier backslash par un point
+            cheminAbsolu = remplacerDernierBackslashParPoint(cheminAbsolu);
+            System.out.println("Chargement de la classe1 : " + nomClasse);
+            File fichier = new File(cheminAbsolu);
+            nomClasse = fichier.getName().replace(".class", "");
+            String cheminClasse = fichier.getParentFile().toURI().toString();
+            chargeurClasse = new URLClassLoader(new URL[]{new URL(cheminClasse)});
+            System.out.println("Chargement de la classe : " + nomClasse);
+            System.out.println("Chemin de la classe : " + cheminClasse);
+            return chargeurClasse.loadClass(nomClasse);
+        }
+    }
+
+    private String remplacerDernierBackslashParPoint(String cheminAbsolu) {
+        int dernierIndexBackslash = cheminAbsolu.lastIndexOf('/');
+        System.out.println("dernier index backslash : " + dernierIndexBackslash);
+        if (dernierIndexBackslash != -1) {
+            String n=  cheminAbsolu.substring(0, dernierIndexBackslash) + '.' + cheminAbsolu.substring(dernierIndexBackslash + 1);
+            System.out.println("nouveau chemin : " + n);
+            return n;
+        }
+        return cheminAbsolu;
+    }
+}

@@ -23,8 +23,19 @@ public class VueRecent extends TreeView<String> implements Observateur {
                 this.getRoot().getChildren().add(new TreeItem<String>(recentfold));
             }
         }
+
+        if(model.getIsHome()) {
+            this.getStyleClass().remove("treeView_hidden");
+            this.getStyleClass().add("treeView");
+            this.setPrefSize(380, 450);  // (400 - 20)
+        } else {
+            this.setVisible(false);
+            this.getStyleClass().add("treeView_hidden");
+            this.setPrefSize(0, 0);
+        }
     }
 
+    /*
     @Override
     public void switchHome2diag() {
         this.setVisible(false);
@@ -39,6 +50,6 @@ public class VueRecent extends TreeView<String> implements Observateur {
         this.getStyleClass().add("treeView");
         this.setPrefSize(400, 180);  // (380 - 20) / 2
     }
-
+    */
 
 }

@@ -66,6 +66,7 @@
     /* Limiter uniquement la largeur */
     -fx-min-width: 100px;  /* Largeur minimale */
     -fx-max-width: 300px;  /* Largeur maximale */
+    
 }
 #separation {
     -fx-border-color: gray;
