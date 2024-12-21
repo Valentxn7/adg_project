@@ -3,6 +3,7 @@ package adg;
 import adg.data.Analyser;
 import adg.data.Classe;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.io.File;
 import java.net.URL;
@@ -121,18 +122,18 @@ public class ModelUML implements Sujet {
         return res.toString();
     }
 
-
-
     /**
-     * Analyse un fichier UML donné et ajoute la classe analysée au modèle.
-     * Notifie ensuite les observateurs.
+     * Analyse un fichier .class à partir de son chemin absolu et charge la classe correspondante dans le classpath.
+     * Effectue également une analyse UML de la classe et notifie les observateurs.
      *
-     * @param cheminAbsolu le chemin absolu du fichier à analyser.
-     * @throws ClassNotFoundException si une classe dans le fichier est introuvable.
+     * @param cheminAbsolu Le chemin absolu du fichier .class à analyser.
+     * @throws Throwable Si une exception se produit lors de l'analyse ou du chargement de la classe.
      */
-    public void analyseFichier(String cheminAbsolu) throws Exception {
+    public void analyseFichier(String cheminAbsolu) throws Throwable {
         // Extrait le nom de la classe à partir du chemin absolu
+        int nbslash = nbSlash(cheminAbsolu);
         String nomClasse = extraireNomClasse(cheminAbsolu);
+        System.out.println("Nom de la classe : " + nomClasse);
 
         File fichier = new File(cheminAbsolu);
         String cheminClasse = fichier.getParentFile().toURI().toString();
@@ -141,7 +142,7 @@ public class ModelUML implements Sujet {
         URLClassLoader chargeurClasse = new URLClassLoader(new URL[]{new URL(cheminClasse)});
 
         // Charge la classe
-        Class<?> classe = chargerClasse(chargeurClasse, nomClasse, cheminAbsolu);
+        Class<?> classe = chargerClasse(chargeurClasse, nomClasse, cheminAbsolu, nbslash);
 
         // Analyse la classe
         Analyser analyse = new Analyser(classe);
@@ -157,75 +158,116 @@ public class ModelUML implements Sujet {
         notifierObservateurs();
     }
 
-    /**
-     * Extrait le nom de la classe à partir d'un chemin absolu de fichier.
-     *
-     * @param cheminAbsolu le chemin absolu du fichier.
-     * @return le nom de la classe extraite du chemin.
-     */
-    private String extraireNomClasse(String cheminAbsolu) {
-        int ind = 0;
-        int indbefore = 0;
 
-        for (int i = 0; i < cheminAbsolu.length(); i++) {
-            if (cheminAbsolu.charAt(i) == '\\') {
-                indbefore = ind;
-                ind = i;
+    /**
+     * Charge une classe en utilisant un URLClassLoader. Tente de charger la classe en ajustant le chemin absolu
+     * en remplaçant les backslashes par des points pour correspondre à la structure des packages.
+     *
+     * @param chargeurClasse Le URLClassLoader utilisé pour charger la classe.
+     * @param nomClasse Le nom de la classe à charger.
+     * @param cheminAbsolu Le chemin absolu du fichier .class.
+     * @param nbslash Le nombre de barres obliques inversées dans le chemin.
+     * @return La classe chargée.
+     * @throws Throwable Si la classe ne peut pas être trouvée ou chargée.
+     */
+    private Class<?> chargerClasse(URLClassLoader chargeurClasse, String nomClasse, String cheminAbsolu, int nbslash) throws Throwable {
+        // On initialise la valeur de la classe à null et on initialise un booléen qui sert à savoir si le chargement a réussi
+        Class<?> c = null;
+        boolean succes = false;
+
+        // On essaie de charger la classe, si une exception est levée, on modifie le chemin absolu tant que c'est possible
+        while (!succes && nbslash > 0) { // Au cas où il y a des packages dans des packages
+            try {
+                // Charge la classe
+                c = chargeurClasse.loadClass(nomClasse);
+                // Si la classe est chargée, on met le booléen à true
+                succes = true;
+            } catch (ClassNotFoundException | NoClassDefFoundError e) { // Sinon, on attrape l'exception et on modifie le chemin absolu
+                // Modifie le chemin absolu pour remplacer le dernier backslash par un point
+                cheminAbsolu = remplacerDernierSlashParPoint(cheminAbsolu);
+                nbslash--;
+
+                File fichier = new File(cheminAbsolu);
+                nomClasse = fichier.getName().replace(".class", "");
+                String cheminClasse = fichier.getParentFile().toURI().toString();
+                chargeurClasse = new URLClassLoader(new URL[]{new URL(cheminClasse)});
             }
         }
-        if (indbefore == 0) {
-            indbefore = ind;
+        // Si la classe n'a pas été chargée, cela veut dire que le .class n'est pas dans le bon package
+        if (!succes) {
+            throw new ClassNotFoundException("La classe n'est pas dans le bon package");
         }
 
-        // Retourner tout après le deuxième dernier séparateur
+        return c;
+    }
 
-        String chemin = cheminAbsolu.substring(indbefore + 1);
 
-        return chemin;
+
+    /**
+     * Trouve l'indice du dernier slash ('\\') ou barre oblique ('/') dans le chemin absolu.
+     *
+     * @param cheminAbsolu Le chemin absolu à analyser.
+     * @return L'indice du dernier slash ou barre oblique dans le chemin, ou -1 si aucun n'est trouvé.
+     */
+    private int indiceDernierSlash(String cheminAbsolu) {
+        int dernierIndex = cheminAbsolu.lastIndexOf('\\');
+
+        // Sur Mac et Linux, le backslash est un slash, on vérifie donc si c'est le cas
+        if (dernierIndex == -1) {
+            dernierIndex = cheminAbsolu.lastIndexOf('/');
+        }
+
+        return dernierIndex;
     }
 
     /**
-     * Charge une classe donnée à l'aide d'un URLClassLoader, en essayant de résoudre
-     * automatiquement son chemin si elle n'est pas trouvée au premier chargement.
+     * Extrait le nom de la classe à partir du chemin absolu du fichier .class.
      *
-     * @param chargeurClasse l'instance de {@code URLClassLoader} utilisée pour charger la classe.
-     * @param nomClasse le nom de la classe à charger.
-     * @param cheminAbsolu le chemin absolu du fichier contenant la classe.
-     * @return l'objet {@code Class<?>} représentant la classe chargée.
-     * @throws Exception si la classe ne peut pas être chargée.
+     * @param cheminAbsolu Le chemin absolu du fichier .class.
+     * @return Le nom de la classe sans l'extension ".class".
      */
-    private Class<?> chargerClasse(URLClassLoader chargeurClasse, String nomClasse, String cheminAbsolu) throws Exception {
-        try {
-            return chargeurClasse.loadClass(nomClasse);
-        } catch (ClassNotFoundException e) {
-            // Modifie le chemin absolu pour remplacer le dernier backslash par un point
-            cheminAbsolu = remplacerDernierBackslashParPoint(cheminAbsolu);
+    private String extraireNomClasse(String cheminAbsolu) {
+        int dernierIndex = indiceDernierSlash(cheminAbsolu);
 
-            File fichier = new File(cheminAbsolu);
-            nomClasse = fichier.getName().replace(".class", "");
-            String cheminClasse = fichier.getParentFile().toURI().toString();
-            chargeurClasse = new URLClassLoader(new URL[]{new URL(cheminClasse)});
-
-            return chargeurClasse.loadClass(nomClasse);
+        // Si un slash ou un backslash est trouvé, on extrait le nom de la classe
+        if (dernierIndex != -1) {
+            cheminAbsolu = cheminAbsolu.substring(dernierIndex + 1);
         }
+
+        return cheminAbsolu.replace(".class", "");
     }
 
     /**
-     * Remplace le dernier backslash dans un chemin absolu par un point.
-     * Utile pour reformater le chemin en respectant les conventions des noms de packages.
+     * Remplace le dernier backslash ('\\') ou slash ('\') par un point ('.') dans le chemin absolu.
      *
-     * @param cheminAbsolu le chemin absolu à modifier.
-     * @return le chemin modifié avec le dernier backslash remplacé par un point.
+     * @param cheminAbsolu Le chemin absolu à modifier.
+     * @return Le chemin avec le dernier backslash remplacé par un point.
      */
-    private String remplacerDernierBackslashParPoint(String cheminAbsolu) {
-        int dernierIndexBackslash = cheminAbsolu.lastIndexOf('\\');
-        if(dernierIndexBackslash == -1) {
-            dernierIndexBackslash = cheminAbsolu.lastIndexOf('/');
+    private String remplacerDernierSlashParPoint(String cheminAbsolu) {
+        int dernierIndex = indiceDernierSlash(cheminAbsolu);
+
+        // Si un slash ou un backslash est trouvé, on remplace le dernier backslash par un point
+        if (dernierIndex != -1) {
+            return cheminAbsolu.substring(0, dernierIndex) + '.' + cheminAbsolu.substring(dernierIndex + 1);
         }
-        if (dernierIndexBackslash != -1) {
-            return cheminAbsolu.substring(0, dernierIndexBackslash) + '.' + cheminAbsolu.substring(dernierIndexBackslash + 1);
-        }
+
         return cheminAbsolu;
+    }
+
+    /**
+     * Compte le nombre de barres obliques inversées ('\\') dans le chemin absolu.
+     *
+     * @param cheminAbsolu Le chemin absolu à analyser.
+     * @return Le nombre de barres obliques inversées dans le chemin.
+     */
+    private int nbSlash(String cheminAbsolu) {
+        int res = 0;
+        for (int i = 0; i < cheminAbsolu.length(); i++) {
+            if (cheminAbsolu.charAt(i) == '\\') {
+                res++;
+            }
+        }
+        return res;
     }
 
 

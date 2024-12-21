@@ -25,52 +25,40 @@
     - Transformation d’un chemin absolu en objet Class<?> pour permettre l’analyse via l’outil Analyser.
 - **Avancement** : ✅ Complétée
 
-
-### Fonctionnalité 2 : Ouverture de fichiers 
-- **Responsable** : [Nom du membre]
+### Fonctionnalité 6 : Explorateur de dossier et de fichiers
+- **Responsable** : Valentin
 - **Description** :
-    - [Expliquer ce que fait cette fonctionnalité]
-    - [Lister les sous-tâches associées, si applicable]
-- **Avancement** : ✅ Complétée
+  - Cette fonctionnalité permet d'ouvrir deux explorateurs différents afin d'ouvrir et de traiter les données sélectionnées.
+  - Un dossier peut être entièrement lut pour être affiché en Treemap.
+- **Avancement** : :white_check_mark: Complétée
 - **Exemple d'utilisation** :
+  Ouvrir l'application et cliquer sur le bouton Ouvrir
 
-  [Commande, capture d'écran ou description d'exécution]
 
-Code source : [Lien vers les fichiers associés (ex : src/...)]
 
-### Fonctionnalité 3 : [Nom de la fonctionnalité]
-- **Responsable** : [Nom du membre]
+### Fonctionnalité 7 : Création d'un dossier d'application ADG
+- **Responsable** : Valentin
 - **Description** :
-    - [Expliquer ce que fait cette fonctionnalité]
-    - [Lister les sous-tâches associées, si applicable]
-- **Avancement** : ✅ Complétée
-- **Exemple d'utilisation** :
+  - Un dossier d'application permettant de stocker les projets créer sur l'application ADG et les fichers data en json pour les autres fonctionnalité.
+  - Ce dossier se situe dans le dossier de l'Utilisateur
+- **Avancement** : :white_check_mark: Complétée
 
-  [Commande, capture d'écran ou description d'exécution]
 
-Code source : [Lien vers les fichiers associés (ex : src/...)]
 
-### Fonctionnalité 4 : [Nom de la fonctionnalité]
-- **Responsable** : [Nom du membre]
+### Fonctionnalité 8 : Créer un nouveau projet
+- **Responsable** : Valentin
 - **Description** :
-    - [Expliquer ce que fait cette fonctionnalité]
-    - [Lister les sous-tâches associées, si applicable]
-- **Avancement** : ✅ Complétée
+  - Création d'un nouveau projet en .adg dès qu'un utilisateur clique sur "Nouveau" dans le dossier d'application afin de sauvegarder son avancement.
+- **Avancement** : :white_check_mark: Complétée
 
-## Points importants de l'itération
 
-- Répartition des tâches :
-    - [Nom du membre] : [Tâches réalisées]
-    - [Nom du membre] : [Tâches réalisées]
-    - [Nom du membre] : [Tâches réalisées]
-    - [Nom du membre] : [Tâches réalisées]
-    - [Nom du membre] : [Tâches réalisées]
 
-- Problèmes rencontrés :
-    - [Lister les problèmes techniques ou organisationnels]
+### Fonctionnalité 9 : Créer une TreeView des dossiers récemment ouvert
+- **Responsable** : Valentin
+- **Description** :
+  - Une treeView permettant à l'utilisateur de revenir à ses anciens projets ouverts, stocké dans data.json et limité à 10 emplacements de retour.
+- **Avancement** : :white_check_mark: Complétée
 
-- Solutions apportées :
-    - [Décrire comment les problèmes ont été résolus]
 
 ## Conclusion
 
