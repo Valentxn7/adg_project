@@ -16,7 +16,7 @@
 - **Responsable** : Ryan Korban
 - **Description** :
   - Finalisation du drag & drop :
-    - Ajout de la possibilité de glisser-déposer plusieurs fichiers .class.
+    - Ajout de la possibilité de glisser-déposer plusieurs fichiers .class. (FUCHS)
     - Correction des bugs liés à l’arborescence sur macOS.
     - Résolution du problème empêchant le drag & drop des fichiers .class qui ont un package.
   - Affichage des diagrammes :
