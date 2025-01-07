@@ -51,6 +51,7 @@ public class MainUML extends Application {
         MenuItem enregistrerSous = new MenuItem("Enregistrer sous");
         MenuItem exporterUml = new MenuItem("Exporter en UML");
         MenuItem exporterPng = new MenuItem("Exporter en PNG");
+        MenuItem exporterJava = new MenuItem("Exporter en Java");
         Menu personnalisation = new Menu("Personnalisation");
         MenuItem accueil = new MenuItem("Accueil");
 
@@ -60,6 +61,7 @@ public class MainUML extends Application {
         enregistrerSous.setDisable(true);
         exporterUml.setDisable(true);
         exporterPng.setDisable(true);
+        exporterJava.setDisable(true);
         personnalisation.setDisable(true);
         accueil.setDisable(true);
 
@@ -67,7 +69,7 @@ public class MainUML extends Application {
                 nouveau, ourvir, new SeparatorMenuItem(),
                 renommer, supprimer, new SeparatorMenuItem(),
                 enregistrer, enregistrerSous, new SeparatorMenuItem(),
-                exporterUml, exporterPng, new SeparatorMenuItem(),
+                exporterUml, exporterPng, exporterJava, new SeparatorMenuItem(),
                 personnalisation, accueil);
 
         Menu viewMenu = new Menu("Affichage");
@@ -114,15 +116,13 @@ public class MainUML extends Application {
         fin.getStyleClass().add("label-fin");
 
 
-
-        ModelUML model = new ModelUML();
-        ControllerDragDrop controller = new ControllerDragDrop(model);
+        ControllerDragDrop controller = new ControllerDragDrop(modelUML);
         controller.activerDragAndDrop(partieDroite);
 
 
 
         Scene scene = new Scene(base, 922, 420);
-        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        //scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         stage.setScene(scene);
         stage.setTitle("ADG - Home");
         stage.setResizable(false);
