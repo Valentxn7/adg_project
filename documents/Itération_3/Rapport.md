@@ -15,7 +15,10 @@
 ### Fonctionnalité 1 : Drag and Drop (Refactoring)
 - **Responsable** : Ryan Korban
 - **Description** :
-- 
+  - degug et amélioration du drag & drop :
+    - Réactivation du drag & drop (debug suite à un merge).
+    - Refactoring du code pour une meilleure lisibilité.
+    - Creation d'une nouvelle classe avec méthodes static pour gerer le conversion des fichiers .class en objet Class<?>.
 - **Avancement** : ✅ Complétée
 
 **Ryan** :
