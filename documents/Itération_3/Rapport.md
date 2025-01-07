@@ -7,7 +7,7 @@
 - **Nom du projet** : ADG Project (Automatic Diagram Generator)
 - **Durée de l'itération** : 8 heures
 - **Membres** : HEUERTZ KNORST KORBAN GROS FUCHS
-- **Objectif principal** : L'objectif principal de l'itération était de développer et stabiliser les fonctionnalités essentielles de l'application ADG, notamment le drag & drop, la gestion des projets, et l'exploration des fichiers, afin de poser les bases pour une utilisation intuitive et efficace de l'outil.
+- **Objectif principal** : L'objectif principal est globalement de rendre le code plus lisible et de corriger les bugs restants suite au gros merge qui a eu lieu.
 
 ---
 ## Fonctionnalités implémentées
