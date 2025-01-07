@@ -82,7 +82,9 @@ public class ControllerDragDrop implements EventHandler<DragEvent> {
                         } catch (ClassNotFoundException e) {
                             System.out.println("Erreur lors de l'analyse du fichier");
                         } catch (Exception e) {
-                            throw new RuntimeException(e);
+                            e.printStackTrace();
+                        } catch (Throwable e) {
+                            e.printStackTrace();
                         }
                     }
                 }

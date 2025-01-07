@@ -1,17 +1,9 @@
 package adg;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
-
-import java.io.File;
 
 public class MainUML extends Application {
     private ModelUML modelUML;
@@ -36,8 +28,11 @@ public class MainUML extends Application {
 
         ControllerDragDrop controller = new ControllerDragDrop(modelUML);
         controller.activerDragAndDrop(partieDroite);
+
+        ControleurDeplacerClasse controleurDeplacerClasse = new ControleurDeplacerClasse(modelUML);
+
         Scene scene = new Scene(partieDroite, 922, 420);
-        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        //scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         stage.setScene(scene);
         stage.setTitle("ADG - Home");
         stage.show();
