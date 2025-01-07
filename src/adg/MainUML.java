@@ -10,18 +10,23 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser;
+
+import java.io.File;
 
 public class MainUML extends Application {
+    private ModelUML modelUML;
+    private Stage rootStage;
+
     public static void main(String[] args) {
         Application.launch();
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-
-        ModelUML modelUML = new ModelUML();
+        rootStage = stage;
+        modelUML = new ModelUML(stage);
         VBox base = new VBox(0);
         VueTitre titre = new VueTitre(modelUML);
         titre.setText("ADG - Home");
@@ -35,12 +40,14 @@ public class MainUML extends Application {
 
         modelUML.enregistrerObservateur(partieDroite);
 
-//        ControleurCreateProject controleurCreateProject = new ControleurCreateProject(modelUML);
         Button addProjectButton = new Button("+");
+        addProjectButton.setId("bouton");
         addProjectButton.setAlignment(javafx.geometry.Pos.CENTER);
-        addProjectButton.setOnAction(e -> openCreateProjectWindow(stage, modelUML));
+        addProjectButton.setOnAction(new ControllerCreateProject(modelUML));
 
         partieDroite.setAlignment(javafx.geometry.Pos.CENTER);
+
+        /**     MENU       **/
 
         VueMenu menuBar = new VueMenu(modelUML);  // barre menu contenante
         modelUML.enregistrerObservateur(menuBar);
@@ -48,7 +55,8 @@ public class MainUML extends Application {
         Menu fileMenu = new Menu("Fichier");  // contenue
 
         MenuItem nouveau = new MenuItem("Nouveau");
-        MenuItem ourvir = new MenuItem("Ouvrir");
+        MenuItem ouvrirP = new MenuItem("Ouvrir un projet");
+        MenuItem ouvrirS = new MenuItem("Ouvrir une sauvegarde");
         MenuItem renommer = new MenuItem("Renommer");
         MenuItem supprimer = new MenuItem("Supprimer");
         MenuItem enregistrer = new MenuItem("Enregistrer");
@@ -68,32 +76,88 @@ public class MainUML extends Application {
         accueil.setDisable(true);
 
         fileMenu.getItems().addAll(
-                nouveau, ourvir, new SeparatorMenuItem(),
+                nouveau, ouvrirP, ouvrirS, new SeparatorMenuItem(),
                 renommer, supprimer, new SeparatorMenuItem(),
                 enregistrer, enregistrerSous, new SeparatorMenuItem(),
                 exporterUml, exporterPng, new SeparatorMenuItem(),
                 personnalisation, accueil);
 
+        personnalisation.getItems().addAll(
+                new MenuItem("Masquer les dépendances pour tous"),
+                new MenuItem("Masquer les héritages pour tous"),
+                new MenuItem("Masquer les attributs pour tous"),
+                new MenuItem("Masquer les méthodes pour tous"),
+                new SeparatorMenuItem(),
+                new MenuItem("Afficher les dépendances pour tous"),
+                new MenuItem("Afficher les héritages pour tous"),
+                new MenuItem("Afficher les attributs pour tous"),
+                new MenuItem("Afficher les méthodes pour tous")
+        );
+
         Menu viewMenu = new Menu("Affichage");
+
+        CheckMenuItem modeNuit = new CheckMenuItem("Mode nuit");
+
+        //MenuItem changerPolice = new MenuItem("Changer la police");
+
+        Label comboBoxLabel = new Label("Police :");
+        comboBoxLabel.setStyle("-fx-text-fill: black;"); // Définit la couleur du texte
+        ComboBox<String> comboBox = new ComboBox<>();
+        comboBox.getItems().addAll("Lexend", "Sans Serif", "...");
+        comboBox.setValue("Lexend");
+        comboBoxLabel.setLabelFor(comboBox);
+
+
+        HBox labeledComboBox = new HBox(10, comboBoxLabel, comboBox); // Espacement de 10px
+        labeledComboBox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        labeledComboBox.setStyle("-fx-padding: 5;"); // Ajout de marges internes
+
+        // Créer un CustomMenuItem pour contenir le HBox
+        CustomMenuItem customMenuItem = new CustomMenuItem(labeledComboBox);
+        customMenuItem.setHideOnClick(false); // Empêche la fermeture du menu lors de l'interaction
+
+        viewMenu.getItems().addAll(modeNuit, customMenuItem);
+
+
         Menu helpMenu = new Menu("Aide");
         menuBar.getMenus().addAll(fileMenu, viewMenu, helpMenu);
 
-        nouveau.setOnAction(e -> openCreateProjectWindow(stage, modelUML));
+        nouveau.setOnAction(new ControllerCreateProject(modelUML));
+        ouvrirP.setOnAction(new ControllerOpenFolder(modelUML, rootStage));
+        ouvrirS.setOnAction(new ControllerOpenFile(modelUML, rootStage));
 
-        TreeItem<String> projetR = new TreeItem<>("Projets récents:");  // l'item de base
-        projetR.setExpanded(true);
-        projetR.getChildren().addAll(  // ses fils
-                new TreeItem<>("Projet 1"),
-                new TreeItem<>("Projet 2"),
-                new TreeItem<>("Projet 3")
-        );
+        accueil.setOnAction(new ControllerAccueil(modelUML));
 
-        TreeView<String> treeView = new TreeView<>(projetR);  // la TreeView affiche les TreeItem
+        /**     ARBORESCENCE       **/
+
+        TreeItem<String> rootArborescence = new TreeItem<String>();  // l'item de base
+        rootArborescence.setValue("Projets ADG:");
+        rootArborescence.setExpanded(true);
+
+        VueArborescence vueArborescence = new VueArborescence(modelUML);  // l'item de base
+        vueArborescence.setRoot(rootArborescence);
+        modelUML.enregistrerObservateur(vueArborescence);
+        vueArborescence.actualiser(modelUML);
+
+        /**     RECENTS       **/
+
+        TreeItem<String> rootRecent = new TreeItem<String>();  // l'item de base
+        rootRecent.setValue("Projets récents:");
+        rootRecent.setExpanded(true);
+
+        VueRecent vueRecent = new VueRecent(modelUML);  // la TreeView affiche les TreeItem
+        vueRecent.setRoot(rootRecent);
+        modelUML.enregistrerObservateur(vueRecent);
+        vueRecent.actualiser(modelUML);
+
+        /**     ORGANISATION       **/
 
         base.getChildren().addAll(titre, centre, fin);  // VBox
         centre.getChildren().addAll(partieGauche, partieDroite);  // HBox
-        partieGauche.getChildren().addAll(menuBar, treeView);  // VBox
+        partieGauche.getChildren().addAll(menuBar, vueArborescence, vueRecent);  // VBox
         partieDroite.getChildren().add(addProjectButton);  // HBox
+
+        /**       SIZE       **/
 
         base.setPrefSize(900, 400);
         base.setMinSize(400, 200);
@@ -103,27 +167,23 @@ public class MainUML extends Application {
         centre.setPrefSize(900, 380);
         fin.setPrefSize(900, 20);
 
-        partieGauche.setPrefSize(400, 380);
-        menuBar.setPrefSize(400, 20);
-        treeView.setPrefSize(400, 360);
+        partieGauche.setPrefSize(ModelUML.PARTIE_GAUCHE_X, ModelUML.PARTIE_GAUCHE_Y);
+        menuBar.setPrefSize(400, ModelUML.MENU_BAR_Y);
+        vueArborescence.setPrefSize(400, 180);  // (380 - 20) / 2
+        vueRecent.setPrefSize(400, 180);  // (380 - 20) / 2
 
         partieDroite.setPrefSize(500, 380);
         addProjectButton.setPrefSize(370, 270);
+
+        /**       STYLE       **/
 
         titre.getStyleClass().add("label-titre");
         addProjectButton.getStyleClass().add("addButton");
         menuBar.getStyleClass().add("menuBar");
         partieDroite.getStyleClass().add("menuBar");
-        treeView.getStyleClass().add("treeView");
+        vueArborescence.getStyleClass().add("treeView");
+        vueRecent.getStyleClass().add("treeView");
         fin.getStyleClass().add("label-fin");
-
-
-
-        ModelUML model = new ModelUML();
-        ControllerDragDrop controller = new ControllerDragDrop(model);
-        controller.activerDragAndDrop(partieDroite);
-
-
 
         Scene scene = new Scene(base, 922, 420);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
@@ -134,47 +194,11 @@ public class MainUML extends Application {
     }
 
     /**
-     * Ouvre une fenêtre de dialogue pour la création d'un nouveau projet.
-     * @param stage la fenêtre principale
-     * @param mod le modèle
-     */
-    private void openCreateProjectWindow(Stage stage, ModelUML mod) {
-        Stage createProjetWind = new Stage();
-        createProjetWind.initModality(Modality.APPLICATION_MODAL);  // empêche les intéractions avec la grande fenêtre
-        createProjetWind.setTitle("Créer un nouveau projet");
-
-        VBox vbox = new VBox(10);
-        vbox.setPadding(new Insets(10));
-
-        Label label = new Label("Entrez le nom du projet :");
-        TextField projectNameField = new TextField();
-        Button createButton = new Button("Créer");
-
-        createButton.setOnAction(e -> {
-            String projectName = projectNameField.getText().trim();
-            if (!projectName.isEmpty()) {
-                System.out.println("Nouveau projet créé : " + projectName);  // ICI ON DOIT SEND LES DONNEES AU MODEL
-                stage.setTitle("ADG - " + projectName);
-                mod.setWindowsTitle(projectName);
-                mod.creerProjetVierge();
-                createProjetWind.close(); // Ferme la fenêtre
-            } else {
-                showErrorMessage("Le nom du projet ne peut pas être vide.");
-            }
-        });
-
-        vbox.getChildren().addAll(label, projectNameField, createButton);
-
-        Scene scene = new Scene(vbox, 300, 150);
-        createProjetWind.setScene(scene);
-        createProjetWind.show();
-    }
-
-    /**
      * Permet l'affichage d'un message d'erreur par une fenêtre de dialogue.
-     * @param message
+     *
+     * @param message le message d'erreur
      */
-    private void showErrorMessage(String message) {
+    public static void showErrorMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
         alert.setHeaderText(null);
