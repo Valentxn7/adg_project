@@ -8,20 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Analyser {
-    public static final int FIELD_NAME = 0; // Nom de l'attribut
-    public static final int FIELD_TYPE = 1; // Type de l'attribut (String, int, etc.)
-    public static final int FIELD_MODIFIER = 2; // Visibilité de l'attribut (public, private, etc.)
+    public static final int FIELD_NAME = 0; //String: Nom de l'attribut
+    public static final int FIELD_TYPE = 1; //String: Type de l'attribut (String, int, etc.)
+    public static final int FIELD_MODIFIER = 2; //String: Visibilité de l'attribut (public, private, etc.)
 
-    public static final int CONSTRUCTOR_NAME = 0; // Nom du constructeur
-    public static final int CONSTRUCTOR_MODIFIER = 1; // Visibilité du constructeur
-    public static final int CONSTRUCTOR_PARAMETERS = 2; // Paramètres du constructeur (
+    public static final int CONSTRUCTOR_NAME = 0; //String: Nom du constructeur
+    public static final int CONSTRUCTOR_MODIFIER = 1; //String: Visibilité du constructeur
+    public static final int CONSTRUCTOR_PARAMETERS = 2; //String[]: Paramètres du constructeur
 
-    public static final int METHOD_NAME = 0; // Nom de la méthode
-    public static final int METHOD_RETURN_TYPE = 1; // Type de retour de la méthode (String, int, etc.)
-    public static final int METHOD_MODIFIER = 2; // Visibilité de la méthode
-    public static final int METHOD_PARAMETERS = 3; // Paramètres de la méthode
+    public static final int METHOD_NAME = 0; //String: Nom de la méthode
+    public static final int METHOD_RETURN_TYPE = 1; //String: Type de retour de la méthode (String, int, etc.)
+    public static final int METHOD_MODIFIER = 2; //String: Visibilité de la méthode
+    public static final int METHOD_PARAMETERS = 3; //String[]: Paramètres de la méthode
 
-    private Class<?> row_class;
+    private final Class<?> row_class;
 
     public Analyser(Class<?> c) throws Exception {
         row_class = c;
@@ -29,30 +29,48 @@ public class Analyser {
 
     /**
      * Analyse the class and returns a map containing class data
-     *
      * @return class data map
      */
     public Classe analyse() {
         Classe classe = new Classe(row_class.getName());
 
-        // Class Name
-        classe.setClassName(row_class.getName());
+        buildSuperClass(classe);
+        buildInterfaces(classe);
+        buildFields(classe);
+        buildConstructors(classe);
+        buildMethods(classe);
 
-        // Super Class
+        return classe;
+    }
+
+    /** Build the superclass for the class
+     * @param classe the class to build the superclass for
+     */
+    private void buildSuperClass(Classe classe) {
         Class<?> superClass = row_class.getSuperclass();
         if(superClass != null)
             classe.setSuperclass(superClass.getName());
+    }
 
-        // Interfaces
-        Class<?>[] interfaces = row_class.getInterfaces();
+
+    /** Build the interfaces for the class
+     * @param classe the class to build the interfaces for
+     */
+    private void buildInterfaces(Classe classe) {
         List<String> nomsInterfaces = new ArrayList<>();
-        for (Class<?> iface : interfaces) {
+
+        for (Class<?> iface : row_class.getInterfaces()) {
             nomsInterfaces.add(iface.getName());
         }
         classe.setInterfaces(nomsInterfaces);
+    }
 
-        // Fields
+    /** Build the fields for the class
+     * @param classe the class to build the fields for
+     */
+    private void buildFields(Classe classe) {
         List<String[]> fields = new ArrayList<>();
+
         for (Field field : row_class.getDeclaredFields()) {
             String[] attributInfo = new String[3];
 
@@ -63,9 +81,14 @@ public class Analyser {
             fields.add(attributInfo);
         }
         classe.setFields(fields);
+    }
 
-        // Constructors
+    /** Build the fields for the class
+     * @param classe the class to build the constructors for
+     */
+    private void buildConstructors(Classe classe) {
         List<Object[]> constructors = new ArrayList<>();
+
         for (Constructor<?> constructor : row_class.getDeclaredConstructors()) {
             Object[] constructeurInfo = new Object[3];
             constructeurInfo[CONSTRUCTOR_NAME] = constructor.getName();
@@ -75,9 +98,14 @@ public class Analyser {
             constructors.add(constructeurInfo);
         }
         classe.setConstructors(constructors);
+    }
 
-        // Methods
+    /** Build the methods for the class
+     * @param classe the class to build the methods for
+     */
+    private void buildMethods(Classe classe) {
         List<Object[]> methods = new ArrayList<>();
+
         for (Method method : row_class.getDeclaredMethods()) {
             Object[] methodeInfo = new Object[4];
 
@@ -95,15 +123,11 @@ public class Analyser {
             return name1.compareTo(name2);
         });
 
-
         classe.setMethods(methods);
-
-        return classe;
     }
 
     /**
      * Get the parameter type names (type --> name)
-     *
      * @param parameterTypes the parameter types
      * @return a list of parameter type names
      */
