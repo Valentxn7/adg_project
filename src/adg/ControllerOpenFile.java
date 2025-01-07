@@ -2,7 +2,6 @@ package adg;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -20,7 +19,6 @@ public class ControllerOpenFile implements EventHandler<ActionEvent> {
     /**
      * Ouvre un explorateur pour sélectionner un fichier .adg (sauvegarde).
      *
-     * @return Le chemin du fichier sélectionné, ou null si aucun fichier n'a été sélectionné.
      */
     public void handle(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();

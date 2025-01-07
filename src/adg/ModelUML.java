@@ -190,7 +190,7 @@ public class ModelUML implements Sujet {
 
     public void setWindowsTitle(String titre) {
         this.windowsTitle = titre;
-        this.stage.setTitle(titre);
+        this.stage.setTitle(getWindowsTitle());
     }
 
     public void setFolderPath(String path) {

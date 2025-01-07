@@ -7,24 +7,18 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.FileChooser;
-
-import java.io.File;
 
 public class MainUML extends Application {
-    private ModelUML modelUML;
-    private Stage rootStage;
 
     public static void main(String[] args) {
         Application.launch();
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-        rootStage = stage;
-        modelUML = new ModelUML(stage);
+    public void start(Stage stage) {
+        ModelUML modelUML = new ModelUML(stage);
         VBox base = new VBox(0);
-        VueTitre titre = new VueTitre(modelUML);
+        VueTitre titre = new VueTitre();
         titre.setText("ADG - Home");
         modelUML.enregistrerObservateur(titre);
         HBox centre = new HBox(0);
@@ -32,7 +26,7 @@ public class MainUML extends Application {
         fin.setAlignment(javafx.geometry.Pos.CENTER);
 
         VBox partieGauche = new VBox(0);  // TreeView et MenuBar
-        VueDiagramme partieDroite = new VueDiagramme(modelUML);  // bouton add projet
+        VueDiagramme partieDroite = new VueDiagramme();  // bouton add projet
         modelUML.enregistrerObservateur(partieDroite);
 
         Button addProjectButton = new Button("+");
@@ -42,9 +36,9 @@ public class MainUML extends Application {
 
         partieDroite.setAlignment(javafx.geometry.Pos.CENTER);
 
-        /**     MENU       **/
+        /*     MENU       **/
 
-        VueMenu menuBar = new VueMenu(modelUML);  // barre menu contenante
+        VueMenu menuBar = new VueMenu();  // barre menu contenante
         modelUML.enregistrerObservateur(menuBar);
 
         Menu fileMenu = new Menu("Fichier");  // contenue
@@ -118,41 +112,41 @@ public class MainUML extends Application {
         menuBar.getMenus().addAll(fileMenu, viewMenu, helpMenu);
 
         nouveau.setOnAction(new ControllerCreateProject(modelUML));
-        ouvrirP.setOnAction(new ControllerOpenFolder(modelUML, rootStage));
-        ouvrirS.setOnAction(new ControllerOpenFile(modelUML, rootStage));
+        ouvrirP.setOnAction(new ControllerOpenFolder(modelUML, stage));
+        ouvrirS.setOnAction(new ControllerOpenFile(modelUML, stage));
 
         accueil.setOnAction(new ControllerAccueil(modelUML));
 
-        /**     ARBORESCENCE       **/
+        /*     ARBORESCENCE       **/
 
         TreeItem<String> rootArborescence = new TreeItem<String>();  // l'item de base
         rootArborescence.setValue("Projets ADG:");
         rootArborescence.setExpanded(true);
 
-        VueArborescence vueArborescence = new VueArborescence(modelUML);  // l'item de base
+        VueArborescence vueArborescence = new VueArborescence();  // l'item de base
         vueArborescence.setRoot(rootArborescence);
         modelUML.enregistrerObservateur(vueArborescence);
         vueArborescence.actualiser(modelUML);
 
-        /**     RECENTS       **/
+        /*     RECENTS       **/
 
         TreeItem<String> rootRecent = new TreeItem<String>();  // l'item de base
         rootRecent.setValue("Projets récents:");
         rootRecent.setExpanded(true);
 
-        VueRecent vueRecent = new VueRecent(modelUML);  // la TreeView affiche les TreeItem
+        VueRecent vueRecent = new VueRecent();  // la TreeView affiche les TreeItem
         vueRecent.setRoot(rootRecent);
         modelUML.enregistrerObservateur(vueRecent);
         vueRecent.actualiser(modelUML);
 
-        /**     ORGANISATION       **/
+        /*     ORGANISATION       **/
 
         base.getChildren().addAll(titre, centre, fin);  // VBox
         centre.getChildren().addAll(partieGauche, partieDroite);  // HBox
         partieGauche.getChildren().addAll(menuBar, vueArborescence, vueRecent);  // VBox
         partieDroite.getChildren().add(addProjectButton);  // HBox
 
-        /**       SIZE       **/
+        /*       SIZE       **/
 
         base.setPrefSize(900, 400);
         base.setMinSize(400, 200);
@@ -170,7 +164,7 @@ public class MainUML extends Application {
         partieDroite.setPrefSize(500, 380);
         addProjectButton.setPrefSize(370, 270);
 
-        /**       STYLE       **/
+        /*       STYLE       **/
 
         titre.getStyleClass().add("label-titre");
         addProjectButton.getStyleClass().add("addButton");
@@ -180,7 +174,7 @@ public class MainUML extends Application {
         vueRecent.getStyleClass().add("treeView");
         fin.getStyleClass().add("label-fin");
 
-        /**       lancement       **/
+        /*       lancement       **/
 
         Scene scene = new Scene(base, 922, 420);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
