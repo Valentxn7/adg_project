@@ -93,6 +93,54 @@ public class Classe {
         return uml.toString();
     }
 
+    public String toJava() {
+        StringBuilder java = new StringBuilder();
+
+        // Class Name
+        java.append("public class ").append(this.class_name).append(" {\n");
+
+        // Fields
+        List<String[]> fields = this.fields;
+        for (String[] field : fields) {
+            java.append("    ").append(field[Analyser.FIELD_MODIFIER]).append(" ")
+                    .append(field[Analyser.FIELD_TYPE]).append(" ")
+                    .append(field[Analyser.FIELD_NAME]).append(";\n");
+        }
+
+        java.append("\n");
+
+        // Constructors
+        List<Object[]> constructors = this.constructors;
+        for (Object[] constructor : constructors) {
+            java.append("    ").append(constructor[Analyser.CONSTRUCTOR_MODIFIER]).append(" ")
+                    .append(this.class_name).append("(");
+
+            List<String> parameters = (List<String>) constructor[Analyser.CONSTRUCTOR_PARAMETERS];
+            java.append(String.join(", ", parameters)).append(") {\n");
+            java.append("        // TODO: constructor implementation\n");
+            java.append("    }\n");
+        }
+
+        java.append("\n");
+
+        // Methods
+        List<Object[]> methods = this.methods;
+        for (Object[] method : methods) {
+            java.append("    ").append(method[Analyser.METHOD_MODIFIER]).append(" ")
+                    .append(method[Analyser.METHOD_RETURN_TYPE]).append(" ")
+                    .append(method[Analyser.METHOD_NAME]).append("(");
+
+            List<String> parameters = (List<String>) method[Analyser.METHOD_PARAMETERS];
+            java.append(String.join(", ", parameters)).append(") {\n");
+            java.append("        // TODO: method implementation\n");
+            java.append("    }\n");
+        }
+
+        java.append("}\n");
+
+        return java.toString();
+    }
+
     public String save() {
         Gson gson = new Gson();
         return gson.toJson(this);
