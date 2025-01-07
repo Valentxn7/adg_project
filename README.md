@@ -7,7 +7,7 @@ Ce projet a pour objectif de développer un logiciel permettant de générer et 
 
 ## Installation ⚙️
 
-Pour installer le projet, retrouvez les informations dans la page du Wiki dédiée à l'[intallation](https://github.com/Valentxn7/adg_project/wiki/Installation). 
+Pour installer le projet, retrouvez les informations dans la page du Wiki dédiée à l'[installation](https://github.com/Valentxn7/adg_project/wiki/Installation). 
 
 ## Auteurs 👥
 | Membres            | Profil  |
