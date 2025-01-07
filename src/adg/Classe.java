@@ -200,4 +200,12 @@ public class Classe {
         }
         return methods;
     }
+
+    public boolean equals(Classe classe) {
+        return this.class_name.equals(classe.getName());
+    }
+
+    public String getName() {
+        return this.class_name;
+    }
 }
