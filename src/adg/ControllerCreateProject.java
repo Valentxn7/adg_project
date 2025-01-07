@@ -31,6 +31,7 @@ public class ControllerCreateProject implements EventHandler<ActionEvent> {
 
         Label label = new Label("Entrez le nom du projet :");
         TextField projectNameField = new TextField();
+        projectNameField.setId("projectNameField");
         Button createButton = new Button("Créer");
 
         projectNameField.setOnAction(new ControllerNewProject(modelUML, createProjetWind));
