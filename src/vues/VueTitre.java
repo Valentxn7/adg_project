@@ -1,5 +1,8 @@
-package adg;
+package vues;
 
+import adg.ModelUML;
+import adg.Observateur;
+import adg.Sujet;
 import javafx.scene.control.Label;
 
 public class VueTitre extends Label implements Observateur {

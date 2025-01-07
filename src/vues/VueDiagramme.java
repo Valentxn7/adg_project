@@ -1,5 +1,8 @@
-package adg;
+package vues;
 
+import adg.ModelUML;
+import adg.Observateur;
+import adg.Sujet;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;

@@ -1,5 +1,9 @@
 package adg;
 
+import adg.control.ControllerAccueil;
+import adg.control.ControllerCreateProject;
+import adg.control.ControllerOpenFile;
+import adg.control.ControllerOpenFolder;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -7,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import vues.*;
 
 public class MainUML extends Application {
 

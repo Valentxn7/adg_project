@@ -3,4 +3,6 @@ module adg_project {
     requires java.sql;
 
     exports adg;
+    exports adg.control;
+    exports vues;
 }
