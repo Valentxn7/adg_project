@@ -25,7 +25,6 @@ public class VueClasse extends VBox implements Observateur {
         this.setSpacing(10); // Espacement entre les éléments
         this.setId("vue-classe");
         this.fleches = new ArrayList<>();
-        System.out.println("VueClasse : Création de la vue pour la classe " + classe.getClassName());
         // Génération de la vue
         afficherClasse();
     }
@@ -40,7 +39,6 @@ public class VueClasse extends VBox implements Observateur {
             int[] position = model.getClassesCoordonnees(this);
             this.setLayoutX(position[0]);
             this.setLayoutY(position[1]);
-            System.out.println("x : " + position[0] + " y : " + position[1]);
     }
 
 

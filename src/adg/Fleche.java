@@ -19,26 +19,39 @@ public abstract class Fleche extends Line implements Observateur {
             setPos(classe[0], classe[1]);
         }
     }
-    public void setPos(VBox start, VBox end){
-        Point2D s = start.localToScene(start.getWidth() / 2, start.getHeight()/2);
-        Point2D e = end.localToScene(end.getWidth() / 2, end.getHeight()/2);
+    public void setPos(VBox start, VBox end) {
+        // Obtenir les coordonnées centrales des VBoxes dans la scène
+        Point2D s = start.localToScene(start.getWidth() / 2, start.getHeight() / 2);
+        Point2D e = end.localToScene(end.getWidth() / 2, end.getHeight() / 2);
 
+        // Déterminer les positions de départ
         this.setStartX(s.getX());
         this.setStartY(s.getY());
 
-        this.setEndX(e.getX());
-        this.setEndY(e.getY()+end.getHeight()/2);
+        // Calculer la direction de la flèche
+        double deltaX = e.getX() - s.getX();
+        double deltaY = e.getY() - s.getY();
+        double angle = Math.atan2(deltaY, deltaX);
+
+        // Ajuster la position finale en fonction des dimensions de la VBox cible
+        double arrowLength = Math.sqrt(deltaX * deltaX + deltaY * deltaY); // Longueur totale de la ligne
+        double endOffsetX = (end.getWidth() / 2) * Math.cos(angle); // Décalage horizontal
+        double endOffsetY = (end.getHeight() / 2) * Math.sin(angle); // Décalage vertical
+
+        // Appliquer le décalage pour que la flèche pointe au bord de la VBox
+        this.setEndX(e.getX() - endOffsetX);
+        this.setEndY(e.getY() - endOffsetY);
+
+        // Mettre à jour la ligne et la tête de flèche
         setLine();
         setArrowHead();
     }
+
     public void setArrowHead(){
 
         Point2D e = new Point2D(this.getEndX(), this.getEndY());
         double x = e.getX()+10;
         double y = e.getY();
-
-        System.out.println(x);
-        System.out.println(y);
 
         tete.setLayoutX(x);
         tete.setLayoutY(y);

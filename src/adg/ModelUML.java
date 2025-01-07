@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+
 /**
  * Classe représentant le modèle UML. Cette classe gère les classes UML,
  * les chemins de fichiers, et la communication avec les observateurs.
@@ -61,52 +62,80 @@ public class ModelUML implements Sujet {
         System.out.println(vueDiagramme == null);
         if (classes != null) {
             classes.add(classe);
-            Observateur vue = new VueClasse(classe);
+            VueClasse vue = new VueClasse(classe);
             observateurs.add(vue);
-            vueDiagramme.getChildren().add((VBox) vue);
-            vues.put(classe.getClassName(), (VueClasse) vue);
-            this.trouverPlacePourClassess((VueClasse) vue);
-            this.ajouterFlecheExt(classe, (VueClasse) vue);
-            this.ajouterFlecheImp(classe, (VueClasse) vue);
+            vueDiagramme.getChildren().add(vue);
+            vues.put(classe.getClassName(), vue);
+            this.trouverPlacePourClassess(vue);
+            this.ajouterFlecheExt(classe, vue);
+            this.ajouterFlecheImp(classe, vue);
+            this.ajoutFlecheCorrespondant();
         }
     }
 
     private void ajouterFlecheExt(Classe classe, VueClasse vueClasse) {
         String s = classe.getSuperclass();
         Classe classeExt = containsClasse(s);
-        System.out.println("classeExt : " + classeExt);
         if (classeExt != null) {
-            System.out.println("classeExt : " + classeExt.getClassName());
-            FlecheExt fleche = new FlecheExt();
-
             VueClasse vueClasseExt = vues.get(classeExt.getClassName());
-            vueDiagramme.getChildren().add(fleche);
-            vueDiagramme.getChildren().add(fleche.getTete());
-            coordonneesFleche.put(fleche, new VueClasse[]{vueClasse, vueClasseExt});
-            observateurs.add(fleche);
+            if (!this.verifExistanceFleche(vueClasse, vues.get(classeExt.getClassName()))) {
+                FlecheExt fleche = new FlecheExt();
+                vueDiagramme.getChildren().add(fleche);
+                vueDiagramme.getChildren().add(fleche.getTete());
+                coordonneesFleche.put(fleche, new VueClasse[]{vueClasse, vueClasseExt});
+                observateurs.add(fleche);
+            }
         }
     }
 
     private void ajouterFlecheImp(Classe classe, VueClasse vueClasse) {
         List<String> s = classe.getInterfaces();
-        for(String i : s){
+        for (String i : s) {
             Classe classeImp = containsClasse(i);
             if (classeImp != null) {
-                FlecheImp fleche = new FlecheImp();
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
-                vueDiagramme.getChildren().add(fleche);
-                vueDiagramme.getChildren().add(fleche.getTete());
-                coordonneesFleche.put(fleche, new VueClasse[]{vueClasse, vueClasseImp});
-                observateurs.add(fleche);
+                if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
+                    FlecheImp fleche = new FlecheImp();
+                    vueDiagramme.getChildren().add(fleche);
+                    vueDiagramme.getChildren().add(fleche.getTete());
+                    coordonneesFleche.put(fleche, new VueClasse[]{vueClasse, vueClasseImp});
+                    observateurs.add(fleche);
+                }
             }
         }
+    }
+
+    private void ajoutFlecheCorrespondant() {
+        for (Classe c : classes) {
+            System.out.println("classe : " + c.getClassName());
+            String nameC = c.getClassName();
+            VueClasse vueClasse = vues.get(nameC);
+            ajouterFlecheExt(c, vueClasse);
+            ajouterFlecheImp(c, vueClasse);
+        }
+
+    }
+
+    private boolean verifExistanceFleche(VueClasse vueClasse1, VueClasse vueClasse2) {
+        boolean res = false;
+        if (vueClasse1 != null && vueClasse2 != null) {
+            for (Fleche f : coordonneesFleche.keySet()) {
+                VueClasse[] vues = coordonneesFleche.get(f);
+                if (vues[0] == vueClasse1 && vues[1] == vueClasse2) {
+                    res = true;
+                    break;
+                }
+            }
+        }
+        System.out.println("res : " + res);
+        return res;
     }
 
     private Classe containsClasse(String s) {
         Classe res = null;
         for (Classe classe : classes) {
             if (classe.getClassName().equals(s)) {
-               res = classe;
+                res = classe;
             }
         }
         return res;
@@ -117,7 +146,6 @@ public class ModelUML implements Sujet {
      * à la vue diagramme.
      */
     public boolean creerProjetVierge(String nomProjet) {
-        System.out.println("Création d'un projet vierge");
 
         String userHome = System.getProperty("user.home"); // C:\Users\NomUtilisateur sur Windows par ex
         File appFolder = new File(userHome, "ADGProjects"); // définie emplacement mais ne le créé pas encore
@@ -128,14 +156,13 @@ public class ModelUML implements Sujet {
 
         try {
             if (newProject.createNewFile()) {  // si le fichier a bien été créé
-                System.out.println("Le fichier a été créé avec succès dans " + newProject.getAbsolutePath() + ".");
+
                 this.folderPath = appFolder.getAbsolutePath();
                 this.folder = new File(appFolder.getAbsolutePath());
                 this.windowsTitle = nomProjet;
                 addRecentFolder(newProject.getAbsolutePath());
                 return true;
             } else {
-                System.out.println("Le fichier existe déjà.");
                 //MainUML.showErrorMessage("Le fichier existe déjà.");
             }
         } catch (IOException e) {
@@ -242,7 +269,7 @@ public class ModelUML implements Sujet {
                 System.err.println("Erreur lors de la création du dossier.");
                 //MainUML.showErrorMessage("Erreur lors de la création du dossier.");
             } else {
-                System.out.println("Dossier ADG créé avec succès dans " + appFolder.getAbsolutePath() + ".");
+                //System.out.println("Dossier ADG créé avec succès dans " + appFolder.getAbsolutePath() + ".");
             }
         }
 
@@ -252,9 +279,9 @@ public class ModelUML implements Sujet {
 
             // Créer le fichier
             if (hiddenFile.createNewFile()) {
-                System.out.println("Fichier data créé : " + hiddenFile.getAbsolutePath());
+                //System.out.println("Fichier data créé : " + hiddenFile.getAbsolutePath());
             } else {
-                System.out.println("Le fichier data existe déjà.");
+                //System.out.println("Le fichier data existe déjà.");
             }
 
             // Ajouter l'attribut 'hidden' sur Windows
@@ -364,7 +391,6 @@ public class ModelUML implements Sujet {
      */
     public void analyseFichier(String cheminAbsolu) throws Exception {
         // Extrait le nom de la classe à partir du chemin absolu
-        System.out.println("Analyse du fichier : " + cheminAbsolu);
         String nomClasse = extraireNomClasse(cheminAbsolu);
 
         File fichier = new File(cheminAbsolu);
@@ -384,7 +410,6 @@ public class ModelUML implements Sujet {
         ajouterClasse(classeAnalysée);
 
         // Affiche la représentation UML de la classe
-        System.out.println(classeAnalysée.UMLString());
 
         // Notifie les observateurs
         notifierObservateurs();
@@ -431,23 +456,18 @@ public class ModelUML implements Sujet {
         } catch (ClassNotFoundException e) {
             // Modifie le chemin absolu pour remplacer le dernier backslash par un point
             cheminAbsolu = remplacerDernierBackslashParPoint(cheminAbsolu);
-            System.out.println("Chargement de la classe1 : " + nomClasse);
             File fichier = new File(cheminAbsolu);
             nomClasse = fichier.getName().replace(".class", "");
             String cheminClasse = fichier.getParentFile().toURI().toString();
             chargeurClasse = new URLClassLoader(new URL[]{new URL(cheminClasse)});
-            System.out.println("Chargement de la classe : " + nomClasse);
-            System.out.println("Chemin de la classe : " + cheminClasse);
             return chargeurClasse.loadClass(nomClasse);
         }
     }
 
     private String remplacerDernierBackslashParPoint(String cheminAbsolu) {
         int dernierIndexBackslash = cheminAbsolu.lastIndexOf('/');
-        System.out.println("dernier index backslash : " + dernierIndexBackslash);
         if (dernierIndexBackslash != -1) {
             String n = cheminAbsolu.substring(0, dernierIndexBackslash) + '.' + cheminAbsolu.substring(dernierIndexBackslash + 1);
-            System.out.println("nouveau chemin : " + n);
             return n;
         }
         return cheminAbsolu;
@@ -482,12 +502,11 @@ public class ModelUML implements Sujet {
     }
 
 
-
     public void trouverPlacePourClassess(VueClasse vue) {
         int[] coordonnees = new int[2];
         for (int y = 40; y < vueDiagramme.getHeight(); y++) {
             boolean b = true;
-            for (int x = 0; x < vueDiagramme.getWidth(); x+=200) {
+            for (int x = 0; x < vueDiagramme.getWidth(); x += 200) {
                 if (estLibre(x, y)) {
                     coordonnees[0] = x;
                     coordonnees[1] = y;
@@ -496,9 +515,9 @@ public class ModelUML implements Sujet {
                     break;
                 }
             }
-           if(!b){
-               break;
-           }
+            if (!b) {
+                break;
+            }
         }
     }
 
@@ -514,23 +533,16 @@ public class ModelUML implements Sujet {
                 }
             }
         }
-        System.out.println("x : " + x + " y : " + y + " res : " + res);
         return res;
     }
 
     public VueClasse[] getCoordonneesFleche(Fleche fleche) {
         VueClasse[] res = null;
-        if(coordonneesFleche.containsKey(fleche)){
+        if (coordonneesFleche.containsKey(fleche)) {
             res = coordonneesFleche.get(fleche);
         }
         return res;
     }
 
-    public void getClasses() {
 
-    }
-
-    public void deplacerClasse(VueClasse classe, int x , int y) {
-
-    }
 }
