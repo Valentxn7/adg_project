@@ -39,6 +39,8 @@ public class ModelUML implements Sujet {
     //coordonner pour les fleches
     private Map<Fleche, VueClasse[]> coordonneesFleche;
 
+    private final ControleurDeplacerClasse controleurDeplacerClasse = new ControleurDeplacerClasse(this);
+
     /**
      * Constructeur par défaut. Initialise les listes d'observateurs,
      * de classes UML et de chemins.
@@ -61,17 +63,30 @@ public class ModelUML implements Sujet {
      */
     public void ajouterClasse(Classe classe) {
         System.out.println(vueDiagramme == null);
-        if (classes != null) {
+        if (!verifExistanceClasse( classe)) {
             classes.add(classe);
             VueClasse vue = new VueClasse(classe);
             observateurs.add(vue);
             vueDiagramme.getChildren().add(vue);
             vues.put(classe.getClassName(), vue);
             this.trouverPlacePourClassess(vue);
+            vue.addEventHandler(MouseEvent.MOUSE_PRESSED, controleurDeplacerClasse);
+            vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
             this.ajouterFlecheExt(classe, vue);
             this.ajouterFlecheImp(classe, vue);
             this.ajoutFlecheCorrespondant();
         }
+    }
+
+    private boolean verifExistanceClasse(Classe classe) {
+        boolean res = false;
+        for (Classe c : classes) {
+            if (c.getClassName().equals(classe.getClassName())) {
+                res = true;
+                break;
+            }
+        }
+        return res;
     }
 
     private void ajouterFlecheExt(Classe classe, VueClasse vueClasse) {
@@ -81,6 +96,7 @@ public class ModelUML implements Sujet {
             VueClasse vueClasseExt = vues.get(classeExt.getClassName());
             if (!this.verifExistanceFleche(vueClasse, vues.get(classeExt.getClassName()))) {
                 FlecheExt fleche = new FlecheExt();
+                fleche.toBack();
                 vueDiagramme.getChildren().add(fleche);
                 vueDiagramme.getChildren().add(fleche.getTete());
                 coordonneesFleche.put(fleche, new VueClasse[]{vueClasse, vueClasseExt});
@@ -502,11 +518,21 @@ public class ModelUML implements Sujet {
         return res;
     }
 
-    public List<VueClasse> getVueClasse(){
+    public List<VueClasse> getVueClasses(){
+        System.out.println("taille : " + vues.size());
         List res = new ArrayList<VueClasse>();
         for (String s : vues.keySet()){
+            System.out.println("classe : " + s);
            res.add(vues.get(s));
         }
         return res;
+    }
+
+    public void changerPositionClasse(VueClasse classe, Double x, Double y) {
+        int[] coordonnees = new int[2];
+        coordonnees[0] = x.intValue();
+        coordonnees[1] = y.intValue();
+        coordonneesClasse.put(classe, coordonnees);
+        notifierObservateurs();
     }
 }

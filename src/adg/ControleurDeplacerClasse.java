@@ -16,12 +16,15 @@ public class ControleurDeplacerClasse implements EventHandler<MouseEvent> {
     @Override
     public void handle(MouseEvent event) {
 
-        VBox classe = (VBox) event.getSource();
+        VueClasse classe = (VueClasse) event.getSource();
 
         if (event.getEventType() == MouseEvent.MOUSE_DRAGGED) {
-            classe.setLayoutX(event.getSceneX() - decalageSouris[0]);
-            classe.setLayoutY(event.getSceneY() - decalageSouris[1]);
+            System.out.println("DRAGGED");
+            Double x = event.getSceneX() - decalageSouris[0];
+            Double y = event.getSceneY() - decalageSouris[1];
+            model.changerPositionClasse(classe, x, y);
         } else if (event.getEventType() == MouseEvent.MOUSE_PRESSED) {
+            System.out.println("PRESSED");
             decalageSouris[0] = event.getSceneX() - classe.getLayoutX();
             decalageSouris[1] = event.getSceneY() - classe.getLayoutY();
         }

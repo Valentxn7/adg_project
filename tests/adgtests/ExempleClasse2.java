@@ -1,4 +1,4 @@
-package adgtests_t;
+package adgtests;
 
 public class ExempleClasse2 {
 }

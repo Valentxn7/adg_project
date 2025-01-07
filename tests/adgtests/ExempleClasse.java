@@ -1,6 +1,6 @@
-package adgtests_t;
+package adgtests;
 
-import adgtest.ExempleClasse2;
+import adgtests.ExempleClasse2;
 
 public class ExempleClasse extends ExempleClasse2 implements ExempleInterface {
 

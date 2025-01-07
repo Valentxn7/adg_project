@@ -51,9 +51,11 @@ public class PathToClass {
         Class<?> c = null;
         boolean succes = false;
 
+        System.out.println(nbslash);
         // On essaie de charger la classe, si une exception est levée, on modifie le chemin absolu tant que c'est possible
         while (!succes && nbslash > 0) { // Au cas où il y a des packages dans des packages
             try {
+                System.out.println("Chargement de la classe : " + nomClasse);
                 // Charge la classe
                 c = chargeurClasse.loadClass(nomClasse);
                 // Si la classe est chargée, on met le booléen à true
@@ -138,7 +140,7 @@ public class PathToClass {
     public static int nbSlash(String cheminAbsolu) {
         int res = 0;
         for (int i = 0; i < cheminAbsolu.length(); i++) {
-            if (cheminAbsolu.charAt(i) == '\\') {
+            if (cheminAbsolu.charAt(i) == '\\' || cheminAbsolu.charAt(i) == '/') {
                 res++;
             }
         }
