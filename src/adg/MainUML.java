@@ -6,9 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -40,7 +38,7 @@ public class MainUML extends Application {
         Button addProjectButton = new Button("+");
         addProjectButton.setId("bouton");
         addProjectButton.setAlignment(javafx.geometry.Pos.CENTER);
-        addProjectButton.setOnAction(e -> openCreateProjectWindow());
+        addProjectButton.setOnAction(new ControllerCreateProject(modelUML));
 
         partieDroite.setAlignment(javafx.geometry.Pos.CENTER);
 
@@ -119,14 +117,9 @@ public class MainUML extends Application {
         Menu helpMenu = new Menu("Aide");
         menuBar.getMenus().addAll(fileMenu, viewMenu, helpMenu);
 
-        nouveau.setOnAction(e -> openCreateProjectWindow());
-        ouvrirP.setOnAction(e -> openProject());
-        ouvrirS.setOnAction(e -> {
-            String path = openSaveFile();
-            if (path != null) {
-                System.out.println("Ouverture de la sauvegarde : " + path);
-            }
-        });
+        nouveau.setOnAction(new ControllerCreateProject(modelUML));
+        ouvrirP.setOnAction(new ControllerOpenFolder(modelUML, rootStage));
+        ouvrirS.setOnAction(new ControllerOpenFile(modelUML, rootStage));
 
         accueil.setOnAction(new ControllerAccueil(modelUML));
 
@@ -195,65 +188,6 @@ public class MainUML extends Application {
         stage.setTitle("ADG - Home");
         stage.setResizable(false);
         stage.show();
-    }
-
-    /**
-     * Ouvre une fenêtre de dialogue pour la création d'un nouveau projet.
-     */
-    private void openCreateProjectWindow() {
-        Stage createProjetWind = new Stage();
-        createProjetWind.initModality(Modality.APPLICATION_MODAL);  // empêche les intéractions avec la grande fenêtre
-        createProjetWind.setTitle("Créer un nouveau projet");
-
-        VBox vbox = new VBox(10);
-        vbox.setPadding(new Insets(10));
-
-        Label label = new Label("Entrez le nom du projet :");
-        TextField projectNameField = new TextField();
-        Button createButton = new Button("Créer");
-
-        projectNameField.setOnAction(new ControllerNewProject(modelUML, createProjetWind));
-        createButton.setOnAction(new ControllerNewProject(modelUML, createProjetWind));
-
-        vbox.getChildren().addAll(label, projectNameField, createButton);
-
-        Scene scene = new Scene(vbox, 300, 150);
-        createProjetWind.setScene(scene);
-        createProjetWind.show();
-    }
-
-    /**
-     * Ouvre un explorateur pour sélectionner un dossier (projet).
-     *
-     * @return Le chemin du dossier sélectionné, ou null si aucun dossier n'a été sélectionné.
-     */
-    private void openProject() {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Ouvrir un projet");
-        File selectedDirectory = directoryChooser.showDialog(rootStage);
-        if (selectedDirectory != null) {
-            String path = selectedDirectory.getAbsolutePath();
-            System.out.println("Ouverture du projet : " + path);
-            rootStage.setTitle("ADG - " + selectedDirectory.getName());
-            modelUML.ouvrirProjet(selectedDirectory);
-        }
-    }
-
-    /**
-     * Ouvre un explorateur pour sélectionner un fichier .adg (sauvegarde).
-     *
-     * @return Le chemin du fichier sélectionné, ou null si aucun fichier n'a été sélectionné.
-     */
-    private String openSaveFile() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Ouvrir une sauvegarde");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers ADG", "*.adg"));
-        File selectedFile = fileChooser.showOpenDialog(rootStage);
-        if (selectedFile != null) {
-
-            return selectedFile.getAbsolutePath();
-        }
-        return null;
     }
 
     /**

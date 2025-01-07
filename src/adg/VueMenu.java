@@ -19,6 +19,7 @@ public class VueMenu extends MenuBar implements Observateur {
         ModelUML modelUML = (ModelUML) mod;
 
         ArrayList<String> menuBar = modelUML.getMenuBar();
+        System.out.println("liste menu a parcourir: " + menuBar);
         for (Menu m : this.getMenus()) {  // on parcours les menus (Fichier, Affichage, ...)
 
             if (menuBar.contains(m.getText())) {  // Si le menu est dans la liste des menus à afficher

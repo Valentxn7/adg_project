@@ -63,6 +63,8 @@ public class ModelUML implements Sujet {
         this.stage = stage;
         this.setADGFolder();
         this.switchState(true);
+        System.out.flush();
+        System.out.println("ModelUML initialisé.");
     }
 
     public void ajouterClasse(Classe classe) {
@@ -125,6 +127,7 @@ public class ModelUML implements Sujet {
 
     @Override
     public void notifierObservateurs() {
+        System.out.println("Notifying Observateurs...");
         for (Observateur o : observateurs) {
             o.actualiser(this);
         }
@@ -188,7 +191,6 @@ public class ModelUML implements Sujet {
     public void setWindowsTitle(String titre) {
         this.windowsTitle = titre;
         this.stage.setTitle(titre);
-        notifierObservateurs();
     }
 
     public void setFolderPath(String path) {
