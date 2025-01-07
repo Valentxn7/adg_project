@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import adg.vues.*;
@@ -155,21 +156,38 @@ public class MainUML extends Application {
 
         /*       SIZE       **/
 
-        base.setPrefSize(900, 400);
-        base.setMinSize(400, 200);
+        base.setMinSize(900, 400);
+        base.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
         base.setPadding(new Insets(10, 10, 10, 10));
 
-        titre.setPrefSize(900, 20);
-        centre.setPrefSize(900, 380);
-        fin.setPrefSize(900, 20);
+//        titre.setPrefSize(900, 20);
+//        centre.setPrefSize(900, 380);
+//        fin.setPrefSize(900, 20);
+        titre.setPrefSize(stage.getMaxWidth(), 20);
+        centre.setPrefSize(stage.getMaxWidth(), 380);
+        fin.setPrefSize(stage.getMaxWidth(), 20);
 
-        partieGauche.setPrefSize(ModelUML.PARTIE_GAUCHE_X, ModelUML.PARTIE_GAUCHE_Y);
-        menuBar.setPrefSize(400, ModelUML.MENU_BAR_Y);
-        vueArborescence.setPrefSize(400, 180);  // (380 - 20) / 2
-        vueRecent.setPrefSize(400, 180);  // (380 - 20) / 2
+        partieGauche.setMinSize(ModelUML.PARTIE_GAUCHE_X, ModelUML.PARTIE_GAUCHE_Y);
+        partieGauche.setPrefSize(ModelUML.PARTIE_GAUCHE_X, stage.getMaxHeight() - 20 - 20);
+        menuBar.setPrefSize(partieGauche.getWidth(), ModelUML.MENU_BAR_Y);
 
-        partieDroite.setPrefSize(500, 380);
+        vueArborescence.setMinSize(ModelUML.PARTIE_GAUCHE_X, (double) (ModelUML.PARTIE_GAUCHE_Y - 41) / 2);  // (380 - 20) / 2
+        vueArborescence.setPrefSize(ModelUML.PARTIE_GAUCHE_X, (double) (ModelUML.PARTIE_GAUCHE_Y - 41) / 2);  // (380 - 20) / 2
+
+        vueRecent.setMinSize(partieGauche.getWidth(), 180);  // (380 - 20) / 2
+        vueRecent.setPrefSize(partieGauche.getWidth(), (partieGauche.getHeight()- 20) / 2);  // (380 - 20) / 2
+
+        //partieDroite.setPrefSize(500, 380);
+        partieDroite.setPrefSize(stage.getWidth(), stage.getMaxHeight() - 20 - 20);
         addProjectButton.setPrefSize(370, 270);
+        System.out.println("w: " + stage.getWidth() + " " + stage.getWidth());
+
+        // Permettre à centre de prendre toute la hauteur restante
+        VBox.setVgrow(centre, Priority.ALWAYS);
+
+        // Permettre à partieDroite de s'élargir
+        HBox.setHgrow(partieDroite, Priority.ALWAYS);
+
 
         /*       STYLE       **/
 
@@ -183,11 +201,13 @@ public class MainUML extends Application {
 
         /*       lancement       **/
 
-        Scene scene = new Scene(base, 922, 420);
+        Scene scene = new Scene(base, 922, 470);
         scene.getStylesheets().add(new File("ressource/style.css").toURI().toString());
         stage.setScene(scene);
         stage.setTitle("ADG - Home");
-        stage.setResizable(false);
+        stage.setResizable(true);
+        stage.setMinHeight(460);
+        stage.setMinWidth(940);
         stage.show();
     }
 

@@ -188,6 +188,8 @@ public class ModelUML implements Sujet {
             for (String item : entete)
                 menuFichier.put(item, true);
 
+            stage.setResizable(false);
+
         } else {  // diagramme
             this.vueArbo_x = PARTIE_GAUCHE_X; // (400 (taille partie gauche) - 10 (marge) )
             this.vueArbo_y = PARTIE_GAUCHE_Y - MENU_BAR_Y; // 20 = taille menuBar
@@ -205,6 +207,8 @@ public class ModelUML implements Sujet {
             vueDiagramme_bouton_visible = false;
 
             menuFichier.replaceAll((key, value) -> true);
+
+            stage.setResizable(true);
         }
 
         notifierObservateurs();
