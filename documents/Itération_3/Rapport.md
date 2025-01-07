@@ -31,10 +31,17 @@
     - Ajout de méthodes pour facilité la récupération d'informations
 - **Avancement** : ✅ Complétée
 
+- ### Fonctionnalité 3 : Flèche (Refactoring)
+- **Responsable** : Georges Gros
+- **Description** :
+  - intégration des flèches dans le model
+  - réalisation de système de placement des classes
+  - correction de bugs.
+- **Avancement** : ✅ Complétée
+
 **Ryan** :
 
 **Valentin** :
 
 **Zacharie**:
-
 
