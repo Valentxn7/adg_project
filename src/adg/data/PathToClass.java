@@ -138,7 +138,7 @@ public class PathToClass {
     public static int nbSlash(String cheminAbsolu) {
         int res = 0;
         for (int i = 0; i < cheminAbsolu.length(); i++) {
-            if (cheminAbsolu.charAt(i) == '\\') {
+            if (cheminAbsolu.charAt(i) == '\\' || cheminAbsolu.charAt(i) == '/') {
                 res++;
             }
         }
