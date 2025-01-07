@@ -1,16 +1,13 @@
 package adg;
 
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.DosFileAttributeView;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 import java.io.File;
@@ -35,6 +32,10 @@ public class ModelUML implements Sujet {
     private static final int MAX_RECENT_FOLDERS = 10;     // Limite du nombre de dossiers récents
     List<String> recentFolders;
     private boolean isHome;
+    //coordonner pour les classes
+    private Map<VueClasse, int[]> coordonneesClasse;
+    //coordonner pour les fleches
+    private Map<Fleche, VueClasse[]> coordonneesFleche;
 
     /**
      * Constructeur par défaut. Initialise les listes d'observateurs,
@@ -47,15 +48,8 @@ public class ModelUML implements Sujet {
         classes = new ArrayList<Classe>();
         setADGFolder();
         isHome = true;
-    }
-
-    public void setHome(){
-        if (!isHome) {
-            isHome = true;
-        }else {
-            isHome = false;
-        }
-        notifierObservateurs();
+        coordonneesClasse = new HashMap<>();
+        coordonneesFleche = new HashMap<>();
     }
 
     /**
@@ -67,13 +61,55 @@ public class ModelUML implements Sujet {
         System.out.println(vueDiagramme == null);
         if (classes != null) {
             classes.add(classe);
-            System.out.println(1);
             Observateur vue = new VueClasse(classe);
-            System.out.println(2);
             observateurs.add(vue);
-            System.out.println(3);
             vueDiagramme.getChildren().add((VBox) vue);
+            vues.put(classe.getClassName(), (VueClasse) vue);
+            this.trouverPlacePourClassess((VueClasse) vue);
+            this.ajouterFlecheExt(classe, (VueClasse) vue);
+            this.ajouterFlecheImp(classe, (VueClasse) vue);
         }
+    }
+
+    private void ajouterFlecheExt(Classe classe, VueClasse vueClasse) {
+        String s = classe.getSuperclass();
+        Classe classeExt = containsClasse(s);
+        System.out.println("classeExt : " + classeExt);
+        if (classeExt != null) {
+            System.out.println("classeExt : " + classeExt.getClassName());
+            FlecheExt fleche = new FlecheExt();
+
+            VueClasse vueClasseExt = vues.get(classeExt.getClassName());
+            vueDiagramme.getChildren().add(fleche);
+            vueDiagramme.getChildren().add(fleche.getTete());
+            coordonneesFleche.put(fleche, new VueClasse[]{vueClasse, vueClasseExt});
+            observateurs.add(fleche);
+        }
+    }
+
+    private void ajouterFlecheImp(Classe classe, VueClasse vueClasse) {
+        List<String> s = classe.getInterfaces();
+        for(String i : s){
+            Classe classeImp = containsClasse(i);
+            if (classeImp != null) {
+                FlecheImp fleche = new FlecheImp();
+                VueClasse vueClasseImp = vues.get(classeImp.getClassName());
+                vueDiagramme.getChildren().add(fleche);
+                vueDiagramme.getChildren().add(fleche.getTete());
+                coordonneesFleche.put(fleche, new VueClasse[]{vueClasse, vueClasseImp});
+                observateurs.add(fleche);
+            }
+        }
+    }
+
+    private Classe containsClasse(String s) {
+        Classe res = null;
+        for (Classe classe : classes) {
+            if (classe.getClassName().equals(s)) {
+               res = classe;
+            }
+        }
+        return res;
     }
 
     /**
@@ -179,7 +215,7 @@ public class ModelUML implements Sujet {
         return isHome;
     }
 
-    public void setADGFolder(){
+    public void setADGFolder() {
         String userHome = System.getProperty("user.home"); // C:\Users\NomUtilisateur sur Windows par ex
         File appFolder = new File(userHome, "ADGProjects"); // définie emplacement mais ne le créé pas encore
         if (!appFolder.exists()) {  // Si le dossier n'existe pas
@@ -189,7 +225,7 @@ public class ModelUML implements Sujet {
         this.folder = new File(appFolder.getAbsolutePath());
     }
 
-    private void ReadRecentProjects(){
+    private void ReadRecentProjects() {
         File[] files = folder.listFiles();
         for (File file : files) {
             if (file.isFile() && file.getName().endsWith(".adg")) {
@@ -198,7 +234,7 @@ public class ModelUML implements Sujet {
         }
     }
 
-    private void createADGfolder(){
+    private void createADGfolder() {
         String userHome = System.getProperty("user.home"); // C:\Users\NomUtilisateur sur Windows par ex
         File appFolder = new File(userHome, "ADGProjects"); // définie emplacement mais ne le créé pas encore
         if (!appFolder.exists()) {  // Si le dossier n'existe pas
@@ -319,7 +355,6 @@ public class ModelUML implements Sujet {
     }
 
 
-
     /**
      * Analyse un fichier UML donné et ajoute la classe analysée au modèle.
      * Notifie ensuite les observateurs.
@@ -411,10 +446,91 @@ public class ModelUML implements Sujet {
         int dernierIndexBackslash = cheminAbsolu.lastIndexOf('/');
         System.out.println("dernier index backslash : " + dernierIndexBackslash);
         if (dernierIndexBackslash != -1) {
-            String n=  cheminAbsolu.substring(0, dernierIndexBackslash) + '.' + cheminAbsolu.substring(dernierIndexBackslash + 1);
+            String n = cheminAbsolu.substring(0, dernierIndexBackslash) + '.' + cheminAbsolu.substring(dernierIndexBackslash + 1);
             System.out.println("nouveau chemin : " + n);
             return n;
         }
         return cheminAbsolu;
+    }
+
+
+    /**
+     * recupère les classes corréspondant à une fleche
+     *
+     * @param fleche
+     */
+    public VueClasse[] getFleche(Fleche fleche) {
+        VueClasse[] res = new VueClasse[2];
+        if (coordonneesFleche.containsKey(fleche)) {
+            res = coordonneesFleche.get(fleche);
+        }
+        return res;
+    }
+
+    /**
+     * récupère les coordonnées d'une classe
+     *
+     * @param vue
+     * @return
+     */
+    public int[] getClassesCoordonnees(VueClasse vue) {
+        int[] res = new int[2];
+        if (coordonneesClasse.containsKey(vue)) {
+            res = coordonneesClasse.get(vue);
+        }
+        return res;
+    }
+
+
+
+    public void trouverPlacePourClassess(VueClasse vue) {
+        int[] coordonnees = new int[2];
+        for (int y = 40; y < vueDiagramme.getHeight(); y++) {
+            boolean b = true;
+            for (int x = 0; x < vueDiagramme.getWidth(); x+=200) {
+                if (estLibre(x, y)) {
+                    coordonnees[0] = x;
+                    coordonnees[1] = y;
+                    coordonneesClasse.put(vue, coordonnees);
+                    b = false;
+                    break;
+                }
+            }
+           if(!b){
+               break;
+           }
+        }
+    }
+
+    private boolean estLibre(int x, int y) {
+        int x2, y2;
+        boolean res = true;
+        for (VueClasse classe : coordonneesClasse.keySet()) {
+            {
+                x2 = coordonneesClasse.get(classe)[0];
+                y2 = coordonneesClasse.get(classe)[1];
+                if ((y >= y2 && y <= y2 + classe.getHeight()) && (x >= x2 && x <= x2 + classe.getWidth())) {
+                    res = false;
+                }
+            }
+        }
+        System.out.println("x : " + x + " y : " + y + " res : " + res);
+        return res;
+    }
+
+    public VueClasse[] getCoordonneesFleche(Fleche fleche) {
+        VueClasse[] res = null;
+        if(coordonneesFleche.containsKey(fleche)){
+            res = coordonneesFleche.get(fleche);
+        }
+        return res;
+    }
+
+    public void getClasses() {
+
+    }
+
+    public void deplacerClasse(VueClasse classe, int x , int y) {
+
     }
 }

@@ -3,6 +3,7 @@ package adg;
 import javafx.event.EventHandler;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 import java.io.File;
@@ -32,7 +33,7 @@ public class ControllerDragDrop implements EventHandler<DragEvent> {
      * @param root le conteneur graphique (StackPane) sur lequel le drag-and-drop
      *             est activé.
      */
-    public void activerDragAndDrop(StackPane root) {
+    public void activerDragAndDrop(Pane root) {
         root.setOnDragOver(this);
         root.setOnDragDropped(this);
     }
@@ -60,10 +61,10 @@ public class ControllerDragDrop implements EventHandler<DragEvent> {
             boolean succes = false;
 
             // Sauvegarde les coordonnées du drop pour les utiliser dans le diagramme
-            StackPane root = (StackPane) event.getSource();
+            Pane root = (Pane) event.getSource();
             double x = root.sceneToLocal(event.getSceneX(), event.getSceneY()).getX();
             double y = root.sceneToLocal(event.getSceneX(), event.getSceneY()).getY();
-            System.out.println("Position : " + x + " " + y);
+
 
             if (event.getDragboard().hasFiles()) {
 

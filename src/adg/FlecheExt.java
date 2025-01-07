@@ -15,8 +15,8 @@ public class FlecheExt extends Fleche {
         });
     }
     public void setLine(){
-        this.setStrokeWidth(2);
-        this.setStroke(Color.BLACK);
+        this.setStroke(Color.BLUE);
+
     }
 
 }

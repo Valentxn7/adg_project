@@ -25,18 +25,12 @@ public class MainUML extends Application {
     public void start(Stage stage) throws Exception {
         rootStage = stage;
         modelUML = new ModelUML();
-        VBox base = new VBox(0);
-        VueTitre titre = new VueTitre(modelUML);
-        titre.setText("ADG - Home");
-        modelUML.enregistrerObservateur(titre);
-        HBox centre = new HBox(0);
         Label fin = new Label("Tous droits réservés");
         fin.setAlignment(javafx.geometry.Pos.CENTER);
 
-        //VBox partieGauche = new VBox(0);  // TreeView et MenuBar
         VueDiagramme partieDroite = new VueDiagramme();  // bouton add projet
 
-
+        modelUML.getClasses();
         modelUML.setVueDiagramme(partieDroite);
         modelUML.enregistrerObservateur(partieDroite);
 
@@ -46,7 +40,6 @@ public class MainUML extends Application {
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         stage.setScene(scene);
         stage.setTitle("ADG - Home");
-        stage.setResizable(false);
         stage.show();
     }
 

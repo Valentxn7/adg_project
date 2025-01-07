@@ -36,6 +36,11 @@ public class VueClasse extends VBox implements Observateur {
     public void actualiser(Sujet mod) {
             this.getChildren().clear();
             afficherClasse();
+            ModelUML model = (ModelUML) mod;
+            int[] position = model.getClassesCoordonnees(this);
+            this.setLayoutX(position[0]);
+            this.setLayoutY(position[1]);
+            System.out.println("x : " + position[0] + " y : " + position[1]);
     }
 
 
@@ -54,13 +59,10 @@ public class VueClasse extends VBox implements Observateur {
     private void afficherClasse() {
         // Affiche le nom de la classe
         this.getChildren().add(new Label(classe.getClassName()));
-        System.out.println(12);
         // Affichage des attributs
         ajouterElements(classe.getFields(), this::creerAttribut);
-        System.out.println(13);
         // Affichage des constructeurs
        ajouterConstructeur();
-        System.out.println(14);
         // Affichage des méthodes
         ajouterMethodes();
     }
