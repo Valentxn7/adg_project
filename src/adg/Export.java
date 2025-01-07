@@ -25,6 +25,36 @@ public class Export {
         return sb.toString();
     }
 
+    public String getJava() throws ClassNotFoundException, IOException {
+
+        StringBuilder source = new StringBuilder();
+
+        source.append("package adg;\n\n");
+
+        for (Classe classe : classes) {
+            source.append(classe.toJava());
+        }
+
+        return source.toString();
+
+    }
+
+    private void exportToJavaFile(String dir, String nomFicher) throws IOException {
+        File file = new File(dir + nomFicher);
+        if (file.canWrite()) {
+            try {
+                System.out.println("File created: " + file.getName() + " location: " + file.getAbsolutePath());
+                FileWriter writer = new FileWriter(file);
+                writer.write(getJava());
+                writer.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Cannot write to file: " + file.getAbsolutePath());
+        }
+    }
+
     public void export(String dir, String project_name) {
         FileWriter writer;
         try {
