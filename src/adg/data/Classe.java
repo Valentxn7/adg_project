@@ -18,7 +18,7 @@ public class Classe {
 
     public Classe(String path) {
         this.class_path = path;
-        this.class_name = null;
+        this.class_name = path;
 
         this.superclass = null;
         this.interfaces = new ArrayList<>();
