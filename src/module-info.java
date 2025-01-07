@@ -1,4 +1,4 @@
-module org.example.adg_projet {
+module org.example.adg_project {
     requires javafx.controls;
     requires com.google.gson;
 
