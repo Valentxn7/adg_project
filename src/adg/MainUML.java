@@ -1,58 +1,49 @@
 package adg;
 
 import adg.control.ControllerAccueil;
-import adg.control.ControllerDragDrop;
-import adg.control.ControllerNewProject;
-import adg.vues.*;
+import adg.control.ControllerCreateProject;
+import adg.control.ControllerOpenFile;
+import adg.control.ControllerOpenFolder;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
-
-import java.io.File;
+import adg.vues.*;
 
 public class MainUML extends Application {
-    private ModelUML modelUML;
-    private Stage rootStage;
 
     public static void main(String[] args) {
         Application.launch();
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-        rootStage = stage;
-        modelUML = new ModelUML(stage);
+    public void start(Stage stage) {
+        ModelUML modelUML = new ModelUML(stage);
         VBox base = new VBox(0);
-        VueTitre titre = new VueTitre(modelUML);
+        VueTitre titre = new VueTitre();
         titre.setText("ADG - Home");
         modelUML.enregistrerObservateur(titre);
         HBox centre = new HBox(0);
         Label fin = new Label("Tous droits réservés");
         fin.setAlignment(javafx.geometry.Pos.CENTER);
 
-        VBox partieGauche = new VBox(0);// TreeView et MenuBar
-        ControllerDragDrop controllerDragDrop = new ControllerDragDrop(modelUML);
-
-        VueDiagramme partieDroite = new VueDiagramme(modelUML);  // bouton add projet
+        VBox partieGauche = new VBox(0);  // TreeView et MenuBar
+        VueDiagramme partieDroite = new VueDiagramme();  // bouton add projet
         modelUML.enregistrerObservateur(partieDroite);
-        controllerDragDrop.activerDragAndDrop(partieDroite);
+
         Button addProjectButton = new Button("+");
         addProjectButton.setId("bouton");
         addProjectButton.setAlignment(javafx.geometry.Pos.CENTER);
-        addProjectButton.setOnAction(e -> openCreateProjectWindow());
+        addProjectButton.setOnAction(new ControllerCreateProject(modelUML));
 
         partieDroite.setAlignment(javafx.geometry.Pos.CENTER);
 
-        /**     MENU       **/
+        /*     MENU       **/
 
-        VueMenu menuBar = new VueMenu(modelUML);  // barre menu contenante
+        VueMenu menuBar = new VueMenu();  // barre menu contenante
         modelUML.enregistrerObservateur(menuBar);
 
         Menu fileMenu = new Menu("Fichier");  // contenue
@@ -125,47 +116,42 @@ public class MainUML extends Application {
         Menu helpMenu = new Menu("Aide");
         menuBar.getMenus().addAll(fileMenu, viewMenu, helpMenu);
 
-        nouveau.setOnAction(e -> openCreateProjectWindow());
-        ouvrirP.setOnAction(e -> openProject());
-        ouvrirS.setOnAction(e -> {
-            String path = openSaveFile();
-            if (path != null) {
-                System.out.println("Ouverture de la sauvegarde : " + path);
-            }
-        });
+        nouveau.setOnAction(new ControllerCreateProject(modelUML));
+        ouvrirP.setOnAction(new ControllerOpenFolder(modelUML, stage));
+        ouvrirS.setOnAction(new ControllerOpenFile(modelUML, stage));
 
         accueil.setOnAction(new ControllerAccueil(modelUML));
 
-        /**     ARBORESCENCE       **/
+        /*     ARBORESCENCE       **/
 
         TreeItem<String> rootArborescence = new TreeItem<String>();  // l'item de base
         rootArborescence.setValue("Projets ADG:");
         rootArborescence.setExpanded(true);
 
-        VueArborescence vueArborescence = new VueArborescence(modelUML);  // l'item de base
+        VueArborescence vueArborescence = new VueArborescence();  // l'item de base
         vueArborescence.setRoot(rootArborescence);
         modelUML.enregistrerObservateur(vueArborescence);
         vueArborescence.actualiser(modelUML);
 
-        /**     RECENTS       **/
+        /*     RECENTS       **/
 
         TreeItem<String> rootRecent = new TreeItem<String>();  // l'item de base
         rootRecent.setValue("Projets récents:");
         rootRecent.setExpanded(true);
 
-        VueRecent vueRecent = new VueRecent(modelUML);  // la TreeView affiche les TreeItem
+        VueRecent vueRecent = new VueRecent();  // la TreeView affiche les TreeItem
         vueRecent.setRoot(rootRecent);
         modelUML.enregistrerObservateur(vueRecent);
         vueRecent.actualiser(modelUML);
 
-        /**     ORGANISATION       **/
+        /*     ORGANISATION       **/
 
         base.getChildren().addAll(titre, centre, fin);  // VBox
         centre.getChildren().addAll(partieGauche, partieDroite);  // HBox
         partieGauche.getChildren().addAll(menuBar, vueArborescence, vueRecent);  // VBox
         partieDroite.getChildren().add(addProjectButton);  // HBox
 
-        /**       SIZE       **/
+        /*       SIZE       **/
 
         base.setPrefSize(900, 400);
         base.setMinSize(400, 200);
@@ -183,7 +169,7 @@ public class MainUML extends Application {
         partieDroite.setPrefSize(500, 380);
         addProjectButton.setPrefSize(370, 270);
 
-        /**       STYLE       **/
+        /*       STYLE       **/
 
         titre.getStyleClass().add("label-titre");
         addProjectButton.getStyleClass().add("addButton");
@@ -193,73 +179,14 @@ public class MainUML extends Application {
         vueRecent.getStyleClass().add("treeView");
         fin.getStyleClass().add("label-fin");
 
-        /**       lancement       **/
+        /*       lancement       **/
 
         Scene scene = new Scene(base, 922, 420);
-        scene.getStylesheets().add(new File("ressource/style.css").toURI().toString());
+        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         stage.setScene(scene);
         stage.setTitle("ADG - Home");
         stage.setResizable(false);
         stage.show();
-    }
-
-    /**
-     * Ouvre une fenêtre de dialogue pour la création d'un nouveau projet.
-     */
-    private void openCreateProjectWindow() {
-        Stage createProjetWind = new Stage();
-        createProjetWind.initModality(Modality.APPLICATION_MODAL);  // empêche les intéractions avec la grande fenêtre
-        createProjetWind.setTitle("Créer un nouveau projet");
-
-        VBox vbox = new VBox(10);
-        vbox.setPadding(new Insets(10));
-
-        Label label = new Label("Entrez le nom du projet :");
-        TextField projectNameField = new TextField();
-        Button createButton = new Button("Créer");
-
-        projectNameField.setOnAction(new ControllerNewProject(modelUML, createProjetWind));
-        createButton.setOnAction(new ControllerNewProject(modelUML, createProjetWind));
-
-        vbox.getChildren().addAll(label, projectNameField, createButton);
-
-        Scene scene = new Scene(vbox, 300, 150);
-        createProjetWind.setScene(scene);
-        createProjetWind.show();
-    }
-
-    /**
-     * Ouvre un explorateur pour sélectionner un dossier (projet).
-     *
-     * @return Le chemin du dossier sélectionné, ou null si aucun dossier n'a été sélectionné.
-     */
-    private void openProject() {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Ouvrir un projet");
-        File selectedDirectory = directoryChooser.showDialog(rootStage);
-        if (selectedDirectory != null) {
-            String path = selectedDirectory.getAbsolutePath();
-            System.out.println("Ouverture du projet : " + path);
-            rootStage.setTitle("ADG - " + selectedDirectory.getName());
-            modelUML.ouvrirProjet(selectedDirectory);
-        }
-    }
-
-    /**
-     * Ouvre un explorateur pour sélectionner un fichier .adg (sauvegarde).
-     *
-     * @return Le chemin du fichier sélectionné, ou null si aucun fichier n'a été sélectionné.
-     */
-    private String openSaveFile() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Ouvrir une sauvegarde");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers ADG", "*.adg"));
-        File selectedFile = fileChooser.showOpenDialog(rootStage);
-        if (selectedFile != null) {
-
-            return selectedFile.getAbsolutePath();
-        }
-        return null;
     }
 
     /**

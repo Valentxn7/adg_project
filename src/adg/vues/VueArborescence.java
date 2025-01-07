@@ -9,19 +9,14 @@ import javafx.scene.control.TreeView;
 import java.io.File;
 
 public class VueArborescence extends TreeView<String> implements Observateur {
-    private ModelUML modelUML;
-
-    public VueArborescence(ModelUML modelUML) {
-        this.modelUML = modelUML;
-    }
 
     @Override
     public void actualiser(Sujet mod) {
         ModelUML model = (ModelUML) mod;
 
         // mon pdv = vaux mieux faire 2 test que changer des éléments graphiques (surtout que ça change pas souvent)
-        if (this.getWidth() != modelUML.getVueArbo_x() || this.getHeight() != modelUML.getVueArbo_y()) {
-            this.setPrefSize(modelUML.getVueArbo_x(), modelUML.getVueArbo_y());
+        if (this.getWidth() != model.getVueArbo_x() || this.getHeight() != model.getVueArbo_y()) {
+            this.setPrefSize(model.getVueArbo_x(), model.getVueArbo_y());
 
             File root = model.getFolder();
             this.getRoot().setValue(root.getName());

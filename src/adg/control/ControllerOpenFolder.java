@@ -20,7 +20,6 @@ public class ControllerOpenFolder implements EventHandler<ActionEvent> {
     /**
      * Ouvre un explorateur pour sélectionner un dossier (projet).
      *
-     * @return Le chemin du dossier sélectionné, ou null si aucun dossier n'a été sélectionné.
      */
     public void handle(ActionEvent event) {
         DirectoryChooser directoryChooser = new DirectoryChooser();

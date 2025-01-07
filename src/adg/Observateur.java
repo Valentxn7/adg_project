@@ -8,9 +8,9 @@ package adg;
 public interface Observateur {
 
     /**
-     * Permet de mettre à jour les vues
+     * Permet de mettre à jour les adg.vues
      * @param mod le sujet à observer
      */
-    public void actualiser(Sujet mod);
+    void actualiser(Sujet mod);
 
 }

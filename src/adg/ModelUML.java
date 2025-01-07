@@ -217,7 +217,6 @@ public class ModelUML implements Sujet {
     public void setWindowsTitle(String titre) {
         this.windowsTitle = titre;
         this.stage.setTitle(titre);
-        notifierObservateurs();
     }
 
     public void setFolderPath(String path) {
@@ -371,6 +370,9 @@ public class ModelUML implements Sujet {
         while (folderSet.size() > MAX_RECENT_FOLDERS) {
             folderSet.remove(folderSet.iterator().next());
         }
+
+        // Sauvegarder dans le fichier JSON
+        saveRecentFolders(new ArrayList<>(folderSet));
     }
 
     // Récupère la liste des dossiers récents

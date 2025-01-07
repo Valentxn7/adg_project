@@ -8,14 +8,11 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 
 public class VueDiagramme extends StackPane implements Observateur {
-    private ModelUML modelUML;
-
-    public VueDiagramme(ModelUML modelUML) {
-        this.modelUML = modelUML;
-    }
 
     @Override
     public void actualiser(Sujet mod) {
+
+        ModelUML modelUML = (ModelUML) mod;
 
         if (modelUML.getVueDiagramme_bouton_visibility() != this.isVisible()) {
             System.out.println("VueDiagramme_bouton: " + modelUML.getVueDiagramme_bouton_visibility());

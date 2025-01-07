@@ -20,7 +20,6 @@ public class ControllerOpenFile implements EventHandler<ActionEvent> {
     /**
      * Ouvre un explorateur pour sélectionner un fichier .adg (sauvegarde).
      *
-     * @return Le chemin du fichier sélectionné, ou null si aucun fichier n'a été sélectionné.
      */
     public void handle(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();

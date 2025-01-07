@@ -12,8 +12,8 @@ public class ControllerAccueil implements EventHandler<ActionEvent> {
     }
 
     public void handle(ActionEvent event) {
+        modelUML.setWindowsTitle("Home");
         modelUML.switchState(true);
-        modelUML.setWindowsTitle("ADG - Home");
     }
 
 }

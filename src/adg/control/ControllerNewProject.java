@@ -17,7 +17,8 @@ public class ControllerNewProject implements EventHandler<ActionEvent> {
     }
 
     public void handle(ActionEvent event) {
-        TextField projectNameField = (TextField) event.getSource();  // le label où on a entré le nom du projet
+        TextField projectNameField = (TextField) createProjetWind.getScene().lookup("#projectNameField");
+        // TextField projectNameField = (TextField) event.getSource();  // le label où on a entré le nom du projet
         String projectName = projectNameField.getText().trim();  // on récupère le texte du champ
 
         if (!projectName.isEmpty()) {  // si le champ n'est pas vide

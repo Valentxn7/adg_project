@@ -9,11 +9,6 @@ import javafx.scene.control.TreeView;
 import java.util.ArrayList;
 
 public class VueRecent extends TreeView<String> implements Observateur {
-    private ModelUML modelUML;
-
-    public VueRecent(ModelUML modelUML) {
-        this.modelUML = modelUML;
-    }
 
     @Override
     public void actualiser(Sujet mod) {
@@ -28,7 +23,7 @@ public class VueRecent extends TreeView<String> implements Observateur {
         }
 
         if (model.getIsHome()) {  // car la vue des récents ne sert que sur l'écran d'accueil donc pas besoin de l'actualiser si on est sur le diagramme
-            ArrayList<String> recentFiles = model.getRecentFolders();
+            ArrayList<String> recentFiles = ModelUML.getRecentFolders();
             this.getChildren().clear();
 
             for (String recentfold : recentFiles) { // on parcours la liste des fichiers récents
