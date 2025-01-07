@@ -193,7 +193,7 @@ public class MainUML extends Application {
         /**       lancement       **/
 
         Scene scene = new Scene(base, 922, 420);
-        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        scene.getStylesheets().add(new File("ressource/style.css").toURI().toString());
         stage.setScene(scene);
         stage.setTitle("ADG - Home");
         stage.setResizable(false);
