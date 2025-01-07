@@ -1,5 +1,7 @@
-package adg;
+package adg.control;
 
+import adg.MainUML;
+import adg.ModelUML;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.TextField;

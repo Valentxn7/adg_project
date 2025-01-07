@@ -1,5 +1,7 @@
 package adg;
 
+import adg.control.ControllerAccueil;
+import adg.control.ControllerNewProject;
 import adg.vues.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
