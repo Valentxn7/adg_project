@@ -1,0 +1,177 @@
+@startuml
+
+
+top to bottom direction
+skinparam linetype ortho
+
+class Analyser {
+  + Analyser(Class<?>): 
+  - buildInterfaces(Classe): void
+  - getParameterTypeNames(Class<?>[]): List<String>
+  - buildFields(Classe): void
+  - buildMethods(Classe): void
+  + analyse(): Classe
+  - buildSuperClass(Classe): void
+  - buildConstructors(Classe): void
+}
+class Classe {
+  + Classe(String): 
+  + UMLString(): String
+  - getUMLVisibility(String): String
+  + save(): String
+   superclass: String
+   classNameWithoutPackages: String
+   constructors: List<Object[]>
+   methods: List<Object[]>
+   interfaces: List<String>
+   className: String
+   fields: List<String[]>
+}
+class ControllerAccueil #lightblue {
+  + ControllerAccueil(ModelUML): 
+  + handle(ActionEvent): void
+}
+class ControllerCreateProject #lightblue{
+  + ControllerCreateProject(ModelUML): 
+  + handle(ActionEvent): void
+}
+class ControllerDragDrop {
+  + ControllerDragDrop(ModelUML): 
+  + handle(DragEvent): void
+  + activerDragAndDrop(StackPane): void
+}
+class ControllerNewProject #lightblue {
+  + ControllerNewProject(ModelUML, Stage): 
+  + handle(ActionEvent): void
+}
+class ControllerOpenFile #lightblue {
+  + ControllerOpenFile(ModelUML, Stage): 
+  + handle(ActionEvent): void
+}
+class ControllerOpenFolder #lightblue {
+  + ControllerOpenFolder(ModelUML, Stage): 
+  + handle(ActionEvent): void
+}
+class Export {
+  + Export(List<Classe>): 
+  + export(String, String): void
+   UML: String
+}
+class Load {
+  + Load(String, String): 
+  + load(): List<Classe>
+}
+
+class ModelUML {
+  + ModelUML(Stage): 
+  - ReadRecentProjects(): void
+  - addRecentFolder(String): void
+  - createADGfolder(): void
+  + notifierObservateurs(): void
+  + setADGFolder(): void
+  + switchState(boolean): void
+  + enregistrerObservateur(Observateur): void
+  + creerProjetVierge(String): boolean
+  + analyseFichier(String): void
+  + ajouterClasse(Classe): void
+  + getMenuItems(int): HashMap<String, Boolean>
+  - saveRecentFolders(List<String>): void
+  + ouvrirProjet(File): void
+  + supprimerObservateur(Observateur): void
+   vueDiagramme_bouton_x: int
+   vueDiagramme_bouton_y: int
+   menuFichier: HashMap<String, Boolean>
+   vueRecentVisibility: boolean
+   folderPath: String
+   folder: File
+   vueDiagramme_y: int
+   vueRecent_style: String
+   vueDiagramme_x: int
+   vueDiagramme_bouton_style: String
+   windowsTitle: String
+   vueDiagramme_bouton_visibility: boolean
+   isHome: boolean
+   recentFolders: ArrayList<String>
+   filePath: String
+   menuBar: ArrayList<String>
+   vueArbo_y: int
+   vueRecent_x: int
+   vueArbo_x: int
+   vueRecent_y: int
+}
+interface Observateur << interface >> {
+  + actualiser(Sujet): void
+}
+class PathToClass  #lightblue{
+  + PathToClass(): 
+  + remplacerDernierSlashParPoint(String): String
+  + extraireNomClasse(String): String
+  + convertirCheminEnClasse(String): Class<?>
+  + nbSlash(String): int
+  + indiceDernierSlash(String): int
+  - chargerClasse(URLClassLoader, String, String, int): Class<?>
+}
+class Save {
+  + Save(String, String, List<Classe>): 
+  + save(): void
+}
+interface Sujet << interface >> {
+  + notifierObservateurs(): void
+  + supprimerObservateur(Observateur): void
+  + enregistrerObservateur(Observateur): void
+}
+class VueArborescence #lightblue {
+  + VueArborescence(): 
+  + actualiser(Sujet): void
+  - RefreshArboresence(File): TreeItem<String>
+}
+class VueClasse {
+  + VueClasse(Classe): 
+  - creerConstructeur(Object[]): HBox
+  - getVisibilityCircle(String): Circle
+  - ajouterElements(List<T>, Function<T, HBox>): void
+  - creerAttribut(String[]): HBox
+  - creerMethode(Object[]): HBox
+  + actualiser(Sujet): void
+  - creerHBox(Circle, Label): HBox
+  - afficherClasse(): void
+}
+class VueDiagramme {
+  + VueDiagramme(): 
+  + actualiser(Sujet): void
+}
+class VueMenu {
+  + VueMenu(): 
+  + actualiser(Sujet): void
+}
+class VueRecent #lightblue {
+  + VueRecent(): 
+  + actualiser(Sujet): void
+}
+class VueTitre {
+  + VueTitre(): 
+  + actualiser(Sujet): void
+}
+
+
+ControllerAccueil       "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                
+
+ControllerCreateProject "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                
+ControllerDragDrop      "1" *-[#595959,plain]-> "model\n1" ModelUML                
+ControllerNewProject    "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                
+ControllerOpenFile      "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                
+ControllerOpenFolder    "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                
+Export                  "1" *-[#595959,plain]-> "classes\n*" Classe                  
+
+ModelUML                "1" *-[#595959,plain]-> "classes\n*" Classe                  
+ModelUML                "1" *-[#595959,plain]-> "observateurs\n*" Observateur             
+ModelUML                 -[#008200,dashed]-^  Sujet                   
+Save                    "1" *-[#595959,plain]-> "classes\n*" Classe                  
+VueArborescence          -[#008200,dashed]-^  Observateur             
+VueClasse               "1" *-[#595959,plain]-> "classe\n1" Classe                  
+VueClasse                -[#008200,dashed]-^  Observateur             
+VueDiagramme             -[#008200,dashed]-^  Observateur             
+VueMenu                  -[#008200,dashed]-^  Observateur             
+VueRecent                -[#008200,dashed]-^  Observateur             
+VueTitre                 -[#008200,dashed]-^  Observateur             
+@enduml
