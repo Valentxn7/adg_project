@@ -3,6 +3,7 @@ package adg;
 import javafx.stage.Stage;
 import adg.data.Analyser;
 import adg.data.Classe;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -86,14 +87,6 @@ public class ModelUML implements Sujet {
             classes.add(classe);
     }
 
-    /**
-     * Crée un projet vierge et notifie les observateurs pour basculer
-     * à la vue diagramme.
-     */
-    public void creerProjetVierge() {
-        System.out.println("Création d'un projet vierge");
-        for (Observateur o : observateurs) {
-            o.switchHome2diag();
     /**
      * Crée un projet vierge, survient quand on clique sur Nouveau Projet
      *
@@ -226,6 +219,7 @@ public class ModelUML implements Sujet {
     public void setWindowsTitle(String titre) {
         this.windowsTitle = titre;
         this.stage.setTitle(titre);
+        notifierObservateurs();
     }
 
     public void setFolderPath(String path) {
@@ -379,16 +373,6 @@ public class ModelUML implements Sujet {
         while (folderSet.size() > MAX_RECENT_FOLDERS) {
             folderSet.remove(folderSet.iterator().next());
         }
-
-    /**
-     * Définit le titre de la fenêtre.
-     *
-     * @param title le nouveau titre.
-     */
-    public void setWindowsTitle(String title) {
-        WindowsTitle = title;
-        // Sauvegarder dans le fichier JSON
-        saveRecentFolders(new ArrayList<>(folderSet));
     }
 
     // Récupère la liste des dossiers récents
@@ -501,13 +485,14 @@ public class ModelUML implements Sujet {
      * en remplaçant les backslashes par des points pour correspondre à la structure des packages.
      *
      * @param chargeurClasse Le URLClassLoader utilisé pour charger la classe.
-     * @param nomClasse Le nom de la classe à charger.
-     * @param cheminAbsolu Le chemin absolu du fichier .class.
-     * @param nbslash Le nombre de barres obliques inversées dans le chemin.
+     * @param nomClasse      Le nom de la classe à charger.
+     * @param cheminAbsolu   Le chemin absolu du fichier .class.
+     * @param nbslash        Le nombre de barres obliques inversées dans le chemin.
      * @return La classe chargée.
      * @throws Throwable Si la classe ne peut pas être trouvée ou chargée.
      */
-    private Class<?> chargerClasse(URLClassLoader chargeurClasse, String nomClasse, String cheminAbsolu, int nbslash) throws Throwable {
+    private Class<?> chargerClasse(URLClassLoader chargeurClasse, String nomClasse, String cheminAbsolu,
+                                   int nbslash) throws Throwable {
         // On initialise la valeur de la classe à null et on initialise un booléen qui sert à savoir si le chargement a réussi
         Class<?> c = null;
         boolean succes = false;
@@ -519,7 +504,8 @@ public class ModelUML implements Sujet {
                 c = chargeurClasse.loadClass(nomClasse);
                 // Si la classe est chargée, on met le booléen à true
                 succes = true;
-            } catch (ClassNotFoundException | NoClassDefFoundError e) { // Sinon, on attrape l'exception et on modifie le chemin absolu
+            } catch (ClassNotFoundException |
+                     NoClassDefFoundError e) { // Sinon, on attrape l'exception et on modifie le chemin absolu
                 // Modifie le chemin absolu pour remplacer le dernier backslash par un point
                 cheminAbsolu = remplacerDernierSlashParPoint(cheminAbsolu);
                 nbslash--;
@@ -537,7 +523,6 @@ public class ModelUML implements Sujet {
 
         return c;
     }
-
 
 
     /**
@@ -606,8 +591,6 @@ public class ModelUML implements Sujet {
         }
         return res;
     }
-
-
 
 
 }

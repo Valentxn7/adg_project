@@ -1,9 +1,11 @@
-package adg;
+package adg.vues;
 
+import adg.ModelUML;
+import adg.Observateur;
+import adg.Sujet;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 public class VueRecent extends TreeView<String> implements Observateur {

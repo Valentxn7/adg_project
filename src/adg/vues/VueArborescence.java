@@ -1,5 +1,8 @@
-package adg;
+package adg.vues;
 
+import adg.ModelUML;
+import adg.Observateur;
+import adg.Sujet;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
