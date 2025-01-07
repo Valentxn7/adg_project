@@ -39,7 +39,24 @@
   - correction de bugs.
 - **Avancement** : ✅ Complétée
 
+
+- ### Fonctionnalité 5 : Flèche (Refactoring)
+- **Responsable** : Valentin Knorst
+- **Description** :
+  - Amélioration du code, la classe observateur a désormais une seule et unique méthode.
+  - Factorisation de ce dernier
+  - Travail sur le retour au menu
+
+- ### Fonctionnalité 5 : Export 
+- **Responsable** : Thomas Fuchs
+- **Description** :
+  - export squelette de la classe en .java
+
+
+- **Avancement** : ✅ Complétée
+
 **Ryan** :
+Le code est plus clair grâce à la création de la nouvelle classe PathToClass qui permet de convertir les fichiers .class en objet Class<?> le modele est donc moins dense.
 
 **Valentin** :
 
