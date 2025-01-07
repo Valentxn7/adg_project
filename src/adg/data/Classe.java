@@ -7,7 +7,6 @@ import java.util.List;
 
 public class Classe {
     private String class_name;
-    private String class_path;
     private String superclass;
     private List<String> interfaces;
     private List<String[]>  fields;
@@ -17,7 +16,6 @@ public class Classe {
     private double[] coords = new double[2];
 
     public Classe(String path) {
-        this.class_path = path;
         this.class_name = path;
 
         this.superclass = null;
@@ -116,19 +114,17 @@ public class Classe {
         }
     }
 
-    public void setClassPath(String path) {
-        this.class_path = path;
-    }
-
-    public String getClassPath() {
-        return this.class_path;
-    }
     public void setClassName(String className) {
         this.class_name = className;
     }
 
     public String getClassName() {
         return this.class_name;
+    }
+
+    public String getClassNameWithoutPackages() {
+        String[] parts = this.class_name.split("\\.");
+        return parts[parts.length - 1];
     }
 
     public void setSuperclass(String superclass) {
