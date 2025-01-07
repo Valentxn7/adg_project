@@ -10,10 +10,10 @@ Ce projet a pour objectif de développer un logiciel permettant de générer et 
 Pour installer le projet, retrouvez les informations dans la page du Wiki dédiée à l'[intallation](https://github.com/Valentxn7/adg_project/wiki/Installation). 
 
 ## Auteurs 👥
-| Membres            |
-| ------------------ |
-| HEUERTZ Zacharie   |
-| KNORST Valentin    |
-| KORBAN Ryan        |
-| GROS Geoffrey      |
-| FUCHS Thomas       |
+| Membres            | Profil  |
+| ------------------ | ------- |
+| HEUERTZ Zacharie   | [SolareFlame](https://github.com/SolareFlame) |
+| KNORST Valentin    | [Valentxn7](https://github.com/Valentxn7) |
+| KORBAN Ryan        | [Yeahboys04](https://github.com/Yeahboys04) |
+| GROS Geoffrey      | [Geoffrey2501](https://github.com/Geoffrey2501) | 
+| FUCHS Thomas       | [ColettesCorvette](https://github.com/ColettesCorvette) | 
