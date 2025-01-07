@@ -21,9 +21,20 @@
     - Creation d'une nouvelle classe avec méthodes static pour gerer le conversion des fichiers .class en objet Class<?>.
 - **Avancement** : ✅ Complétée
 
+### Fonctionnalité 2 : Analyser et Classe (Refactoring)
+- **Responsable** : Heuertz Zacharie
+- **Description** :
+  - Simplification du code dans la classe Analyser
+    - Refactoring du code pour une meilleure lisibilité.
+    - Tâches dédiés à des sous méthodes.
+  - Ajouts dans la classe Classe
+    - Ajout de méthodes pour facilité la récupération d'informations
+- **Avancement** : ✅ Complétée
+
 **Ryan** :
 
 **Valentin** :
 
 **Zacharie**:
+
 
