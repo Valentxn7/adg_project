@@ -125,12 +125,6 @@ public class VueClasse extends VBox implements Observateur {
         return circle;
     }
 
-    @Override
-    public void switchHome2diag() {
-        this.getChildren().clear();
-        this.setPrefSize(900, 400);
-        System.out.println("VueDiagramme : Switching to diagram");
-    }
 }
 
 
