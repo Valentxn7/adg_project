@@ -9,7 +9,7 @@
 - **Membres** : HEUERTZ KNORST KORBAN GROS FUCHS
 - **Objectif principal** : L'objectif principal de l'itération était de développer et stabiliser les fonctionnalités essentielles de l'application ADG, notamment le drag & drop, la gestion des projets, et l'exploration des fichiers, afin de poser les bases pour une utilisation intuitive et efficace de l'outil.
 
---
+---
 ## Fonctionnalités implémentées
 
 ### Fonctionnalité 1 : Drag and Drop (Debug et amélioration)
@@ -70,6 +70,15 @@
   - Implémentation des flèches dans le modèle
 - **Avancement** : ✅ Complétée
 
+### Fonctionnalité 10 : Exportation en puml
+- **Responsable** : Zacharie Heuertz
+- **Description** :
+  - Corriger le système de sauvegarde (json)
+  - Mise en place de plus de tests
+  - Mise en place d'un système de lecture d'un fichier de sauvegarde
+  - Factorisation de Code et de packages
+  - Simplification des exports pour Classe.
+- **Avancement** :  ✅ Complétée
 
 
 ## Conclusion
@@ -88,4 +97,15 @@ Le drag & drop a été un gros défi pour moi, notamment à cause de la gestion 
 Cette erreur était particulièrement compliquée à gérer parce qu’elle n’était pas levée comme une exception classique, c'etait une Error et j’attrapais uniquement les exceptions dans mon catch, ce qui m’a ralenti pendant un moment vu que je me suis retrouvé bloqué.
 Finalement, j’ai mis en place une boucle dans un try-catch qui essaie toutes les combinaisons possibles et j'attrape désormais les errors aussi. Grâce à cette solution, on peut désormais glisser-déposer n’importe quel fichier .class, peu importe le nombre de packages.
 Cependant, il y a un cas où cela ne fonctionne pas : lorsque le fichier .class est dans le mauvais package. Dans ce cas, c’est normal que ça échoue, et je l’indique clairement en lançant une exception."
+
+**Valentin** :
+L'application que je développe a bien progressé malgré un schéma MVC initialement incorrect. Elle devient performante, avec un code propre et des fonctionnalités très intéressantes. La factorisation du code et le travail sur son efficacité commencent également à me donner entière satisfaction.
+
+
+**Zacharie**:
+
+Pour compléter les fonctionnalités du package data, j'ai rencontré des défis complèxes pour gérer le chargement, la sauvegarde et l'exportation.
+J'ai dû construire des classes de test completes pour vérifier le bon fonctionnement de ces méthodes qui sont à la racine de l'application.
+J'ai mis en place tous les packages pour simplifier l'usage du code pour toute l'équipe, désormais le projet est bien plus propre.
+Pour correspondre aux demandes de Geoffrey, j'ai ajouté des méthodes dans la classe Classe afin qu'il puisse plus facilement la manipuler.
 
