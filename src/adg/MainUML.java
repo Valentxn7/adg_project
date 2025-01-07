@@ -22,7 +22,7 @@ public class MainUML extends Application {
 
         VueDiagramme partieDroite = new VueDiagramme();  // bouton add projet
 
-        modelUML.getClasses();
+
         modelUML.setVueDiagramme(partieDroite);
         modelUML.enregistrerObservateur(partieDroite);
 
