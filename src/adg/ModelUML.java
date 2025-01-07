@@ -502,5 +502,11 @@ public class ModelUML implements Sujet {
         return res;
     }
 
-
+    public List<VueClasse> getVueClasse(){
+        List res = new ArrayList<VueClasse>();
+        for (String s : vues.keySet()){
+           res.add(vues.get(s));
+        }
+        return res;
+    }
 }
