@@ -1,4 +1,4 @@
-package vues;
+package adg.vues;
 
 import adg.ModelUML;
 import adg.Observateur;

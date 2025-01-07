@@ -11,7 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import vues.*;
+import adg.vues.*;
 
 public class MainUML extends Application {
 

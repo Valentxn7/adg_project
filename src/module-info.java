@@ -4,5 +4,5 @@ module adg_project {
 
     exports adg;
     exports adg.control;
-    exports vues;
+    exports adg.vues;
 }
