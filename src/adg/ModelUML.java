@@ -1,5 +1,6 @@
 package adg;
 
+import adg.data.PathToClass;
 import javafx.stage.Stage;
 import adg.data.Analyser;
 import adg.data.Classe;
@@ -10,11 +11,8 @@ import java.nio.file.Path;
 import java.nio.file.attribute.DosFileAttributeView;
 import java.util.*;
 
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.io.File;
-import java.net.URL;
-import java.net.URLClassLoader;
 
 public class ModelUML implements Sujet {
     private ArrayList<Observateur> observateurs;

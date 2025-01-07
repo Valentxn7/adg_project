@@ -1,6 +1,7 @@
 package adg;
 
 import adg.control.ControllerAccueil;
+import adg.control.ControllerDragDrop;
 import adg.control.ControllerNewProject;
 import adg.vues.*;
 import javafx.application.Application;
@@ -36,10 +37,12 @@ public class MainUML extends Application {
         Label fin = new Label("Tous droits réservés");
         fin.setAlignment(javafx.geometry.Pos.CENTER);
 
-        VBox partieGauche = new VBox(0);  // TreeView et MenuBar
+        VBox partieGauche = new VBox(0);// TreeView et MenuBar
+        ControllerDragDrop controllerDragDrop = new ControllerDragDrop(modelUML);
+
         VueDiagramme partieDroite = new VueDiagramme(modelUML);  // bouton add projet
         modelUML.enregistrerObservateur(partieDroite);
-
+        controllerDragDrop.activerDragAndDrop(partieDroite);
         Button addProjectButton = new Button("+");
         addProjectButton.setId("bouton");
         addProjectButton.setAlignment(javafx.geometry.Pos.CENTER);
