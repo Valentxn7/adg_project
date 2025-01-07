@@ -19,6 +19,8 @@ public class TestExport {
     Classe classe2;
     Classe classe3;
 
+    ArrayList<Classe> classes = new ArrayList<>();
+
     String className = ExempleClasse.class.getName();
     String className2 = ExempleClasse2.class.getName();
     String className3 = ExempleInterface.class.getName();
@@ -27,8 +29,6 @@ public class TestExport {
 
     @BeforeEach
     public void setUp() throws Exception {
-        ArrayList<Classe> classes = new ArrayList<>();
-
         Analyser analyser = new Analyser(ExempleClasse.class);
         classe = analyser.analyse();
         classes.add(classe);
@@ -40,13 +40,11 @@ public class TestExport {
         Analyser analyser3 = new Analyser(ExempleInterface.class);
         classe3 = analyser3.analyse();
         classes.add(classe3);
-
-        exp = new Export(classes);
     }
 
     @Test
     public void test_uml() throws Exception {
-        String uml = exp.getUML();
+        String uml = exp.getUML(classes);
 
         String expected = """
         @startuml
