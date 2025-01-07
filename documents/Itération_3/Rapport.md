@@ -20,10 +20,13 @@
     - Refactoring du code pour une meilleure lisibilité.
     - Creation d'une nouvelle classe avec méthodes static pour gerer le conversion des fichiers .class en objet Class<?>.
 - **Avancement** : ✅ Complétée
+- 
+- ### Fonctionnalité 2 : Flèche (Refactoring)
+- **Responsable** : Georges Gros
+- **Description** :
+  - intégration des flèches dans le model
+  - réalisation de système de placement des classes
+  - correction de bugs.
+- **Avancement** : ✅ Complétée
 
-**Ryan** :
-
-**Valentin** :
-
-**Zacharie**:
 
