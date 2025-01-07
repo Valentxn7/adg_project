@@ -1,5 +1,6 @@
 package adg;
 
+import adg.data.PathToClass;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
@@ -389,27 +390,27 @@ public class ModelUML implements Sujet {
      * @param cheminAbsolu le chemin absolu du fichier à analyser.
      * @throws ClassNotFoundException si une classe dans le fichier est introuvable.
      */
-    public void analyseFichier(String cheminAbsolu) throws Exception {
-        // Extrait le nom de la classe à partir du chemin absolu
-        String nomClasse = extraireNomClasse(cheminAbsolu);
-
-        File fichier = new File(cheminAbsolu);
-        String cheminClasse = fichier.getParentFile().toURI().toString();
-
-        // Crée un URLClassLoader pour charger la classe
-        URLClassLoader chargeurClasse = new URLClassLoader(new URL[]{new URL(cheminClasse)});
+    /**
+     * Analyse un fichier .class à partir de son chemin absolu et charge la classe correspondante dans le classpath.
+     * Effectue également une analyse UML de la classe et notifie les observateurs.
+     *
+     * @param cheminAbsolu Le chemin absolu du fichier .class à analyser.
+     * @throws Throwable Si une exception se produit lors de l'analyse ou du chargement de la classe.
+     */
+    public void analyseFichier(String cheminAbsolu) throws Throwable {
 
         // Charge la classe
-        Class<?> classe = chargerClasse(chargeurClasse, nomClasse, cheminAbsolu);
+        Class<?> classe = PathToClass.convertirCheminEnClasse(cheminAbsolu);
 
         // Analyse la classe
         Analyser analyse = new Analyser(classe);
-        Classe classeAnalysée = analyse.analyse();
+        Classe classeAnalysee = analyse.analyse();
 
         // Ajoute la classe au modèle
-        ajouterClasse(classeAnalysée);
+        ajouterClasse(classeAnalysee);
 
         // Affiche la représentation UML de la classe
+        System.out.println(classeAnalysee.UMLString());
 
         // Notifie les observateurs
         notifierObservateurs();
@@ -429,49 +430,6 @@ public class ModelUML implements Sujet {
     }
 
 
-    private String extraireNomClasse(String cheminAbsolu) {
-        int ind = 0;
-        int indbefore = 0;
-
-        for (int i = 0; i < cheminAbsolu.length(); i++) {
-            if (cheminAbsolu.charAt(i) == '\\') {
-                indbefore = ind;
-                ind = i;
-            }
-        }
-        if (indbefore == 0) {
-            indbefore = ind;
-        }
-
-        // Retourner tout après le deuxième dernier séparateur
-
-        String chemin = cheminAbsolu.substring(indbefore + 1);
-
-        return chemin;
-    }
-
-    private Class<?> chargerClasse(URLClassLoader chargeurClasse, String nomClasse, String cheminAbsolu) throws Exception {
-        try {
-            return chargeurClasse.loadClass(nomClasse);
-        } catch (ClassNotFoundException e) {
-            // Modifie le chemin absolu pour remplacer le dernier backslash par un point
-            cheminAbsolu = remplacerDernierBackslashParPoint(cheminAbsolu);
-            File fichier = new File(cheminAbsolu);
-            nomClasse = fichier.getName().replace(".class", "");
-            String cheminClasse = fichier.getParentFile().toURI().toString();
-            chargeurClasse = new URLClassLoader(new URL[]{new URL(cheminClasse)});
-            return chargeurClasse.loadClass(nomClasse);
-        }
-    }
-
-    private String remplacerDernierBackslashParPoint(String cheminAbsolu) {
-        int dernierIndexBackslash = cheminAbsolu.lastIndexOf('/');
-        if (dernierIndexBackslash != -1) {
-            String n = cheminAbsolu.substring(0, dernierIndexBackslash) + '.' + cheminAbsolu.substring(dernierIndexBackslash + 1);
-            return n;
-        }
-        return cheminAbsolu;
-    }
 
 
     /**
