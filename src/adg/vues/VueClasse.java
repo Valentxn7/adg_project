@@ -1,5 +1,10 @@
-package adg;
+package adg.vues;
 
+import adg.Fleche;
+import adg.ModelUML;
+import adg.Observateur;
+import adg.Sujet;
+import adg.data.Classe;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
@@ -15,6 +20,7 @@ public class VueClasse extends VBox implements Observateur {
      * La classe à afficher
      */
     private Classe classe;
+
     /**
      * Constructeur de la vue
      * @param classe la classe à afficher
@@ -23,7 +29,6 @@ public class VueClasse extends VBox implements Observateur {
         this.classe = classe;
         this.setSpacing(10); // Espacement entre les éléments
         this.setId("vue-classe");
-
         // Génération de la vue
         afficherClasse();
     }
@@ -32,22 +37,24 @@ public class VueClasse extends VBox implements Observateur {
      * @param mod le sujet à observer
      */
     public void actualiser(Sujet mod) {
-            this.getChildren().clear();
-            afficherClasse();
+        this.getChildren().clear();
+        afficherClasse();
+        ModelUML model = (ModelUML) mod;
+        int[] position = model.getClassesCoordonnees(this);
+        this.setLayoutX(position[0]);
+        this.setLayoutY(position[1]);
     }
+
 
     private void afficherClasse() {
         // Affiche le nom de la classe
         this.getChildren().add(new Label(classe.getClassName()));
-
         // Affichage des attributs
         ajouterElements(classe.getFields(), this::creerAttribut);
-
         // Affichage des constructeurs
-        ajouterElements(classe.getConstructors(), this::creerConstructeur);
-
+        ajouterConstructeur();
         // Affichage des méthodes
-        ajouterElements(classe.getMethods(), this::creerMethode);
+        ajouterMethodes();
     }
 
     /**
@@ -105,16 +112,16 @@ public class VueClasse extends VBox implements Observateur {
     /**
      * Crée une HBox pour un constructeur.
      */
-    private HBox creerConstructeur(Object[] constructor) {
-        List<String> params = (List<String>) constructor[1];
-        return creerHBox(getVisibilityCircle(constructor[0].toString()), new Label(classe.getClassName() + "(" + String.join(", ", params) + ")"));
+    private HBox creerConstructeur(String[] constructor) {
+        String params = constructor[2];
+        return creerHBox(getVisibilityCircle(constructor[0]), new Label(classe.getClassName() + "(" + String.join(", ", params) + ")"));
     }
 
     /**
      * Crée une HBox pour une méthode.
      */
-    private HBox creerMethode(Object[] method) {
-        List<String> params = (List<String>) method[2];
+    private HBox creerMethode(String[] method) {
+        String params = method[2];
         return creerHBox(getVisibilityCircle(method[0].toString()), new Label(method[1] + "(" + String.join(", ", params) + ") : " + method[3]));
     }
 
@@ -153,8 +160,11 @@ public class VueClasse extends VBox implements Observateur {
         }
         return circle;
     }
-
 }
+
+
+
+
 
 
 

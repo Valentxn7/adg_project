@@ -1,5 +1,6 @@
 package adg.vues;
 
+
 import adg.ModelUML;
 import adg.Observateur;
 import adg.Sujet;

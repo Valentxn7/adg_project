@@ -1,9 +1,11 @@
-package adg;
+package adg.control;
 
+import adg.ModelUML;
+import adg.vues.VueDiagramme;
 import javafx.event.EventHandler;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 
 import java.io.File;
 import java.util.List;
@@ -32,7 +34,7 @@ public class ControllerDragDrop implements EventHandler<DragEvent> {
      * @param root le conteneur graphique (StackPane) sur lequel le drag-and-drop
      *             est activé.
      */
-    public void activerDragAndDrop(StackPane root) {
+    public void activerDragAndDrop(VueDiagramme root) {
         root.setOnDragOver(this);
         root.setOnDragDropped(this);
     }

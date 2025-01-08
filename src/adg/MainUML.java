@@ -1,5 +1,6 @@
 package adg;
 
+import adg.control.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -34,6 +35,7 @@ public class MainUML extends Application {
         VBox partieGauche = new VBox(0);  // TreeView et MenuBar
         VueDiagramme partieDroite = new VueDiagramme();  // bouton add projet
         modelUML.enregistrerObservateur(partieDroite);
+        modelUML.setVueDiagramme(partieDroite);
         ControllerDragDrop controllerDragDrop = new ControllerDragDrop(modelUML);
 
         controllerDragDrop.activerDragAndDrop(partieDroite);
@@ -42,7 +44,7 @@ public class MainUML extends Application {
         addProjectButton.setAlignment(javafx.geometry.Pos.CENTER);
         addProjectButton.setOnAction(new ControllerCreateProject(modelUML));
 
-        partieDroite.setAlignment(javafx.geometry.Pos.CENTER);
+
 
         /*     MENU       **/
 
