@@ -32,17 +32,18 @@ import java.net.URLClassLoader;
  * les chemins de fichiers, et la communication avec les observateurs.
  */
 public class ModelUML implements Sujet {
-
     private VueDiagramme vueDiagramme;
     private ArrayList<Observateur> observateurs; // Liste des observateurs
     private ArrayList<Classe> classes;          // Liste des classes UML
     private ArrayList<String> chemins;          // Liste des chemins de fichiers
+
     private HashMap<String, VueClasse> vues;  // hashmap qui associe le nom de la classe à sa vue
     private String windowsTitle = "Home";
     private String folderPath = null;
     private File folder = null;
     private static final String DATA_FILE = ".data.json"; // Nom du fichier des données
     private static final int MAX_RECENT_FOLDERS = 10;     // Limite du nombre de dossiers récents
+
     List<String> recentFolders;
     private boolean isHome = true;
 
@@ -352,6 +353,10 @@ public class ModelUML implements Sujet {
         return "ADG - " + windowsTitle;
     }
 
+    public String getProjectName() {
+        return windowsTitle;
+    }
+
     /**
      * Définit le titre de la fenêtre.
      *
@@ -368,6 +373,10 @@ public class ModelUML implements Sujet {
 
     public ArrayList<Observateur> getObservers() {
         return observateurs;
+    }
+
+    public VueDiagramme getVueDiagramme() {
+        return vueDiagramme;
     }
 
     public void setFolderPath(String path) {
@@ -733,11 +742,6 @@ public class ModelUML implements Sujet {
         coordonnees[1] = y.intValue();
         coordonneesClasse.put(classe, coordonnees);
         notifierObservateurs();
-    }
-
-
-    public VueDiagramme getVueDiagramme() {
-        return vueDiagramme;
     }
 
 
