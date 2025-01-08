@@ -743,7 +743,6 @@ public class ModelUML implements Sujet {
                 if (estLibre(x, y)) {
                     // Si c'est libre, on place la classe ici et on met à jour ses coordonnées
                     classe.setCoords(x, y);
-                    System.err.println("Classe " + classe.getClassName() + " placée en (" + x + ", " + y + ")");
                     placeTrouvee = true;
                     break; // Sortir de la boucle interne si la place a été trouvée
                 }
