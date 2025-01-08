@@ -44,7 +44,7 @@ public class ControleurDeplacerClasse implements EventHandler<MouseEvent> {
 
             if (x >= 0 && x + classe.getWidth() <= partieDroiteMaxX &&
                     y >= 0 && y + classe.getHeight() <= partieDroiteMaxY) { //Si la classe est dans la partie droite
-                model.changerPositionClasse(classe, x, y); //On change la position de la classe
+                model.changerPositionClasse(classe.getClasse(), x, y); //On change la position de la classe
             }
 
         } else if (event.getEventType() == MouseEvent.MOUSE_PRESSED) { // Quand on appuie sur la souris

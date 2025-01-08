@@ -137,7 +137,6 @@ public class ModelUML implements Sujet {
         this.ajouterFlecheImp(classe, vue);
         this.ajouterFlecheAttri(classe, vue);
         this.ajoutFlecheCorrespondant();
-
     }
 
 
@@ -210,7 +209,7 @@ public class ModelUML implements Sujet {
 
     private void ajoutFlecheCorrespondant() {
         for (Classe c : classes) {
-            System.out.println("classe : " + c.getClassName());
+            //System.out.println("classe : " + c.getClassName());
             String nameC = c.getClassName();
             VueClasse vueClasse = vues.get(nameC);
             ajouterFlecheExt(c, vueClasse);
@@ -231,7 +230,7 @@ public class ModelUML implements Sujet {
                 }
             }
         }
-        System.out.println("res : " + res);
+        // System.out.println("res : " + res);
         return res;
     }
 
@@ -713,35 +712,72 @@ public class ModelUML implements Sujet {
     }
 
 
-    public void trouverPlacePourClassess(VueClasse vue) {
-        int[] coordonnees = new int[2];
-        for (int y = 40; y < vueDiagramme.getHeight(); y++) {
-            boolean b = true;
-            for (int x = 0; x < vueDiagramme.getWidth(); x += 200) {
+    public void trouverPlacePourClassess(Classe classe) {
+        // Récupérer les dimensions de la nouvelle classe
+        int width = classe.getWidth();
+        int height = classe.getHeight();
+
+        // Commencer à tester à partir du coin supérieur gauche avec une marge
+        int marge = 10; // marge autour de la classe pour éviter de la placer trop près d'autres
+        int x = marge;
+        int y = marge;
+
+        // Définir la largeur et la hauteur maximales du pane
+        int maxWidth = (int) vueDiagramme.getWidth();
+        int maxHeight =(int) vueDiagramme.getHeight();
+
+        System.out.println("maxWidth : " + maxWidth);
+        System.out.println("maxHeight : " + maxHeight);
+        boolean placeTrouvee = false;
+
+        // Boucle pour trouver un emplacement libre
+        while (y + height <= maxHeight) {
+            while (x + width <= maxWidth) {
+                // Vérifier si l'emplacement est libre
                 if (estLibre(x, y)) {
-                    coordonnees[0] = x;
-                    coordonnees[1] = y;
-                    coordonneesClasse.put(vue, coordonnees);
-                    b = false;
-                    break;
+                    // Si c'est libre, on place la classe ici et on met à jour ses coordonnées
+                    classe.setCoords(x, y);
+                    System.err.println("Classe " + classe.getClassName() + " placée en (" + x + ", " + y + ")");
+                    placeTrouvee = true;
+                    break; // Sortir de la boucle interne si la place a été trouvée
                 }
+                // Déplacer l'élément sur l'axe X
+                x += width + marge;
             }
-            if (!b) {
-                break;
+
+            if (placeTrouvee) {
+                break; // Sortir de la boucle externe si la place a été trouvée
             }
+
+            // Si aucune place trouvée, passer à la ligne suivante
+            x = marge;
+            y += height + marge;
+        }
+
+        // Si aucune place n'a été trouvée, placer la classe à un endroit par défaut
+        if (!placeTrouvee) {
+            classe.setCoords(0,0);
+            System.err.println("Aucun emplacement libre trouvé. Classe " + classe.getClassName() + " placée en dernier endroit possible.");
         }
     }
 
-    private boolean estLibre(int x, int y) {
-        int x2, y2;
+
+    /**
+     * Vérifie si une case est libre
+     *
+     * @param x Coordonnée x du clic
+     * @param y Coordonnée y du clic
+     * @return true si la case est libre, false sinon
+     */
+    public boolean estLibre(int x, int y) {
         boolean res = true;
-        for (VueClasse classe : coordonneesClasse.keySet()) {
-            {
-                x2 = coordonneesClasse.get(classe)[0];
-                y2 = coordonneesClasse.get(classe)[1];
-                if ((y >= y2 && y <= y2 + classe.getHeight()) && (x >= x2 && x <= x2 + classe.getWidth())) {
-                    res = false;
-                }
+        for (Classe classe : classes) {
+            int[] coordonnees = classe.getCoords();
+            int width = classe.getWidth();
+            int height = classe.getHeight();
+            if (x >= coordonnees[0] && x <= coordonnees[0] + width && y >= coordonnees[1] && y <= coordonnees[1] + height) {
+                res = false;
+                break;
             }
         }
         return res;
@@ -779,6 +815,10 @@ public class ModelUML implements Sujet {
         return this.etatClickDroit;
     }
 
+    public boolean getEtatClickDroitClasse() {
+        return etatClickDroitClasse;
+    }
+
     /**
      * Affiche le menu contextuel au click droit
      *
@@ -791,6 +831,15 @@ public class ModelUML implements Sujet {
         coordonneesClickDroit[1] = y;
         System.out.println("click droit : " + x + " " + y);
         System.out.println("etat click droit : " + etatClickDroit);
+        notifierObservateurs();
+    }
+
+    public void afficherClickDroitClasse(int x, int y) {
+        etatClickDroitClasse = true;
+        coordonneesClickDroit[0] = x;
+        coordonneesClickDroit[1] = y;
+        System.err.println("click droit Classe : " + x + " " + y);
+        System.err.println("etat click droit Classe : " + etatClickDroitClasse);
         notifierObservateurs();
     }
 
@@ -869,6 +918,7 @@ public class ModelUML implements Sujet {
     public void afficherToutesDependances() {
         //TODO
         System.out.println("afficher toutes les dépendances");
+        notifierObservateurs();
     }
 
     /**
@@ -877,6 +927,7 @@ public class ModelUML implements Sujet {
     public void afficherTousHeritages() {
         //TODO
         System.out.println("afficher tous les héritages");
+        notifierObservateurs();
     }
 
     /**
@@ -885,6 +936,7 @@ public class ModelUML implements Sujet {
     public void afficherTousAttributs() {
         //TODO
         System.out.println("afficher tous les attributs");
+        notifierObservateurs();
     }
 
 
@@ -894,5 +946,49 @@ public class ModelUML implements Sujet {
     public void afficherToutesMethodes() {
         //TODO
         System.out.println("afficher toutes les méthodes");
+        notifierObservateurs();
+    }
+
+
+    public void masquerDependances() {
+        //TODO
+        System.out.println("masquer les dépendances");
+        notifierObservateurs();
+    }
+
+    public void masquerHeritages() {
+        //TODO
+        System.out.println("masquer les héritages");
+        notifierObservateurs();
+    }
+
+    public void masquerAttributs() {
+        //TODO
+        System.out.println("masquer les attributs");
+        notifierObservateurs();
+    }
+
+    public void afficherDependances() {
+        //TODO
+        System.out.println("afficher les dépendances");
+        notifierObservateurs();
+    }
+
+    public void afficherHeritages() {
+        //TODO
+        System.out.println("afficher les héritages");
+        notifierObservateurs();
+    }
+
+    public void afficherAttributs() {
+        //TODO
+        System.out.println("afficher les attributs");
+        notifierObservateurs();
+    }
+
+    public void afficherMethodes() {
+        //TODO
+        System.out.println("afficher les méthodes");
+        notifierObservateurs();
     }
 }

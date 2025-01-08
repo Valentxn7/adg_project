@@ -232,6 +232,10 @@ public class MainUML extends Application {
         partieDroite.setOnMouseClicked(controllerClickDroit);
         modelUML.setPaneClickDroit(partieDroite);
 
+        VueClickDroitClasse vueClickDroitClasse = new VueClickDroitClasse(modelUML);
+        modelUML.enregistrerObservateur(vueClickDroitClasse);
+
+
 
 
         /*       lancement       **/
