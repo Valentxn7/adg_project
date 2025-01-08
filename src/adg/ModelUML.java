@@ -94,6 +94,7 @@ public class ModelUML implements Sujet {
     private final ControleurDeplacerClasse controleurDeplacerClasse = new ControleurDeplacerClasse(this);
 
     private boolean etatClickDroit = false;
+    private boolean etatClickDroitClasse = false;
     private int[] coordonneesClickDroit = new int[2];
     private VueDiagramme partieDroite;
 
@@ -130,7 +131,7 @@ public class ModelUML implements Sujet {
         observateurs.add(vue);
         vueDiagramme.getChildren().add(vue);
         vues.put(classe.getClassName(), vue);
-        this.trouverPlacePourClassess(vue);
+        this.trouverPlacePourClassess(classe);
         vue.addEventHandler(MouseEvent.MOUSE_PRESSED, controleurDeplacerClasse);
         vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
         this.ajouterFlecheExt(classe, vue);
