@@ -163,10 +163,10 @@ public class ModelUML implements Sujet {
     }
 
     /**
-     * Crée un projet vierge, survient quand on clique sur Nouveau Projet
+     * Ajoute une flèche d'implémentation à la vue diagramme
      *
-     * @param nomProjet nom du projet
-     * @return true si le projet a été créé, false sinon
+     * @param classe
+     * @param vueClasse
      */
     private void ajouterFlecheImp(Classe classe, VueClasse vueClasse) {
         List<String> s = classe.getInterfaces();
