@@ -43,7 +43,7 @@ public class VueClasse extends VBox implements Observateur {
         int[] position = model.getClassesCoordonnees(this);
         this.setLayoutX(position[0]);
         this.setLayoutY(position[1]);
-
+        classe.setCoords(position[0], position[1]);
     }
 
 
