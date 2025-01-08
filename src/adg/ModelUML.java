@@ -4,6 +4,7 @@ import adg.data.PathToClass;
 import adg.vues.VueClasse;
 import adg.vues.VueDiagramme;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import adg.data.Analyser;
 import adg.data.Classe;
@@ -134,7 +135,9 @@ public class ModelUML implements Sujet {
         vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
         this.ajouterFlecheExt(classe, vue);
         this.ajouterFlecheImp(classe, vue);
+        this.ajouterFlecheAttri(classe, vue);
         this.ajoutFlecheCorrespondant();
+
     }
 
 
@@ -187,6 +190,24 @@ public class ModelUML implements Sujet {
         }
     }
 
+    private void ajouterFlecheAttri(Classe classe, VueClasse vueClasse) {
+        List<String[]> s = classe.getFields();
+        for (String[] i : s) {
+            Classe classeImp = containsClasse(i[Analyser.FIELD_TYPE]);
+            if (classeImp != null) {
+                VueClasse vueClasseImp = vues.get(classeImp.getClassName());
+                if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
+                    FlecheAttri fleche = new FlecheAttri(new Text(i[Analyser.FIELD_MODIFIER]+i[Analyser.FIELD_NAME]));
+                    vueDiagramme.getChildren().add(fleche);
+                    vueDiagramme.getChildren().add(fleche.getTete());
+                    vueDiagramme.getChildren().add(fleche.getAttribut());
+                    coordonneesFleche.put(fleche, new VueClasse[]{vueClasse, vueClasseImp});
+                    observateurs.add(fleche);
+                }
+            }
+        }
+    }
+
     private void ajoutFlecheCorrespondant() {
         for (Classe c : classes) {
             System.out.println("classe : " + c.getClassName());
@@ -194,6 +215,7 @@ public class ModelUML implements Sujet {
             VueClasse vueClasse = vues.get(nameC);
             ajouterFlecheExt(c, vueClasse);
             ajouterFlecheImp(c, vueClasse);
+            ajouterFlecheAttri(c, vueClasse);
         }
 
     }
