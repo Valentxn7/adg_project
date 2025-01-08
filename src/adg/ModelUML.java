@@ -2,6 +2,7 @@ package adg;
 
 import adg.data.PathToClass;
 import adg.vues.VueClasse;
+import adg.vues.VueDiagramme;
 import javafx.stage.Stage;
 import adg.data.Analyser;
 import adg.data.Classe;
@@ -91,7 +92,7 @@ public class ModelUML implements Sujet {
      * Constructeur par défaut. Initialise les listes d'observateurs,
      * de classes UML et de chemins.
      */
-    public ModelUML() {
+    public ModelUML(Stage stage) {
         chemins = new ArrayList<>();
         vues = new HashMap<>();
         observateurs = new ArrayList<Observateur>();
@@ -114,20 +115,20 @@ public class ModelUML implements Sujet {
      * @param classe la classe à ajouter.
      */
     public void ajouterClasse(Classe classe) {
-        if(classes!=null)
+        if (classes != null)
             classes.add(classe);
-            VueClasse vue = new VueClasse(classe);
-            observateurs.add(vue);
-            vueDiagramme.getChildren().add(vue);
-            vues.put(classe.getClassName(), vue);
-            this.trouverPlacePourClassess(vue);
-            vue.addEventHandler(MouseEvent.MOUSE_PRESSED, controleurDeplacerClasse);
-            vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
-            this.ajouterFlecheExt(classe, vue);
-            this.ajouterFlecheImp(classe, vue);
-            this.ajoutFlecheCorrespondant();
-        }
+        VueClasse vue = new VueClasse(classe);
+        observateurs.add(vue);
+        vueDiagramme.getChildren().add(vue);
+        vues.put(classe.getClassName(), vue);
+        this.trouverPlacePourClassess(vue);
+        vue.addEventHandler(MouseEvent.MOUSE_PRESSED, controleurDeplacerClasse);
+        vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
+        this.ajouterFlecheExt(classe, vue);
+        this.ajouterFlecheImp(classe, vue);
+        this.ajoutFlecheCorrespondant();
     }
+
 
     private boolean verifExistanceClasse(Classe classe) {
         boolean res = false;
@@ -344,10 +345,8 @@ public class ModelUML implements Sujet {
     /**
      * Définit le titre de la fenêtre.
      *
-     * @param title le nouveau titre.
+     * @param titre le nouveau titre.
      */
-    public void setWindowsTitle(String title) {
-        windowsTitle = title;
     public void setWindowsTitle(String titre) {
         this.windowsTitle = titre;
         this.stage.setTitle(titre);
@@ -490,7 +489,7 @@ public class ModelUML implements Sujet {
             e.printStackTrace();
         }
     }
-    }
+
 
     // Ajoute un dossier récent au fichier JSON
     private static void addRecentFolder(String folderPath) {
@@ -619,8 +618,6 @@ public class ModelUML implements Sujet {
     }
 
 
-
-
     /**
      * recupère les classes corréspondant à une fleche
      *
@@ -691,12 +688,12 @@ public class ModelUML implements Sujet {
         return res;
     }
 
-    public List<VueClasse> getVueClasses(){
+    public List<VueClasse> getVueClasses() {
         System.out.println("taille : " + vues.size());
         List res = new ArrayList<VueClasse>();
-        for (String s : vues.keySet()){
+        for (String s : vues.keySet()) {
             System.out.println("classe : " + s);
-           res.add(vues.get(s));
+            res.add(vues.get(s));
         }
         return res;
     }
@@ -708,57 +705,6 @@ public class ModelUML implements Sujet {
         coordonneesClasse.put(classe, coordonnees);
         notifierObservateurs();
     }
-}
-    /**
-     * Ajoute un chemin de fichier au modèle et notifie les observateurs.
-     *
-     * @param filePath le chemin à ajouter.
-     */
-    public void setFilePath(String filePath) {
-        this.chemins.add(filePath);
-        notifierObservateurs();
-    }
-
-    /**
-     * Retourne tous les chemins de fichiers enregistrés sous forme de chaîne.
-     *
-     * @return une chaîne contenant tous les chemins, séparés par des sauts de ligne.
-     */
-    public String getFilePath() {
-        StringBuilder res = new StringBuilder();
-        for (String chemin : chemins) {
-            res.append(chemin).append("\n");
-        }
-        return res.toString();
-    }
-
-    /**
-     * Analyse un fichier .class à partir de son chemin absolu et charge la classe correspondante dans le classpath.
-     * Effectue également une analyse UML de la classe et notifie les observateurs.
-     *
-     * @param cheminAbsolu Le chemin absolu du fichier .class à analyser.
-     * @throws Throwable Si une exception se produit lors de l'analyse ou du chargement de la classe.
-     */
-    public void analyseFichier(String cheminAbsolu) throws Throwable {
-
-        // Charge la classe
-        Class<?> classe = PathToClass.convertirCheminEnClasse(cheminAbsolu);
-
-        // Analyse la classe
-        Analyser analyse = new Analyser(classe);
-        Classe classeAnalysee = analyse.analyse();
-
-        // Ajoute la classe au modèle
-        ajouterClasse(classeAnalysee);
-
-        // Affiche la représentation UML de la classe
-        System.out.println(classeAnalysee.UMLString());
-
-        // Notifie les observateurs
-        notifierObservateurs();
-    }
-
-
 
 
 }

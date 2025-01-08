@@ -1,5 +1,6 @@
 package adg;
 
+import adg.vues.VueClasse;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;

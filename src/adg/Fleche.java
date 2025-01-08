@@ -1,4 +1,5 @@
 package adg;
+import adg.vues.VueClasse;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
