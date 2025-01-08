@@ -1,5 +1,6 @@
 package adg;
 import adg.vues.VueClasse;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -20,6 +21,7 @@ public abstract class Fleche extends Line implements Observateur {
             setPos(classe[0], classe[1]);
         }
     }
+
 
 
     public void setPos(VBox start, VBox end) {
@@ -94,6 +96,12 @@ public abstract class Fleche extends Line implements Observateur {
             return new Point2D(centerX + x, centerY + y);
         }
     }
+
+
+
+
+
+
 
 
 

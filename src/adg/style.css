@@ -63,10 +63,6 @@
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
 
-    /* Limiter uniquement la largeur */
-    -fx-min-width: 100px;  /* Largeur minimale */
-    -fx-max-width: 300px;  /* Largeur maximale */
-
 }
 #separation {
     -fx-border-color: gray;
