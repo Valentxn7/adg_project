@@ -1,6 +1,5 @@
-package adg.control;
+package adg;
 
-import adg.ModelUML;
 import javafx.event.EventHandler;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
@@ -61,10 +60,10 @@ public class ControllerDragDrop implements EventHandler<DragEvent> {
             boolean succes = false;
 
             // Sauvegarde les coordonnées du drop pour les utiliser dans le diagramme
-            StackPane root = (StackPane) event.getSource();
+            Pane root = (Pane) event.getSource();
             double x = root.sceneToLocal(event.getSceneX(), event.getSceneY()).getX();
             double y = root.sceneToLocal(event.getSceneX(), event.getSceneY()).getY();
-            System.out.println("Position : " + x + " " + y);
+
 
             if (event.getDragboard().hasFiles()) {
 
@@ -81,9 +80,8 @@ public class ControllerDragDrop implements EventHandler<DragEvent> {
                             model.analyseFichier(file.getAbsolutePath());
                         } catch (ClassNotFoundException e) {
                             System.out.println("Erreur lors de l'analyse du fichier");
-                            e.printStackTrace();
                         } catch (Exception e) {
-                           e.printStackTrace();
+                            e.printStackTrace();
                         } catch (Throwable e) {
                             e.printStackTrace();
                         }

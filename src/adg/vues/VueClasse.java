@@ -1,14 +1,13 @@
-package adg.vues;
+package adg;
 
-import adg.Observateur;
-import adg.Sujet;
-import adg.data.Classe;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VueClasse extends VBox implements Observateur {
@@ -61,11 +60,41 @@ public class VueClasse extends VBox implements Observateur {
             VBox box = new VBox();// Espacement entre les éléments
             box.setId("separation");
             for (T element : elements) {
+                System.out.println(element);
                 box.getChildren().add(constructeur.apply(element));
             }
             this.getChildren().add(box);
         }
     }
+    private void ajouterConstructeur(){
+        List<String[]> constructors = classe.getConstructorsInStrings();
+        if (!constructors.isEmpty()) {
+            VBox box = new VBox();// Espacement entre les éléments
+            box.setId("separation");
+            for (String[] constructor : constructors) {
+                box.getChildren().add(creerConstructeur(constructor));
+            }
+            this.getChildren().add(box);
+        }
+    }
+
+    private void ajouterMethodes(){
+        List<String[]>methods = classe.getMethodsInStrings();
+        if (!methods.isEmpty()) {
+            VBox box = new VBox();// Espacement entre les éléments
+            box.setId("separation");
+            for (String[] method : methods) {
+                box.getChildren().add(creerMethode(method));
+            }
+            this.getChildren().add(box);
+        }
+    }
+
+
+
+
+
+
 
     /**
      * Crée une HBox pour un attribut.
