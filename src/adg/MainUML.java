@@ -145,7 +145,6 @@ public class MainUML extends Application {
         VueRecent vueRecent = new VueRecent();  // la TreeView affiche les TreeItem
         vueRecent.setRoot(rootRecent);
         modelUML.enregistrerObservateur(vueRecent);
-        vueRecent.actualiser(modelUML);
 
         /*     ORGANISATION       **/
 
