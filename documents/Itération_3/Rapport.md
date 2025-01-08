@@ -40,7 +40,7 @@
 - **Avancement** : ✅ Complétée
 
 
-- ### Fonctionnalité 5 : Flèche (Refactoring)
+- ### Fonctionnalité 5 : Partie graphique (Refactoring)
 - **Responsable** : Valentin Knorst
 - **Description** :
   - Amélioration du code, la classe observateur a désormais une seule et unique méthode.
