@@ -13,7 +13,9 @@ public class Classe {
     private List<Object[]> constructors;
     private List<Object[]> methods;
 
-    private double[] coords = new double[2];
+    private int[] coords = new int[2];
+    private int height = 0;
+    private int width = 0;
 
     public Classe(String path) {
         this.class_name = path;
@@ -203,5 +205,30 @@ public class Classe {
 
     public String getName() {
         return this.class_name;
+    }
+
+    public void setCoords(int x, int y) {
+        this.coords[0] = x;
+        this.coords[1] = y;
+    }
+
+    public int[] getCoords() {
+        return this.coords;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public int getHeight() {
+        return this.height;
     }
 }

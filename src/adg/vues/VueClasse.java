@@ -40,9 +40,17 @@ public class VueClasse extends VBox implements Observateur {
         this.getChildren().clear();
         afficherClasse();
         ModelUML model = (ModelUML) mod;
-        int[] position = model.getClassesCoordonnees(this);
+        int[] position = classe.getCoords();
         this.setLayoutX(position[0]);
         this.setLayoutY(position[1]);
+        this.classe.setCoords(position[0], position[1]);
+        this.classe.setWidth((int)this.getWidth());
+        this.classe.setHeight((int)this.getHeight());
+
+
+        System.err.println("VueClasse: " + position[0] + " " + position[1]);
+        System.out.println(this.getWidth());
+        System.out.println(this.getHeight());
     }
 
 
@@ -159,6 +167,10 @@ public class VueClasse extends VBox implements Observateur {
                 break;
         }
         return circle;
+    }
+
+    public Classe getClasse() {
+        return classe;
     }
 }
 

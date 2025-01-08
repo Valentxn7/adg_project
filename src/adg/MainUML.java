@@ -192,11 +192,11 @@ public class MainUML extends Application {
         vueArborescence.setMinSize(ModelUML.PARTIE_GAUCHE_X, (double) (stage.getMinHeight() - 100) / 2);  // (380 - 20) / 2
         vueArborescence.setPrefSize(ModelUML.PARTIE_GAUCHE_X, (double) (stage.getMinHeight() - 100) / 2);  // (380 - 20) / 2
         //vueRecent.setMinSize(ModelUML.PARTIE_GAUCHE_X, 180);  // (380 - 20) / 2
-        System.out.println("h: " + stage.getWidth() + " " + stage.getHeight());
-        System.out.println("h: " + stage.getMaxWidth() + " " + stage.getMaxHeight());
-        System.out.println("h: " + stage.getMinWidth() + " " + stage.getMinHeight());  // le bon truc à mettre
-        System.out.println("h: " + stage.getScene().getWidth() + " " + stage.getScene().getHeight());
-        System.out.println("h: " + partieGauche.getPrefWidth() + " " + partieGauche.getPrefHeight());
+        //System.out.println("h: " + stage.getWidth() + " " + stage.getHeight());
+        //System.out.println("h: " + stage.getMaxWidth() + " " + stage.getMaxHeight());
+        //System.out.println("h: " + stage.getMinWidth() + " " + stage.getMinHeight());  // le bon truc à mettre
+        //System.out.println("h: " + stage.getScene().getWidth() + " " + stage.getScene().getHeight());
+        //System.out.println("h: " + partieGauche.getPrefWidth() + " " + partieGauche.getPrefHeight());
 
 
 
@@ -230,6 +230,10 @@ public class MainUML extends Application {
         modelUML.enregistrerObservateur(vueClickDroit);
         partieDroite.setOnMouseClicked(controllerClickDroit);
         modelUML.setPaneClickDroit(partieDroite);
+
+        VueClickDroitClasse vueClickDroitClasse = new VueClickDroitClasse(modelUML);
+        modelUML.enregistrerObservateur(vueClickDroitClasse);
+
 
 
 

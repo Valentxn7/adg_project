@@ -30,6 +30,7 @@ public class VueDiagramme extends Pane implements Observateur {
             this.setPrefSize(modelUML.getVueDiagramme_x(), modelUML.getVueDiagramme_y());
         }
 
+
     }
 }
 

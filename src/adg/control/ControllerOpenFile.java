@@ -5,6 +5,7 @@ import adg.data.Classe;
 import adg.data.Load;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 public class ControllerOpenFile implements EventHandler<ActionEvent> {
     private ModelUML modelUML;
     private Stage rootStage;
+    private ControllerChoixClickDroit controllerChoixClickDroit;
 
     public ControllerOpenFile(ModelUML modelUML, Stage rootStage) {
         this.modelUML = modelUML;
