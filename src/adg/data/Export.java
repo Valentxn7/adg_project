@@ -1,6 +1,7 @@
 package adg.data;
 
 import adg.Observateur;
+import adg.vues.VueDiagramme;
 import javafx.scene.Node;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.PixelReader;
@@ -19,10 +20,10 @@ public class Export {
      * @param dir Répertoire de destination
      * @param file_name Nom du fichier
      */
-    public void exportUML(List<Classe> classes, String dir, String file_name) {
+    public static void exportUML(List<Classe> classes, String dir, String file_name) {
         FileWriter writer;
         try {
-            writer = new FileWriter(dir + "/" + file_name + ".puml");
+            writer = new FileWriter(dir + "/" + file_name);
             writer.write(getUML(classes));
             writer.close();
 
@@ -36,7 +37,7 @@ public class Export {
      * @return String UML
      * @throws Exception
      */
-    public String getUML(List<Classe> classes) throws Exception {
+    public static String getUML(List<Classe> classes) throws Exception {
         StringBuilder sb = new StringBuilder();
 
         sb.append("@startuml\n");
@@ -49,23 +50,14 @@ public class Export {
     }
 
     /**
-     * @param vues Liste des observateurs à exporter (vues du Model)
+     * @param v VueDiagramme à exporter
      * @param dir Répertoire de destination
      * @param png_name Nom du fichier PNG
      */
-    public void exportPNG(ArrayList<Observateur> vues, String dir, String png_name) {
-        List<Node> nodes = new ArrayList<>();
-        for (Observateur observateur : vues) {
-            if (observateur instanceof Node) nodes.add((Node) observateur);
-        }
+    public static void exportPNG(VueDiagramme v, String dir, String png_name) {
+        WritableImage image = v.snapshot(null, null);
 
-        WritableImage image = nodes.get(0).snapshot(null, null);
-
-        for (int i = 1; i < nodes.size(); i++) {
-            image = nodes.get(i).snapshot(null, image);
-        }
-
-        File file = new File(dir + "/" + png_name + ".png");
+        File file = new File(dir + "/" + png_name);
         writePNG(image, file);
     }
 
@@ -74,9 +66,11 @@ public class Export {
      * @param image Image à exporter
      * @param file Fichier de destination
      */
-    private void writePNG(WritableImage image, File file) {
+    private static void writePNG(WritableImage image, File file) {
         int width = (int) image.getWidth();
         int height = (int) image.getHeight();
+
+        System.out.println("width: " + width + " height: " + height);
 
         int[] pixels = new int[width * height];
 
@@ -91,5 +85,7 @@ public class Export {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        System.out.println("Image saved to " + file.getAbsolutePath());
     }
 }

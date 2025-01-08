@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import adg.vues.*;
@@ -32,7 +33,7 @@ public class MainUML extends Application {
         Label fin = new Label("Tous droits réservés");
         fin.setAlignment(javafx.geometry.Pos.CENTER);
 
-        VBox partieGauche = new VBox(0);  // TreeView et MenuBar
+        VuePartieGauche partieGauche = new VuePartieGauche(0);  // TreeView et MenuBar
         VueDiagramme partieDroite = new VueDiagramme();  // bouton add projet
         modelUML.enregistrerObservateur(partieDroite);
         modelUML.setVueDiagramme(partieDroite);
@@ -125,6 +126,9 @@ public class MainUML extends Application {
         ouvrirP.setOnAction(new ControllerOpenFolder(modelUML, stage));
         ouvrirS.setOnAction(new ControllerOpenFile(modelUML, stage));
 
+        exporterPng.setOnAction(new ControllerExportPng(modelUML, stage));
+        exporterUml.setOnAction(new ControllerExportUml(modelUML, stage));
+
         accueil.setOnAction(new ControllerAccueil(modelUML));
 
         /*     ARBORESCENCE       **/
@@ -147,7 +151,6 @@ public class MainUML extends Application {
         VueRecent vueRecent = new VueRecent();  // la TreeView affiche les TreeItem
         vueRecent.setRoot(rootRecent);
         modelUML.enregistrerObservateur(vueRecent);
-        vueRecent.actualiser(modelUML);
 
         /*     ORGANISATION       **/
 
@@ -158,21 +161,54 @@ public class MainUML extends Application {
 
         /*       SIZE       **/
 
-        base.setPrefSize(900, 400);
-        base.setMinSize(400, 200);
+        Scene scene = new Scene(base, 922, 470);
+        scene.getStylesheets().add(new File("ressource/style.css").toURI().toString());
+        stage.setScene(scene);
+        stage.setTitle("ADG - Home");
+        stage.setResizable(true);
+        stage.setMinHeight(460);
+        stage.setMinWidth(940);
+
+        base.setMinSize(900, 400);
+        //base.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
         base.setPadding(new Insets(10, 10, 10, 10));
 
-        titre.setPrefSize(900, 20);
-        centre.setPrefSize(900, 380);
-        fin.setPrefSize(900, 20);
+//        titre.setPrefSize(900, 20);
+//        centre.setPrefSize(900, 380);
+//        fin.setPrefSize(900, 20);
+        titre.setPrefSize(stage.getMaxWidth(), 20);
+        centre.setPrefSize(stage.getMaxWidth(), 380);
+        fin.setPrefSize(stage.getMaxWidth(), 20);
 
-        partieGauche.setPrefSize(ModelUML.PARTIE_GAUCHE_X, ModelUML.PARTIE_GAUCHE_Y);
-        menuBar.setPrefSize(400, ModelUML.MENU_BAR_Y);
-        vueArborescence.setPrefSize(400, 180);  // (380 - 20) / 2
-        vueRecent.setPrefSize(400, 180);  // (380 - 20) / 2
+        partieGauche.setMinSize(ModelUML.PARTIE_GAUCHE_X, ModelUML.PARTIE_GAUCHE_Y);
+        partieGauche.setPrefSize(ModelUML.PARTIE_GAUCHE_X, stage.getMinHeight() - 20 - 20);
 
-        partieDroite.setPrefSize(500, 380);
+        menuBar.setPrefHeight(ModelUML.MENU_BAR_Y);
+
+        vueArborescence.setMinSize(ModelUML.PARTIE_GAUCHE_X, (double) (stage.getMinHeight() - 100) / 2);  // (380 - 20) / 2
+        vueArborescence.setPrefSize(ModelUML.PARTIE_GAUCHE_X, (double) (stage.getMinHeight() - 100) / 2);  // (380 - 20) / 2
+        //vueRecent.setMinSize(ModelUML.PARTIE_GAUCHE_X, 180);  // (380 - 20) / 2
+        System.out.println("h: " + stage.getWidth() + " " + stage.getHeight());
+        System.out.println("h: " + stage.getMaxWidth() + " " + stage.getMaxHeight());
+        System.out.println("h: " + stage.getMinWidth() + " " + stage.getMinHeight());  // le bon truc à mettre
+        System.out.println("h: " + stage.getScene().getWidth() + " " + stage.getScene().getHeight());
+        System.out.println("h: " + partieGauche.getPrefWidth() + " " + partieGauche.getPrefHeight());
+
+
+
+        //partieDroite.setPrefSize(500, 380);
+        partieDroite.setPrefSize(stage.getWidth(), stage.getMaxHeight() - 20 - 20);
         addProjectButton.setPrefSize(370, 270);
+
+        // Permettre à centre de prendre toute la hauteur restante
+        VBox.setVgrow(centre, Priority.ALWAYS);
+        VBox.setVgrow(partieGauche, Priority.ALWAYS);
+        VBox.setVgrow(vueArborescence, Priority.ALWAYS);
+        VBox.setVgrow(vueRecent, Priority.SOMETIMES);
+
+        // Permettre à partieDroite de s'élargir
+        HBox.setHgrow(partieDroite, Priority.ALWAYS);
+
 
         /*       STYLE       **/
 
@@ -194,12 +230,7 @@ public class MainUML extends Application {
 
 
         /*       lancement       **/
-
-        Scene scene = new Scene(base, 922, 420);
-        scene.getStylesheets().add(new File("ressource/style.css").toURI().toString());
-        stage.setScene(scene);
-        stage.setTitle("ADG - Home");
-        stage.setResizable(false);
+        modelUML.switchState(true);
         stage.show();
     }
 
