@@ -91,7 +91,7 @@ public class ModelUML implements Sujet {
 
     private boolean etatClickDroit = false;
     private int[] coordonneesClickDroit = new int[2];
-    private Pane partieDroite;
+    private VueDiagramme partieDroite;
 
     /**
      * Constructeur par défaut. Initialise les listes d'observateurs,
@@ -769,11 +769,11 @@ public class ModelUML implements Sujet {
         notifierObservateurs();
     }
 
-    public Pane getPaneCLickDroit() {
+    public VueDiagramme getPaneCLickDroit() {
         return partieDroite;
     }
 
-    public void setPaneClickDroit(Pane pane) {
+    public void setPaneClickDroit(VueDiagramme pane) {
         this.partieDroite = pane;
     }
 

@@ -21,8 +21,9 @@ public class ControllerClickDroit implements EventHandler<MouseEvent> {
     public void handle(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.SECONDARY) {
             System.out.println("------------------------click droit");
-            int x = (int)mouseEvent.getX();
-            int y = (int)mouseEvent.getY();
+            int x = (int)mouseEvent.getScreenX();
+            int y = (int)mouseEvent.getScreenY();
+            System.out.println("x: " + x + " y: " + y);
             if (modelUML.getEtat() == false) {
                 modelUML.afficherClickDroit(x,y);
             } else {
