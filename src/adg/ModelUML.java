@@ -750,6 +750,12 @@ public class ModelUML implements Sujet {
         return this.etatClickDroit;
     }
 
+    /**
+     * Affiche le menu contextuel au click droit
+     *
+     * @param x
+     * @param y
+     */
     public void afficherClickDroit(int x, int y) {
         etatClickDroit = true;
         coordonneesClickDroit[0] = x;
@@ -759,28 +765,105 @@ public class ModelUML implements Sujet {
         notifierObservateurs();
     }
 
-    public void switchEtatClickDroit() {
-        etatClickDroit = !etatClickDroit;
-        notifierObservateurs();
-    }
 
+    /**
+     * Masque le menu contextuel
+     */
     public void masquerClickDroit() {
         etatClickDroit = false;
         notifierObservateurs();
     }
 
+    /**
+     * Getter la partie droite de l'application
+     *
+     * @return
+     */
     public VueDiagramme getPaneCLickDroit() {
         return partieDroite;
     }
 
+    /**
+     * Définit le pane du click droit
+     *
+     * @param pane
+     */
     public void setPaneClickDroit(VueDiagramme pane) {
         this.partieDroite = pane;
     }
 
+    /**
+     * Getter des coordonnées du click droit
+     *
+     * @return coordonnees x du ClickDroit
+     */
     public int getCooXClickDroit() {
         return coordonneesClickDroit[0];
     }
+
+    /**
+     * Getter des coordonnées du click droit
+     *
+     * @return coordonnees y du ClickDroit
+     */
     public int getCooYClickDroit() {
         return coordonneesClickDroit[1];
+    }
+
+    /**
+     * Masque toutes les dépendances.
+     */
+    public void masquerToutesDependances() {
+        //TODO
+        System.out.println("masquer toutes les dépendances");
+    }
+
+    /**
+     * Masque tous les héritages.
+     */
+    public void masquerToutHeritages() {
+        //TODO
+        System.out.println("masquer tous les héritages");
+    }
+
+    /**
+     * Masque tous les attributs.
+     */
+    public void masquerToutAttributs() {
+        //TODO
+        System.out.println("masquer tous les attributs");
+    }
+
+    /**
+     * Affiche toutes les dépendances.
+     */
+    public void afficherToutesDependances() {
+        //TODO
+        System.out.println("afficher toutes les dépendances");
+    }
+
+    /**
+     * Affiche tous les héritages.
+     */
+    public void afficherTousHeritages() {
+        //TODO
+        System.out.println("afficher tous les héritages");
+    }
+
+    /**
+     * Affiche tous les attributs.
+     */
+    public void afficherTousAttributs() {
+        //TODO
+        System.out.println("afficher tous les attributs");
+    }
+
+
+    /**
+     * Masque toutes les méthodes.
+     */
+    public void afficherToutesMethodes() {
+        //TODO
+        System.out.println("afficher toutes les méthodes");
     }
 }
