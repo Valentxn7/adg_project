@@ -98,7 +98,6 @@ public class ModelUML implements Sujet {
     private boolean etatClickDroit = false;
     private boolean etatClickDroitClasse = false;
     private int[] coordonneesClickDroit = new int[2];
-    private VueDiagramme partieDroite;
     private ControllerClickDroitClasse controllerClickDroit;
     private Classe classeSelectionne;
 
@@ -862,14 +861,6 @@ public class ModelUML implements Sujet {
         notifierObservateurs();
     }
 
-    /**
-     * Getter la partie droite de l'application
-     *
-     * @return
-     */
-    public VueDiagramme getPaneCLickDroit() {
-        return partieDroite;
-    }
 
     /**
      * Définit le pane du click droit
@@ -877,7 +868,7 @@ public class ModelUML implements Sujet {
      * @param pane
      */
     public void setPaneClickDroit(VueDiagramme pane) {
-        this.partieDroite = pane;
+        this.vueDiagramme = pane;
     }
 
     /**

@@ -59,7 +59,7 @@ public class VueClickDroit extends ContextMenu implements Observateur {
     public void actualiser(Sujet mod) {
         // Mise à jour du menu contextuel selon l'état pour eviter les doublons
         if (modelUML.getEtat()) {
-            VueDiagramme pane = modelUML.getPaneCLickDroit();
+            VueDiagramme pane = modelUML.getVueDiagramme();
             this.show(pane, modelUML.getCooXClickDroit(), modelUML.getCooYClickDroit());
         } else {
 

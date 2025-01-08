@@ -22,7 +22,7 @@ public class ControllerClickDroit implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent mouseEvent) {
-        if (mouseEvent.getTarget() == modelUML.getPaneCLickDroit()) { // Vérifie si le clic est sur le Pane
+        if (mouseEvent.getTarget() == modelUML.getVueDiagramme()) { // Vérifie si le clic est sur le Pane
 
             if (mouseEvent.getButton() == MouseButton.SECONDARY) {
                 int x = (int) mouseEvent.getScreenX();
