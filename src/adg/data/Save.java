@@ -3,23 +3,7 @@ package adg.data;
 import java.util.List;
 
 public class Save {
-
-    private String path;
-    private String project_name;
-    private List<Classe> classes;
-
-    /**
-     * @param p Path to save the file
-     * @param pn Project name
-     * @param classes List of classes to save
-     */
-    public Save (String p, String pn, List<Classe> classes) {
-        this.path = p;
-        this.project_name = pn;
-        this.classes = classes;
-    }
-
-    public void save() {
+    public static void save(List<Classe> classes, String path, String project_name) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("[\n");
@@ -35,7 +19,7 @@ public class Save {
         }
 
         try {
-            java.io.FileWriter writer = new java.io.FileWriter(path + project_name + ".adg");
+            java.io.FileWriter writer = new java.io.FileWriter(path);
             writer.write(String.valueOf(sb));
             writer.close();
 
@@ -43,6 +27,5 @@ public class Save {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }
