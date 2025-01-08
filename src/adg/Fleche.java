@@ -1,5 +1,6 @@
 package adg;
 import adg.vues.VueClasse;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -22,18 +23,22 @@ public abstract class Fleche extends Line implements Observateur {
     }
 
 
+
     public void setPos(VBox start, VBox end) {
-        // Obtenir les coordonnées centrales des VBoxes dans la scène
-        Point2D sCenter = start.localToScene(start.getWidth() / 2, start.getHeight() / 2);
-        Point2D eCenter = end.localToScene(end.getWidth() / 2, end.getHeight() / 2);
+        // Obtenir les coordonnées centrales des VBoxes dans le parent (Pane)
+        Point2D sCenter = start.localToParent(start.getWidth() / 2, start.getHeight() / 2);
+        Point2D eCenter = end.localToParent(end.getWidth() / 2, end.getHeight() / 2);
 
         // Calculer la direction de la flèche
         double deltaX = eCenter.getX() - sCenter.getX();
         double deltaY = eCenter.getY() - sCenter.getY();
 
+        double deltaX2 = sCenter.getX() - eCenter.getX();
+        double deltaY2 = sCenter.getY() - eCenter.getY();
+
         // Calculer l'angle de la flèche
         double angle = Math.atan2(deltaY, deltaX);
-
+        double angle2= Math.atan2(deltaY2, deltaX2);
         // Calculer les points d'intersection pour le début (start)
         Point2D startIntersection = getIntersectionPoint(
                 sCenter.getX(), sCenter.getY(), angle, start.getWidth(), start.getHeight()
@@ -42,8 +47,10 @@ public abstract class Fleche extends Line implements Observateur {
         // Calculer les points d'intersection pour la fin (end)
         // Utiliser l'angle opposé pour calculer l'intersection à l'autre extrémité
         Point2D endIntersection = getIntersectionPoint(
-                eCenter.getX(), eCenter.getY(), angle + Math.PI, end.getWidth(), end.getHeight()
+                eCenter.getX(), eCenter.getY(), angle2 , end.getWidth(), end.getHeight()
         );
+
+
 
         // Appliquer les positions
         this.setStartX(startIntersection.getX());
@@ -89,6 +96,12 @@ public abstract class Fleche extends Line implements Observateur {
             return new Point2D(centerX + x, centerY + y);
         }
     }
+
+
+
+
+
+
 
 
 
