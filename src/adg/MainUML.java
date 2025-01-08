@@ -31,7 +31,7 @@ public class MainUML extends Application {
         Label fin = new Label("Tous droits réservés");
         fin.setAlignment(javafx.geometry.Pos.CENTER);
 
-        VBox partieGauche = new VBox(0);  // TreeView et MenuBar
+        VuePartieGauche partieGauche = new VuePartieGauche(0);  // TreeView et MenuBar
         VueDiagramme partieDroite = new VueDiagramme();  // bouton add projet
         modelUML.enregistrerObservateur(partieDroite);
         ControllerDragDrop controllerDragDrop = new ControllerDragDrop(modelUML);
@@ -156,8 +156,16 @@ public class MainUML extends Application {
 
         /*       SIZE       **/
 
+        Scene scene = new Scene(base, 922, 470);
+        scene.getStylesheets().add(new File("ressource/style.css").toURI().toString());
+        stage.setScene(scene);
+        stage.setTitle("ADG - Home");
+        stage.setResizable(true);
+        stage.setMinHeight(460);
+        stage.setMinWidth(940);
+
         base.setMinSize(900, 400);
-        base.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
+        //base.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
         base.setPadding(new Insets(10, 10, 10, 10));
 
 //        titre.setPrefSize(900, 20);
@@ -168,22 +176,30 @@ public class MainUML extends Application {
         fin.setPrefSize(stage.getMaxWidth(), 20);
 
         partieGauche.setMinSize(ModelUML.PARTIE_GAUCHE_X, ModelUML.PARTIE_GAUCHE_Y);
-        partieGauche.setPrefSize(ModelUML.PARTIE_GAUCHE_X, stage.getMaxHeight() - 20 - 20);
-        menuBar.setPrefSize(partieGauche.getWidth(), ModelUML.MENU_BAR_Y);
+        partieGauche.setPrefSize(ModelUML.PARTIE_GAUCHE_X, stage.getMinHeight() - 20 - 20);
 
-        vueArborescence.setMinSize(ModelUML.PARTIE_GAUCHE_X, (double) (ModelUML.PARTIE_GAUCHE_Y - 41) / 2);  // (380 - 20) / 2
-        vueArborescence.setPrefSize(ModelUML.PARTIE_GAUCHE_X, (double) (ModelUML.PARTIE_GAUCHE_Y - 41) / 2);  // (380 - 20) / 2
+        menuBar.setPrefHeight(ModelUML.MENU_BAR_Y);
 
-        vueRecent.setMinSize(partieGauche.getWidth(), 180);  // (380 - 20) / 2
-        vueRecent.setPrefSize(partieGauche.getWidth(), (partieGauche.getHeight()- 20) / 2);  // (380 - 20) / 2
+        vueArborescence.setMinSize(ModelUML.PARTIE_GAUCHE_X, (double) (stage.getMinHeight() - 100) / 2);  // (380 - 20) / 2
+        vueArborescence.setPrefSize(ModelUML.PARTIE_GAUCHE_X, (double) (stage.getMinHeight() - 100) / 2);  // (380 - 20) / 2
+        //vueRecent.setMinSize(ModelUML.PARTIE_GAUCHE_X, 180);  // (380 - 20) / 2
+        System.out.println("h: " + stage.getWidth() + " " + stage.getHeight());
+        System.out.println("h: " + stage.getMaxWidth() + " " + stage.getMaxHeight());
+        System.out.println("h: " + stage.getMinWidth() + " " + stage.getMinHeight());  // le bon truc à mettre
+        System.out.println("h: " + stage.getScene().getWidth() + " " + stage.getScene().getHeight());
+        System.out.println("h: " + partieGauche.getPrefWidth() + " " + partieGauche.getPrefHeight());
+
+
 
         //partieDroite.setPrefSize(500, 380);
         partieDroite.setPrefSize(stage.getWidth(), stage.getMaxHeight() - 20 - 20);
         addProjectButton.setPrefSize(370, 270);
-        System.out.println("w: " + stage.getWidth() + " " + stage.getWidth());
 
         // Permettre à centre de prendre toute la hauteur restante
         VBox.setVgrow(centre, Priority.ALWAYS);
+        VBox.setVgrow(partieGauche, Priority.ALWAYS);
+        VBox.setVgrow(vueArborescence, Priority.ALWAYS);
+        VBox.setVgrow(vueRecent, Priority.SOMETIMES);
 
         // Permettre à partieDroite de s'élargir
         HBox.setHgrow(partieDroite, Priority.ALWAYS);
@@ -200,14 +216,7 @@ public class MainUML extends Application {
         fin.getStyleClass().add("label-fin");
 
         /*       lancement       **/
-
-        Scene scene = new Scene(base, 922, 470);
-        scene.getStylesheets().add(new File("ressource/style.css").toURI().toString());
-        stage.setScene(scene);
-        stage.setTitle("ADG - Home");
-        stage.setResizable(true);
-        stage.setMinHeight(460);
-        stage.setMinWidth(940);
+        modelUML.switchState(true);
         stage.show();
     }
 

@@ -27,7 +27,7 @@ public class ModelUML implements Sujet {
     private boolean isHome = true;
     private final Stage stage;
 
-    public final static int PARTIE_GAUCHE_X = 400;
+    public static int PARTIE_GAUCHE_X = 300;  // anciennement 400
     public final static int PARTIE_GAUCHE_Y = 380;
     public final static int MENU_BAR_Y = 20;
 
@@ -167,6 +167,8 @@ public class ModelUML implements Sujet {
     public void switchState(boolean isHome) {
         this.isHome = isHome;
         if (isHome) {  // home
+            PARTIE_GAUCHE_X = 350;
+
             this.vueArbo_x = PARTIE_GAUCHE_X; // (400 (taille partie gauche) - 10 (marge) ) / 2
             this.vueArbo_y = (PARTIE_GAUCHE_Y - MENU_BAR_Y) / 2; // 380 /2
 
@@ -191,6 +193,8 @@ public class ModelUML implements Sujet {
             stage.setResizable(false);
 
         } else {  // diagramme
+            PARTIE_GAUCHE_X = 250;
+
             this.vueArbo_x = PARTIE_GAUCHE_X; // (400 (taille partie gauche) - 10 (marge) )
             this.vueArbo_y = PARTIE_GAUCHE_Y - MENU_BAR_Y; // 20 = taille menuBar
 
@@ -289,6 +293,18 @@ public class ModelUML implements Sujet {
 
     public boolean getVueDiagramme_bouton_visibility() {
         return vueDiagramme_bouton_visible;
+    }
+
+    public int getPartieGaucheX() {
+        return PARTIE_GAUCHE_X;
+    }
+
+    public int getPartieGaucheY() {
+        return PARTIE_GAUCHE_Y;
+    }
+
+    public double getPartieGaucheYPref() {
+        return stage.getMinHeight() - 20 - 20;
     }
 
     public ArrayList<String> getMenuBar() {
@@ -472,8 +488,6 @@ public class ModelUML implements Sujet {
         // Notifie les observateurs
         notifierObservateurs();
     }
-
-
 
 
 }
