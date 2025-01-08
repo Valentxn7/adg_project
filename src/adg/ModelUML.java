@@ -362,6 +362,18 @@ public class ModelUML implements Sujet {
         this.stage.setTitle(titre);
     }
 
+    public ArrayList<Classe> getClasses() {
+        return classes;
+    }
+
+    public ArrayList<Observateur> getObservers() {
+        return observateurs;
+    }
+
+    public VueDiagramme getVueDiagramme() {
+        return vueDiagramme;
+    }
+
     public void setFolderPath(String path) {
         folderPath = path;
     }

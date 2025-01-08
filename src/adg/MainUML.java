@@ -126,6 +126,9 @@ public class MainUML extends Application {
         ouvrirP.setOnAction(new ControllerOpenFolder(modelUML, stage));
         ouvrirS.setOnAction(new ControllerOpenFile(modelUML, stage));
 
+        exporterPng.setOnAction(new ControllerExportPng(modelUML, stage));
+        exporterUml.setOnAction(new ControllerExportUml(modelUML, stage));
+
         accueil.setOnAction(new ControllerAccueil(modelUML));
 
         /*     ARBORESCENCE       **/
