@@ -32,6 +32,7 @@ import java.net.URLClassLoader;
  * les chemins de fichiers, et la communication avec les observateurs.
  */
 public class ModelUML implements Sujet {
+
     private VueDiagramme vueDiagramme;
     private ArrayList<Observateur> observateurs; // Liste des observateurs
     private ArrayList<Classe> classes;          // Liste des classes UML
@@ -368,10 +369,6 @@ public class ModelUML implements Sujet {
 
     public ArrayList<Observateur> getObservers() {
         return observateurs;
-    }
-
-    public VueDiagramme getVueDiagramme() {
-        return vueDiagramme;
     }
 
     public void setFolderPath(String path) {
@@ -737,6 +734,11 @@ public class ModelUML implements Sujet {
         coordonnees[1] = y.intValue();
         coordonneesClasse.put(classe, coordonnees);
         notifierObservateurs();
+    }
+
+
+    public VueDiagramme getVueDiagramme() {
+        return vueDiagramme;
     }
 
 
