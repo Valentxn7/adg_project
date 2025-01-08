@@ -20,10 +20,11 @@ public class VueRecent extends TreeView<String> implements Observateur {
         // ce n'est pas du au style car même en enlevant le style, la vue reste invisible
 
         if (model.getVueRecentVisibility() != this.isVisible()) {  // valeur de check pour éviter de faire des opérations inutiles si la vue est déjà comme on veut qu'elle soit
-            System.out.println("VueRecent: " + model.getVueRecentVisibility());
+            //System.out.println("VueRecent: " + model.getVueRecentVisibility());
             this.setVisible(model.getVueRecentVisibility());
             this.getStyleClass().clear();
             this.getStyleClass().add(model.getVueRecent_style());
+            this.setMinWidth(model.getVueRecent_x());
             this.setPrefSize(model.getVueRecent_x(), model.getVueRecent_y());
         }
 
