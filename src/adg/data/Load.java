@@ -10,22 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Load {
-    private String path;
-    private String project_name;
-
-    /**
-     * @param p Path to load the file
-     * @param pn Project name
-     */
-    public Load(String p, String pn) {
-        this.path = p;
-        this.project_name = pn;
-    }
-
-    public List<Classe> load() {
+    public static ArrayList<Classe> load(String path) {
         String json = "";
         try {
-            File file = new File(this.path + "/" + this.project_name + ".adg");
+            File file = new File(path);
             if (!file.exists()) {
                 throw new IOException("Le fichier n'existe pas : " + file.getAbsolutePath());
             }
@@ -38,7 +26,7 @@ public class Load {
 
         Classe[] classesArray = gson.fromJson(json, Classe[].class);
 
-        List<Classe> classesList = new ArrayList<>();
+        ArrayList<Classe> classesList = new ArrayList<>();
         for (Classe c : classesArray) {
             classesList.add(c);
         }
