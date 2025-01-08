@@ -23,8 +23,7 @@ public class TestLoad {
     @Test
     public void load1() throws Exception {
 
-        Load load = new Load(path1, pn1);
-        classes = load.load();
+        classes = Load.load(path1 + pn1 + ".json");
 
         for (Classe c : classes) {
             System.out.println(c.getClassName());

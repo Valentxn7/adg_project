@@ -1,12 +1,15 @@
 package adg.control;
 
 import adg.ModelUML;
+import adg.data.Classe;
+import adg.data.Load;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class ControllerOpenFile implements EventHandler<ActionEvent> {
     private ModelUML modelUML;
@@ -29,7 +32,21 @@ public class ControllerOpenFile implements EventHandler<ActionEvent> {
         File selectedFile = fileChooser.showOpenDialog(rootStage);
         if (selectedFile != null) {
             System.out.println("Ouverture de la sauvegarde : " + selectedFile.getAbsolutePath());
-            /**      ENDROIT OU TRAITER LES FICHIERS PLUS TARDS VOIR AVEC RYAN    **/
+
+
+            ArrayList<Classe> classes = Load.load(selectedFile.getAbsolutePath());
+
+            for(Classe c : classes){
+                modelUML.ajouterClasse(c);
+            }
+            modelUML.switchState(false);
+
+
+
+
+
+
+
         } else {
             System.out.println("Aucun fichier sélectionné.");
         }

@@ -37,13 +37,14 @@ public class ModelUML implements Sujet {
     private ArrayList<Observateur> observateurs; // Liste des observateurs
     private ArrayList<Classe> classes;          // Liste des classes UML
     private ArrayList<String> chemins;          // Liste des chemins de fichiers
-    private String WindowsTitle = "Home";       // Titre de la fenêtre
+
     private HashMap<String, VueClasse> vues;  // hashmap qui associe le nom de la classe à sa vue
     private String windowsTitle = "Home";
     private String folderPath = null;
     private File folder = null;
     private static final String DATA_FILE = ".data.json"; // Nom du fichier des données
     private static final int MAX_RECENT_FOLDERS = 10;     // Limite du nombre de dossiers récents
+
     List<String> recentFolders;
     private boolean isHome = true;
 
@@ -164,7 +165,6 @@ public class ModelUML implements Sujet {
 
     /**
      * Ajoute une flèche d'implémentation à la vue diagramme
-     *
      * @param classe
      * @param vueClasse
      */
@@ -288,6 +288,7 @@ public class ModelUML implements Sujet {
      */
     @Override
     public void notifierObservateurs() {
+        System.out.println("Notifying Observateurs...");
         for (Observateur o : observateurs) {
             o.actualiser(this);
         }
@@ -356,6 +357,10 @@ public class ModelUML implements Sujet {
         return "ADG - " + windowsTitle;
     }
 
+    public String getProjectName() {
+        return windowsTitle;
+    }
+
     /**
      * Définit le titre de la fenêtre.
      *
@@ -363,7 +368,7 @@ public class ModelUML implements Sujet {
      */
     public void setWindowsTitle(String titre) {
         this.windowsTitle = titre;
-        this.stage.setTitle(titre);
+        this.stage.setTitle(getWindowsTitle());
     }
 
     public ArrayList<Classe> getClasses() {
@@ -372,6 +377,10 @@ public class ModelUML implements Sujet {
 
     public ArrayList<Observateur> getObservers() {
         return observateurs;
+    }
+
+    public VueDiagramme getVueDiagramme() {
+        return vueDiagramme;
     }
 
     public void setFolderPath(String path) {
@@ -740,10 +749,6 @@ public class ModelUML implements Sujet {
         notifierObservateurs();
     }
 
-
-    public VueDiagramme getVueDiagramme() {
-        return vueDiagramme;
-    }
 
 
     public boolean getEtat() {
