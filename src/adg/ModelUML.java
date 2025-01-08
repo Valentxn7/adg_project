@@ -161,7 +161,6 @@ public class ModelUML implements Sujet {
     /**
      * Crée un projet vierge, survient quand on clique sur Nouveau Projet
      *
-     * @param nomProjet nom du projet
      * @return true si le projet a été créé, false sinon
      */
     private void ajouterFlecheImp(Classe classe, VueClasse vueClasse) {
@@ -364,7 +363,7 @@ public class ModelUML implements Sujet {
      */
     public void setWindowsTitle(String titre) {
         this.windowsTitle = titre;
-        this.stage.setTitle(titre);
+        this.stage.setTitle(getWindowsTitle());
     }
 
     public ArrayList<Classe> getClasses() {
