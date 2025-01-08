@@ -46,7 +46,7 @@ public class ModelUML implements Sujet {
     List<String> recentFolders;
     private boolean isHome = true;
 
-    public final static int PARTIE_GAUCHE_X = 400;
+    public static int PARTIE_GAUCHE_X = 300;  // anciennement 400
     public final static int PARTIE_GAUCHE_Y = 380;
     public final static int MENU_BAR_Y = 20;
 
@@ -241,7 +241,8 @@ public class ModelUML implements Sujet {
                 addRecentFolder(newProject.getAbsolutePath());
                 return true;
             } else {
-                //MainUML.showErrorMessage("Le fichier existe déjà.");
+                /*System.out.println("Le fichier existe déjà.");
+                MainUML.showErrorMessage("Le fichier existe déjà.");*/
             }
         } catch (IOException e) {
             System.err.println("Erreur lors de la création du fichier : " + e.getMessage());
@@ -282,6 +283,7 @@ public class ModelUML implements Sujet {
      */
     @Override
     public void notifierObservateurs() {
+        System.out.println("Notifying Observateurs...");
         for (Observateur o : observateurs) {
             o.actualiser(this);
         }
@@ -295,6 +297,8 @@ public class ModelUML implements Sujet {
     public void switchState(boolean isHome) {
         this.isHome = isHome;
         if (isHome) {  // home
+            PARTIE_GAUCHE_X = 350;
+
             this.vueArbo_x = PARTIE_GAUCHE_X; // (400 (taille partie gauche) - 10 (marge) ) / 2
             this.vueArbo_y = (PARTIE_GAUCHE_Y - MENU_BAR_Y) / 2; // 380 /2
 
@@ -316,7 +320,11 @@ public class ModelUML implements Sujet {
             for (String item : entete)
                 menuFichier.put(item, true);
 
+            stage.setResizable(false);
+
         } else {  // diagramme
+            PARTIE_GAUCHE_X = 250;
+
             this.vueArbo_x = PARTIE_GAUCHE_X; // (400 (taille partie gauche) - 10 (marge) )
             this.vueArbo_y = PARTIE_GAUCHE_Y - MENU_BAR_Y; // 20 = taille menuBar
 
@@ -333,13 +341,15 @@ public class ModelUML implements Sujet {
             vueDiagramme_bouton_visible = false;
 
             menuFichier.replaceAll((key, value) -> true);
+
+            stage.setResizable(true);
         }
 
         notifierObservateurs();
     }
 
     public String getWindowsTitle() {
-        return windowsTitle;
+        return "ADG - " + windowsTitle;
     }
 
     /**
@@ -420,6 +430,18 @@ public class ModelUML implements Sujet {
         return vueDiagramme_bouton_visible;
     }
 
+    public int getPartieGaucheX() {
+        return PARTIE_GAUCHE_X;
+    }
+
+    public int getPartieGaucheY() {
+        return PARTIE_GAUCHE_Y;
+    }
+
+    public double getPartieGaucheYPref() {
+        return stage.getMinHeight() - 20 - 20;
+    }
+
     public ArrayList<String> getMenuBar() {
         return menuBar;
     }
@@ -462,9 +484,9 @@ public class ModelUML implements Sujet {
         if (!appFolder.exists()) {  // Si le dossier n'existe pas
             if (!appFolder.mkdirs()) { // Crée le dossier s'il n'existe pas
                 System.err.println("Erreur lors de la création du dossier.");
-                //MainUML.showErrorMessage("Erreur lors de la création du dossier.");
+                MainUML.showErrorMessage("Erreur lors de la création du dossier.");
             } else {
-                //System.out.println("Dossier ADG créé avec succès dans " + appFolder.getAbsolutePath() + ".");
+                System.out.println("Dossier ADG créé avec succès dans " + appFolder.getAbsolutePath() + ".");
             }
         }
 
@@ -474,9 +496,9 @@ public class ModelUML implements Sujet {
 
             // Créer le fichier
             if (hiddenFile.createNewFile()) {
-                //System.out.println("Fichier data créé : " + hiddenFile.getAbsolutePath());
+                System.out.println("Fichier data créé : " + hiddenFile.getAbsolutePath());
             } else {
-                //System.out.println("Le fichier data existe déjà.");
+                System.out.println("Le fichier data existe déjà.");
             }
 
             // Ajouter l'attribut 'hidden' sur Windows
@@ -489,7 +511,6 @@ public class ModelUML implements Sujet {
             e.printStackTrace();
         }
     }
-
 
     // Ajoute un dossier récent au fichier JSON
     private static void addRecentFolder(String folderPath) {
@@ -577,7 +598,6 @@ public class ModelUML implements Sujet {
         return res.toString();
     }
 
-
     /**
      * Analyse un fichier .class à partir de son chemin absolu et charge la classe correspondante dans le classpath.
      * Effectue également une analyse UML de la classe et notifie les observateurs.
@@ -603,6 +623,7 @@ public class ModelUML implements Sujet {
         // Notifie les observateurs
         notifierObservateurs();
     }
+
 
     public void setVueDiagramme(VueDiagramme vueDiagramme) {
         this.vueDiagramme = vueDiagramme;
