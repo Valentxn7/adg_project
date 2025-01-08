@@ -184,6 +184,15 @@ public class MainUML extends Application {
         vueRecent.getStyleClass().add("treeView");
         fin.getStyleClass().add("label-fin");
 
+
+        ControllerClickDroit controllerClickDroit = new ControllerClickDroit(modelUML);
+        VueClickDroit vueClickDroit = new VueClickDroit(modelUML);
+        modelUML.enregistrerObservateur(vueClickDroit);
+        partieDroite.setOnMouseClicked(controllerClickDroit);
+        modelUML.setPaneClickDroit(partieDroite);
+
+
+
         /*       lancement       **/
 
         Scene scene = new Scene(base, 922, 420);

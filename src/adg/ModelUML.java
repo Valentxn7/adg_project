@@ -3,6 +3,7 @@ package adg;
 import adg.data.PathToClass;
 import adg.vues.VueClasse;
 import adg.vues.VueDiagramme;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import adg.data.Analyser;
 import adg.data.Classe;
@@ -36,7 +37,6 @@ public class ModelUML implements Sujet {
     private ArrayList<Observateur> observateurs; // Liste des observateurs
     private ArrayList<Classe> classes;          // Liste des classes UML
     private ArrayList<String> chemins;          // Liste des chemins de fichiers
-    private String WindowsTitle = "Home";       // Titre de la fenêtre
     private HashMap<String, VueClasse> vues;  // hashmap qui associe le nom de la classe à sa vue
     private String windowsTitle = "Home";
     private String folderPath = null;
@@ -87,6 +87,10 @@ public class ModelUML implements Sujet {
     }};
 
     private final ControleurDeplacerClasse controleurDeplacerClasse = new ControleurDeplacerClasse(this);
+
+    private boolean etatClickDroit = false;
+    private int[] coordonneesClickDroit = new int[2];
+    private Pane partieDroite;
 
     /**
      * Constructeur par défaut. Initialise les listes d'observateurs,
@@ -707,4 +711,41 @@ public class ModelUML implements Sujet {
     }
 
 
+    public boolean getEtat() {
+        return this.etatClickDroit;
+    }
+
+    public void afficherClickDroit(int x, int y) {
+        etatClickDroit = true;
+        coordonneesClickDroit[0] = x;
+        coordonneesClickDroit[1] = y;
+        System.out.println("click droit : " + x + " " + y);
+        System.out.println("etat click droit : " + etatClickDroit);
+        notifierObservateurs();
+    }
+
+    public void switchEtatClickDroit() {
+        etatClickDroit = !etatClickDroit;
+        notifierObservateurs();
+    }
+
+    public void masquerClickDroit() {
+        etatClickDroit = false;
+        notifierObservateurs();
+    }
+
+    public Pane getPaneCLickDroit() {
+        return partieDroite;
+    }
+
+    public void setPaneClickDroit(Pane pane) {
+        this.partieDroite = pane;
+    }
+
+    public int getCooXClickDroit() {
+        return coordonneesClickDroit[0];
+    }
+    public int getCooYClickDroit() {
+        return coordonneesClickDroit[1];
+    }
 }
