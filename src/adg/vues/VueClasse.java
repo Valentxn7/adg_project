@@ -47,10 +47,6 @@ public class VueClasse extends VBox implements Observateur {
         this.classe.setWidth((int)this.getWidth());
         this.classe.setHeight((int)this.getHeight());
 
-
-        System.err.println("VueClasse: " + position[0] + " " + position[1]);
-        System.out.println(this.getWidth());
-        System.out.println(this.getHeight());
     }
 
 
@@ -75,7 +71,7 @@ public class VueClasse extends VBox implements Observateur {
             VBox box = new VBox();// Espacement entre les éléments
             box.setId("separation");
             for (T element : elements) {
-                System.out.println(element);
+                //System.out.println(element);
                 box.getChildren().add(constructeur.apply(element));
             }
             this.getChildren().add(box);

@@ -15,10 +15,12 @@ import static javafx.scene.input.MouseEvent.MOUSE_PRESSED;
 public class VueClickDroit extends ContextMenu implements Observateur {
 
     private ModelUML modelUML;
+    private ControllerChoixClickDroit controllerChoixClickDroit;
 
-    public VueClickDroit(ModelUML modelUML) {
+    public VueClickDroit(ModelUML modelUML,ControllerChoixClickDroit controllerChoixClickDroit) {
 
         this.modelUML = modelUML;
+
 
         // Création des items
         MenuItem item1 = new MenuItem("Masquer dépendences pour tous");
@@ -32,8 +34,6 @@ public class VueClickDroit extends ContextMenu implements Observateur {
         // Ajout des items au menu
         this.getItems().addAll(item1, item2, item3,item4,item5,item6,item7);
 
-        // Création du controller
-        ControllerChoixClickDroit controllerChoixClickDroit = new ControllerChoixClickDroit(modelUML);
         // Ajouter des actions aux éléments
         item1.setOnAction(controllerChoixClickDroit);
         item1.setId("1");
@@ -59,11 +59,10 @@ public class VueClickDroit extends ContextMenu implements Observateur {
     public void actualiser(Sujet mod) {
         // Mise à jour du menu contextuel selon l'état pour eviter les doublons
         if (modelUML.getEtat()) {
-            System.out.println("Menu contextuel mis à jour : État actif.");
             VueDiagramme pane = modelUML.getPaneCLickDroit();
             this.show(pane, modelUML.getCooXClickDroit(), modelUML.getCooYClickDroit());
         } else {
-            System.out.println("Menu contextuel mis à jour : État inactif.");
+
             this.hide();
         }
     }
