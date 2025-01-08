@@ -40,7 +40,9 @@ public class ModelUML implements Sujet {
     List<String> recentFolders;
     private boolean isHome = true;
 
-    public static int PARTIE_GAUCHE_X = 300;  // anciennement 400
+    private static int PARTIE_GAUCHE_X = 350;  // anciennement 400
+    private static final int PARTIE_GAUCHE_X_HOME = 350;
+    private static final int PARTIE_GAUCHE_X_DIAG = 250;
     public final static int PARTIE_GAUCHE_Y = 380;
     public final static int MENU_BAR_Y = 20;
 
@@ -297,7 +299,7 @@ public class ModelUML implements Sujet {
     public void switchState(boolean isHome) {
         this.isHome = isHome;
         if (isHome) {  // home
-            PARTIE_GAUCHE_X = 350;
+            PARTIE_GAUCHE_X = PARTIE_GAUCHE_X_HOME;
 
             this.vueArbo_x = PARTIE_GAUCHE_X; // (400 (taille partie gauche) - 10 (marge) ) / 2
             this.vueArbo_y = (PARTIE_GAUCHE_Y - MENU_BAR_Y) / 2; // 380 /2
@@ -323,7 +325,7 @@ public class ModelUML implements Sujet {
             stage.setResizable(false);
 
         } else {  // diagramme
-            PARTIE_GAUCHE_X = 250;
+            PARTIE_GAUCHE_X = PARTIE_GAUCHE_X_DIAG;
 
             this.vueArbo_x = PARTIE_GAUCHE_X; // (400 (taille partie gauche) - 10 (marge) )
             this.vueArbo_y = PARTIE_GAUCHE_Y - MENU_BAR_Y; // 20 = taille menuBar
@@ -468,7 +470,7 @@ public class ModelUML implements Sujet {
 
     public HashMap<String, Boolean> getMenuItems(int index) {
         String menu = menuBar.get(index);
-        System.out.println("Menu: " + menu);
+        //System.out.println("Menu: " + menu);
         if (menu.equals("Fichier")) {
             return menuFichier;
         }

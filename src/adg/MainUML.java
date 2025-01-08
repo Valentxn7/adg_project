@@ -34,6 +34,7 @@ public class MainUML extends Application {
         fin.setAlignment(javafx.geometry.Pos.CENTER);
 
         VuePartieGauche partieGauche = new VuePartieGauche(0);  // TreeView et MenuBar
+        modelUML.enregistrerObservateur(partieGauche);
         VueDiagramme partieDroite = new VueDiagramme();  // bouton add projet
         modelUML.enregistrerObservateur(partieDroite);
         modelUML.setVueDiagramme(partieDroite);
@@ -184,19 +185,19 @@ public class MainUML extends Application {
         centre.setPrefSize(stage.getMaxWidth(), 380);
         fin.setPrefSize(stage.getMaxWidth(), 20);
 
-        partieGauche.setMinSize(ModelUML.PARTIE_GAUCHE_X, ModelUML.PARTIE_GAUCHE_Y);
-        partieGauche.setPrefSize(ModelUML.PARTIE_GAUCHE_X, stage.getMinHeight() - 20 - 20);
+        partieGauche.setMinSize(modelUML.getPartieGaucheX(), ModelUML.PARTIE_GAUCHE_Y);
+        partieGauche.setPrefSize(modelUML.getPartieGaucheX(), stage.getMinHeight() - 20 - 20);
 
         menuBar.setPrefHeight(ModelUML.MENU_BAR_Y);
 
-        vueArborescence.setMinSize(ModelUML.PARTIE_GAUCHE_X, (double) (stage.getMinHeight() - 100) / 2);  // (380 - 20) / 2
-        vueArborescence.setPrefSize(ModelUML.PARTIE_GAUCHE_X, (double) (stage.getMinHeight() - 100) / 2);  // (380 - 20) / 2
-        //vueRecent.setMinSize(ModelUML.PARTIE_GAUCHE_X, 180);  // (380 - 20) / 2
-        //System.out.println("h: " + stage.getWidth() + " " + stage.getHeight());
-        //System.out.println("h: " + stage.getMaxWidth() + " " + stage.getMaxHeight());
-        //System.out.println("h: " + stage.getMinWidth() + " " + stage.getMinHeight());  // le bon truc à mettre
-        //System.out.println("h: " + stage.getScene().getWidth() + " " + stage.getScene().getHeight());
-        //System.out.println("h: " + partieGauche.getPrefWidth() + " " + partieGauche.getPrefHeight());
+        vueArborescence.setMinSize(modelUML.getPartieGaucheX(), (double) (stage.getMinHeight() - 100) / 2);  // (380 - 20) / 2
+        vueArborescence.setPrefSize(modelUML.getPartieGaucheX(), (double) (stage.getMinHeight() - 100) / 2);  // (380 - 20) / 2
+        //vueRecent.setMinSize(modelUML.getPartieGaucheX(), 180);  // (380 - 20) / 2
+        /*System.out.println("h: " + stage.getWidth() + " " + stage.getHeight());
+        System.out.println("h: " + stage.getMaxWidth() + " " + stage.getMaxHeight());
+        System.out.println("h: " + stage.getMinWidth() + " " + stage.getMinHeight());  // le bon truc à mettre
+        System.out.println("h: " + stage.getScene().getWidth() + " " + stage.getScene().getHeight());
+        System.out.println("h: " + partieGauche.getPrefWidth() + " " + partieGauche.getPrefHeight());*/
 
 
 
