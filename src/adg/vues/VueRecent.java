@@ -15,6 +15,10 @@ public class VueRecent extends TreeView<String> implements Observateur {
     public void actualiser(Sujet mod) {
         ModelUML model = (ModelUML) mod;
 
+
+        //debug recent invisible quand retour menu
+        // ce n'est pas du au style car même en enlevant le style, la vue reste invisible
+
         if (model.getVueRecentVisibility() != this.isVisible()) {  // valeur de check pour éviter de faire des opérations inutiles si la vue est déjà comme on veut qu'elle soit
             System.out.println("VueRecent: " + model.getVueRecentVisibility());
             this.setVisible(model.getVueRecentVisibility());
@@ -24,8 +28,9 @@ public class VueRecent extends TreeView<String> implements Observateur {
         }
 
         if (model.getIsHome()) {  // car la vue des récents ne sert que sur l'écran d'accueil donc pas besoin de l'actualiser si on est sur le diagramme
+
             ArrayList<String> recentFiles = ModelUML.getRecentFolders();
-            this.getChildren().clear();
+            this.getRoot().getChildren().clear();
 
             for (String recentfold : recentFiles) { // on parcours la liste des fichiers récents
                 this.getRoot().getChildren().add(new TreeItem<String>(recentfold));
