@@ -37,7 +37,6 @@ public class ModelUML implements Sujet {
     private ArrayList<Observateur> observateurs; // Liste des observateurs
     private ArrayList<Classe> classes;          // Liste des classes UML
     private ArrayList<String> chemins;          // Liste des chemins de fichiers
-    private String WindowsTitle = "Home";       // Titre de la fenêtre
     private HashMap<String, VueClasse> vues;  // hashmap qui associe le nom de la classe à sa vue
     private String windowsTitle = "Home";
     private String folderPath = null;
