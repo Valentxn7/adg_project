@@ -35,7 +35,6 @@ public class ControleurDeplacerClasse implements EventHandler<MouseEvent> {
         VueDiagramme partieDroite = model.getVueDiagramme();
 
         if (event.getEventType() == MouseEvent.MOUSE_DRAGGED) { // Quand la souris est en train de bouger
-            System.out.println("DRAGGED");
 
             Double x = event.getSceneX() - decalageSouris[0]; //On récupère les coordonnées de la souris
             Double y = event.getSceneY() - decalageSouris[1];
@@ -49,7 +48,6 @@ public class ControleurDeplacerClasse implements EventHandler<MouseEvent> {
             }
 
         } else if (event.getEventType() == MouseEvent.MOUSE_PRESSED) { // Quand on appuie sur la souris
-            System.out.println("PRESSED");
             decalageSouris[0] = event.getSceneX() - classe.getLayoutX(); //On récupère les coordonnées de la souris
             decalageSouris[1] = event.getSceneY() - classe.getLayoutY();
         }
