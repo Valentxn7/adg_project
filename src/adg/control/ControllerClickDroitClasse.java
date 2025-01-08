@@ -23,7 +23,6 @@ public class ControllerClickDroitClasse implements EventHandler<MouseEvent> {
     @Override
     public void handle(MouseEvent mouseEvent) {
 
-
         if (mouseEvent.getButton() == MouseButton.SECONDARY) {
             int x = (int) mouseEvent.getScreenX();
             int y = (int) mouseEvent.getScreenY();
@@ -32,6 +31,7 @@ public class ControllerClickDroitClasse implements EventHandler<MouseEvent> {
             int y2 = (int) mouseEvent.getY();
 
             boolean estLibre = modelUML.estLibre(x2, y2);
+
 
             VueClasse classe = (VueClasse) mouseEvent.getSource();
             Classe c = classe.getClasse();

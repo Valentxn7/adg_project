@@ -133,6 +133,7 @@ public class ModelUML implements Sujet {
             classes.add(classe);
         this.trouverPlacePourClassess(classe);
         VueClasse vue = new VueClasse(classe);
+        vue.setOnMouseClicked(controllerClickDroit);
         observateurs.add(vue);
 
         vueDiagramme.getChildren().add(vue);
@@ -318,7 +319,7 @@ public class ModelUML implements Sujet {
      */
     @Override
     public void notifierObservateurs() {
-        System.out.println("Notifying Observateurs...");
+//        System.out.println("Notifying Observateurs...");
         for (Observateur o : observateurs) {
             o.actualiser(this);
         }
