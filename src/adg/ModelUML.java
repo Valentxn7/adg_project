@@ -168,6 +168,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Ajoute une flèche d'implémentation à la vue diagramme
+     *
      * @param classe
      * @param vueClasse
      */
@@ -703,7 +704,7 @@ public class ModelUML implements Sujet {
 
         // Définir la largeur et la hauteur maximales du pane
         int maxWidth = (int) vueDiagramme.getWidth();
-        int maxHeight =(int) vueDiagramme.getHeight();
+        int maxHeight = (int) vueDiagramme.getHeight();
 
         boolean placeTrouvee = false;
 
@@ -733,7 +734,7 @@ public class ModelUML implements Sujet {
 
         // Si aucune place n'a été trouvée, placer la classe à un endroit par défaut
         if (!placeTrouvee) {
-            classe.setCoords(0,0);
+            classe.setCoords(0, 0);
             System.err.println("Aucun emplacement libre trouvé. Classe " + classe.getClassName() + " placée en dernier endroit possible.");
         }
     }
@@ -762,9 +763,6 @@ public class ModelUML implements Sujet {
     }
 
 
-
-
-
     public VueClasse[] getCoordonneesFleche(Fleche fleche) {
         VueClasse[] res = null;
         if (coordonneesFleche.containsKey(fleche)) {
@@ -790,7 +788,6 @@ public class ModelUML implements Sujet {
         classe.setCoords(coordonnees[0], coordonnees[1]);
         notifierObservateurs();
     }
-
 
 
     public boolean getEtat() {
