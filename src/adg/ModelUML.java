@@ -275,7 +275,7 @@ public class ModelUML implements Sujet {
             if (classeImp != null) {
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
                 if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
-                    Fleche f = new Fleche(classe, classeImp, Fleche.IMPLEMENTATION);
+                    Fleche f = new Fleche(classe, classeImp, Fleche.HERITAGE);
                     f.setPos();
                     ajouterFleches(f);
                     VueFlecheAttri fleche = new VueFlecheAttri(this,f,new Text(i[Analyser.FIELD_MODIFIER] + i[Analyser.FIELD_NAME]));
@@ -1434,5 +1434,14 @@ public class ModelUML implements Sujet {
         } else {
             System.err.println("Le fichier n'existe pas : " + filePath);
         }
+    }
+
+    public static String getFileExtension(String fileName) {
+        int indexpoint = fileName.lastIndexOf('.');
+
+        if (indexpoint > 0 && indexpoint < fileName.length() - 1) {
+            return fileName.substring(indexpoint + 1); // l'extension
+        }
+        return ""; // Pas d'extension
     }
 }
