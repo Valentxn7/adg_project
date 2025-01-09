@@ -1,0 +1,331 @@
+@startuml
+
+
+top to bottom direction
+skinparam linetype ortho
+
+class Analyser {
+  + Analyser(Class<?>): 
+  + analyse(): Classe
+  - getParameterTypeNames(Class<?>[]): List<String>
+  - buildFields(Classe): void
+  - buildMethods(Classe): void
+  - buildConstructors(Classe): void
+  - buildSuperClass(Classe): void
+  - buildInterfaces(Classe): void
+}
+class Classe {
+  + Classe(String): 
+  + setCoords(int, int): void
+  + equals(Classe): boolean
+  + UMLString(): String
+  - getUMLVisibility(String): String
+  + save(): String
+   classNameWithoutPackages: String
+   constructors: List<Object[]>
+   constructorsInStrings: List<String[]>
+   fields: List<String[]>
+   coords: int[]
+   superclass: String
+   name: String
+   height: int
+   methods: List<Object[]>
+   interfaces: List<String>
+   className: String
+   width: int
+   methodsInStrings: List<String[]>
+}
+class ControleurDeplacerClasse #lightblue {
+  + ControleurDeplacerClasse(ModelUML): 
+  + handle(MouseEvent): void
+}
+class ControllerAccueil {
+  + ControllerAccueil(ModelUML): 
+  + handle(ActionEvent): void
+}
+class ControllerChoixClickDroit #lightblue {
+  + ControllerChoixClickDroit(ModelUML): 
+  + handle(ActionEvent): void
+}
+class ControllerClickDroit #lightblue {
+  + ControllerClickDroit(ModelUML): 
+  + handle(MouseEvent): void
+}
+class ControllerClickDroitClasse #lightblue{
+  + ControllerClickDroitClasse(ModelUML): 
+  + handle(MouseEvent): void
+}
+class ControllerCreateProject {
+  + ControllerCreateProject(ModelUML): 
+  + handle(ActionEvent): void
+}
+class ControllerDragDrop {
+  + ControllerDragDrop(ModelUML): 
+  + activerDragAndDrop(VueDiagramme): void
+  + handle(DragEvent): void
+}
+class ControllerExportPng #lightblue{
+  + ControllerExportPng(ModelUML, Stage): 
+  + handle(ActionEvent): void
+}
+class ControllerExportUml {
+  + ControllerExportUml(ModelUML, Stage): 
+  + handle(ActionEvent): void
+}
+class ControllerNewProject #lightblue {
+  + ControllerNewProject(ModelUML, Stage): 
+  + handle(ActionEvent): void
+}
+class ControllerOpenFile {
+  + ControllerOpenFile(ModelUML, Stage): 
+  + handle(ActionEvent): void
+}
+class ControllerOpenFolder {
+  + ControllerOpenFolder(ModelUML, Stage): 
+  + handle(ActionEvent): void
+}
+class ControllerSaveAs #lightblue {
+  + ControllerSaveAs(ModelUML, Stage): 
+  + handle(ActionEvent): void
+}
+class Export {
+  + Export(): 
+  + exportUML(List<Classe>, String, String): void
+  - writePNG(WritableImage, File): void
+  + getUML(List<Classe>): String
+  + exportPNG(VueDiagramme, String, String): void
+}
+class Fleche {
+  + Fleche(int): 
+  + setArrowHead(): void
+  + actualiser(Sujet): void
+  - getIntersectionPoint(double, double, double, double, double): Point2D
+  + setLine(): void
+  + setPos(VBox, VBox): void
+   tete: Polygon
+   decalagePos: int
+}
+class FlecheAttri #lightblue{
+  + FlecheAttri(Text): 
+  + setLine(): void
+  - setPosAttribut(): void
+   attribut: Text
+}
+class FlecheExt #lightblue{
+  + FlecheExt(): 
+  + setLine(): void
+}
+class FlecheImp #lightblue{
+  + FlecheImp(): 
+  + setLine(): void
+}
+class Load {
+  + Load(): 
+  + load(String): ArrayList<Classe>
+}
+class ModelUML {
+  + ModelUML(Stage): 
+  - ajoutFlecheCorrespondant(): void
+  + afficherMethodes(): void
+  - ReadRecentProjects(): void
+  + afficherDependances(): void
+  + masquerToutesDependances(): void
+  + afficherTousHeritages(): void
+  + afficherToutesDependances(): void
+  - addRecentFolder(String): void
+  - verifExistanceClasse(Classe): boolean
+  + supprimerObservateur(Observateur): void
+  + masquerAttributs(): void
+  - containsClasse(String): Classe
+  + afficherToutesMethodes(): void
+  + getCoordonneesFleche(Fleche): VueClasse[]
+  + masquerToutHeritages(): void
+  + switchState(boolean): void
+  + masquerClickDroit(): void
+  - ajouterFlecheImp(Classe, VueClasse): void
+  + afficherAttributs(): void
+  + getClassesCoordonnees(VueClasse): int[]
+  - createADGfolder(): void
+  + changerPositionClasse(Classe, Double, Double): void
+  - ajouterFlecheExt(Classe, VueClasse): void
+  + setADGFolder(): void
+  - saveRecentFolders(List<String>): void
+  + masquerClickDroitClass(): void
+  + afficherClickDroitClasse(int, int): void
+  - verifExistanceFleche(VueClasse, VueClasse): boolean
+  + enregistrerObservateur(Observateur): void
+  + ouvrirProjet(File): void
+  + getFleche(Fleche): VueClasse[]
+  + analyseFichier(String): void
+  + masquerDependances(): void
+  + ajouterClasse(Classe): void
+  + afficherClickDroit(int, int): void
+  - ajouterFlecheAttri(Classe, VueClasse): void
+  + getMenuItems(int): HashMap<String, Boolean>
+  + afficherHeritages(): void
+  + masquerToutAttributs(): void
+  + afficherTousAttributs(): void
+  + trouverPlacePourClassess(Classe): void
+  + notifierObservateurs(): void
+  + masquerHeritages(): void
+  + estLibre(int, int): boolean
+  + creerProjetVierge(String): boolean
+   vues: HashMap<String, VueClasse>
+   vueClasses: List<VueClasse>
+   PARTIE_GAUCHE_X: int
+   menuFichier: HashMap<String, Boolean>
+   observers: ArrayList<Observateur>
+   folder: File
+   vueArbo_x: int
+   vueDiagramme_bouton_style: String
+   etatClickDroitClasse: boolean
+   vueRecent_y: int
+   vueDiagramme: VueDiagramme
+   classeSelectionne: Classe
+   classes: ArrayList<Classe>
+   vueDiagramme_bouton_x: int
+   recentFolders: ArrayList<String>
+   vueDiagramme_x: int
+   isHome: boolean
+   vueRecentVisibility: boolean
+   PARTIE_GAUCHE_Y: int
+   cooXClickDroit: int
+   folderPath: String
+   vueArbo_y: int
+   controllerClickDroit: ControllerClickDroitClasse
+   vueRecent_style: String
+   projectName: String
+   vueRecent_x: int
+   windowsTitle: String
+   partieGaucheYPref: double
+   vueDiagramme_bouton_y: int
+   etat: boolean
+   paneClickDroit: VueDiagramme
+   controlleurClickDroit: ControllerClickDroitClasse
+   vueDiagramme_y: int
+   menuBar: ArrayList<String>
+   cooYClickDroit: int
+   filePath: String
+   vueDiagramme_bouton_visibility: boolean
+}
+interface Observateur << interface >> {
+  + actualiser(Sujet): void
+}
+class PathToClass {
+  + PathToClass(): 
+  + extraireNomClasse(String): String
+  - chargerClasse(URLClassLoader, String, String, int): Class<?>
+  + nbSlash(String): int
+  + remplacerDernierSlashParPoint(String): String
+  + indiceDernierSlash(String): int
+  + convertirCheminEnClasse(String): Class<?>
+}
+class Pointe #lightblue {
+  + Pointe(): 
+  + actualiser(Sujet): void
+}
+class Save {
+  + Save(): 
+  + save(List<Classe>, String, String): void
+}
+interface Sujet << interface >> {
+  + enregistrerObservateur(Observateur): void
+  + notifierObservateurs(): void
+  + supprimerObservateur(Observateur): void
+}
+class VueArborescence {
+  + VueArborescence(): 
+  + actualiser(Sujet): void
+  - RefreshArboresence(File): TreeItem<String>
+}
+class VueClasse {
+  + VueClasse(Classe): 
+  - getVisibilityCircle(String): Circle
+  + actualiser(Sujet): void
+  - ajouterConstructeur(): void
+  - ajouterMethodes(): void
+  - ajouterElements(List<T>, Function<T, HBox>): void
+  - creerAttribut(String[]): HBox
+  - creerHBox(Circle, Label): HBox
+  - afficherClasse(): void
+  - creerMethode(String[]): HBox
+  - creerConstructeur(String[]): HBox
+   classe: Classe
+}
+class VueClickDroit #lightblue{
+  + VueClickDroit(ModelUML, ControllerChoixClickDroit): 
+  + actualiser(Sujet): void
+}
+class VueClickDroitClasse #lightblue{
+  + VueClickDroitClasse(ModelUML, ControllerChoixClickDroit): 
+  + actualiser(Sujet): void
+}
+class VueDiagramme {
+  + VueDiagramme(): 
+  + actualiser(Sujet): void
+}
+class VueMenu {
+  + VueMenu(): 
+  + actualiser(Sujet): void
+}
+class VuePartieGauche {
+  + VuePartieGauche(int): 
+  + actualiser(Sujet): void
+}
+class VueRecent {
+  + VueRecent(): 
+  + actualiser(Sujet): void
+}
+class VueTitre {
+  + VueTitre(): 
+  + actualiser(Sujet): void
+}
+
+
+ControleurDeplacerClasse   "1" *-[#595959,plain]-> "model\n1" ModelUML                   
+ControllerAccueil          "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                   
+ControllerChoixClickDroit  "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                   
+ControllerClickDroit       "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                   
+ControllerClickDroitClasse "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                   
+
+ControllerCreateProject    "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                   
+ControllerDragDrop         "1" *-[#595959,plain]-> "model\n1" ModelUML                   
+ControllerExportPng        "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                   
+ControllerExportUml        "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                   
+ControllerNewProject       "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                   
+ControllerOpenFile         "1" *-[#595959,plain]-> "controllerChoixClickDroit\n1" ControllerChoixClickDroit  
+ControllerOpenFile         "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                   
+ControllerOpenFolder       "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                   
+ControllerSaveAs           "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                   
+Fleche                      -[#008200,dashed]-^  Observateur                
+FlecheAttri                 -[#000082,plain]-^  Fleche                     
+FlecheExt                   -[#000082,plain]-^  Fleche                     
+FlecheImp                   -[#000082,plain]-^  Fleche                     
+
+ModelUML                   "1" *-[#595959,plain]-> "classes\n*" Classe                     
+ModelUML                   "1" *-[#595959,plain]-> "controleurDeplacerClasse\n1" ControleurDeplacerClasse   
+
+ModelUML                   "1" *-[#595959,plain]-> "controllerClickDroit\n1" ControllerClickDroitClasse 
+ModelUML                   "1" *-[#595959,plain]-> "coordonneesFleche\n*" Fleche                     
+
+ModelUML                   "1" *-[#595959,plain]-> "observateurs\n*" Observateur                
+ModelUML                    -[#008200,dashed]-^  Sujet                      
+ModelUML                   "1" *-[#595959,plain]-> "vues\n*" VueClasse                  
+
+ModelUML                   "1" *-[#595959,plain]-> "vueDiagramme\n1" VueDiagramme               
+Pointe                      -[#008200,dashed]-^  Observateur                
+VueArborescence             -[#008200,dashed]-^  Observateur                
+VueClasse                  "1" *-[#595959,plain]-> "classe\n1" Classe                     
+VueClasse                   -[#008200,dashed]-^  Observateur                
+VueClickDroit              "1" *-[#595959,plain]-> "controllerChoixClickDroit\n1" ControllerChoixClickDroit  
+VueClickDroit              "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                   
+VueClickDroit               -[#008200,dashed]-^  Observateur                
+VueClickDroitClasse        "1" *-[#595959,plain]-> "controllerChoixClickDroit\n1" ControllerChoixClickDroit  
+VueClickDroitClasse        "1" *-[#595959,plain]-> "modelUML\n1" ModelUML                   
+VueClickDroitClasse         -[#008200,dashed]-^  Observateur                
+VueDiagramme                -[#008200,dashed]-^  Observateur                
+VueMenu                     -[#008200,dashed]-^  Observateur                
+VuePartieGauche             -[#008200,dashed]-^  Observateur                
+VueRecent                   -[#008200,dashed]-^  Observateur                
+VueTitre                    -[#008200,dashed]-^  Observateur                
+@enduml

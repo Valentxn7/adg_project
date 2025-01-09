@@ -29,7 +29,7 @@
   - Ajout primaire des action du menu contextuel (avec des print).
 - **Avancement** : ✅ Complétée
 
-### Fonctionnalité 3 : Refactoring Des coordonnées de la cLasse Classe
+### Fonctionnalité 3 : Refactoring Des coordonnées de la cLasse CLasse
 - **Responsable** : Ryan Korban
 - **Description** :
   - Refactoring des coordonnées pour une meilleure gestion des coordonnées. (les coordonnées des classes étaient stoker dans le modèle alors qu'elles devraient être stockées dans l'objet Classe).
@@ -58,6 +58,9 @@
   - correction de bugs liés aux flèches.
 - **Avancement** : ✅ Complétée
 
+
+## Éléments dont nous sommes fiers :
+
 **Ryan** :
 J'ai commencé à résoudre un problème de conception dans le programme : les coordonnées des classes étaient stockées dans le modèle, alors qu'elles devraient l'être directement dans l'objet Classe. Cette mauvaise répartition des responsabilités causait des problèmes, notamment lors de l'utilisation du clic droit. J'ai donc entrepris un refactoring pour corriger et améliorer cet aspect. Cependant, le même problème persiste avec les flèches, mais je n'aurai pas le temps de le traiter dans cette itération.
 
@@ -66,4 +69,3 @@ J'ai commencé à résoudre un problème de conception dans le programme : les c
 **Zacharie**:
 Après de grosses phases de fix dans le model, j'ai pu implémenter les controllers pour l'exportation et le système de sauvegarde. Malgré quelques difficultés de conception, le système est désormais fonctionnel et permet d'enregistrer le projet sans passer par une simple sérialisation mais par un vrai fichier de sauvegarde.
 
-**Thomas** : J'ai implémenté le déplacement des classes dans VueDiagramme avec un controleur. Il y a également une gestion des limites du pane, qui empêche les classes de  sortir dépasser la partie droite.  
