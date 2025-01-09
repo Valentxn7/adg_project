@@ -1293,7 +1293,7 @@ public class ModelUML implements Sujet {
 
         ArrayList<Classe> classes = Load.load(path);
         for(Classe c : classes){
-            ajouterClasse(c);
+            ajouterClasseSauvegarde(c);
         }
 
     }
