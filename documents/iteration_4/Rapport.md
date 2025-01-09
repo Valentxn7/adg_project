@@ -69,3 +69,4 @@ J'ai commencé à résoudre un problème de conception dans le programme : les c
 **Zacharie**:
 Après de grosses phases de fix dans le model, j'ai pu implémenter les controllers pour l'exportation et le système de sauvegarde. Malgré quelques difficultés de conception, le système est désormais fonctionnel et permet d'enregistrer le projet sans passer par une simple sérialisation mais par un vrai fichier de sauvegarde.
 
+**Geoffrey** : comportement dynamique des flèches, indépendamment de la position des classes, les flèches s'adaptent.
