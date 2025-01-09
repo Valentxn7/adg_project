@@ -1,24 +1,13 @@
 package adg;
 
 import adg.vues.VueClasse;
-import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 
-public abstract class Fleche extends Line implements Observateur {
-    protected Polygon tete = new Polygon();
-    protected boolean display = true;
-    private int decalage;
-    private int decalagePos;
-    public Fleche(int d) {
-        this.setStroke(Color.BLACK);
-        this.setStrokeWidth(2);
-        this.decalage = d;
-        decalagePos = 10;
-    }
+public abstract class VueFleche extends Line implements Observateur {
 
     public void actualiser(Sujet model) {
         ModelUML mod = (ModelUML) model;
@@ -26,6 +15,7 @@ public abstract class Fleche extends Line implements Observateur {
         if (classe != null) {
             setPos(classe[0], classe[1]);
         }
+        setLine();
     }
 
 
@@ -64,7 +54,6 @@ public abstract class Fleche extends Line implements Observateur {
 
         // Mettre à jour la ligne et la tête de flèche
         setLine();
-        setArrowHead();
     }
 
 
@@ -101,36 +90,6 @@ public abstract class Fleche extends Line implements Observateur {
         }
     }
 
-
-    public void setArrowHead() {
-        if(display){
-            Point2D e = new Point2D(this.getEndX(), this.getEndY());
-            double x = e.getX() + decalagePos;
-            double y = e.getY();
-            double angle = Math.atan2(this.getEndY() - this.getStartY(), this.getEndX() - this.getStartX()) * 180 / Math.PI;
-
-            tete.setLayoutX(x);
-            tete.setLayoutY(y);
-            tete.setRotate(angle+decalage);
-        }
-
-    }
-    public void setDecalagePos(int d){
-        decalagePos = d;
-    }
-
     public abstract void setLine();
-
-    public Polygon getTete() {
-        return tete;
-    }
-
-    public void setDisplay(boolean display) {
-        this.display = display;
-    }
-
-    public boolean getDisplay() {
-        return display;
-    }
 
 }

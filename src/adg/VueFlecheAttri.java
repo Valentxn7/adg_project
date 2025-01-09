@@ -3,20 +3,10 @@ package adg;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-public class FlecheAttri extends Fleche {
+public class VueFlecheAttri extends VueFleche {
     private Text  attribut;
-    public FlecheAttri( Text attribut){
-        super(90);
-        this.tete.setFill(Color.BLUE);
+    public VueFlecheAttri(Text attribut){
         this.attribut = attribut;
-        this.tete.getPoints().addAll(new Double[]{
-                -1.0, -10.0, // Point gauche bas
-                -15.0, 10.0,  // Point gauche haut
-                0.0, 0.0,     // Sommet (pointe de la flèche)
-                15.0, 10.0,   // Point droit haut
-                1.0, -10.0,// Point droit bas
-        });
-        setDecalagePos(0);
     }
     public void setLine(){
         this.setStrokeWidth(2);

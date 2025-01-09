@@ -3,12 +3,17 @@ package adg.vues;
 import adg.ModelUML;
 import adg.Observateur;
 import adg.Sujet;
+import adg.control.ControllerDoubleClicTreeAdg;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
 import java.io.File;
 
 public class VueArborescence extends TreeView<String> implements Observateur {
+
+    public VueArborescence(ControllerDoubleClicTreeAdg cont){
+        this.setOnMouseClicked(cont);
+    }
 
     @Override
     public void actualiser(Sujet mod) {

@@ -2,7 +2,7 @@ package adg;
 
 import adg.control.ControleurDeplacerClasse;
 import adg.control.ControllerClickDroitClasse;
-import adg.data.PathToClass;
+import adg.data.*;
 import adg.vues.VueClasse;
 import adg.vues.VueDiagramme;
 import javafx.scene.layout.Pane;
@@ -15,7 +15,11 @@ import adg.data.PathToClass;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
+import java.awt.*;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.DosFileAttributeView;
@@ -30,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.List;
 
 /**
  * Classe représentant le modèle UML. Cette classe gère les classes UML,
@@ -43,9 +48,11 @@ public class ModelUML implements Sujet {
 
     private HashMap<String, VueClasse> vues;  // hashmap qui associe le nom de la classe à sa vue
     private String windowsTitle = "Home";
+    private String ADGFolfer;
     private String folderPath = null;
     private File folder = null;
     private static final String DATA_FILE = ".data.json"; // Nom du fichier des données
+    private static final String HELP_FILE = "aide.html"; // Nom du fichier des données
     private static final int MAX_RECENT_FOLDERS = 10;     // Limite du nombre de dossiers récents
 
     List<String> recentFolders;
@@ -74,7 +81,7 @@ public class ModelUML implements Sujet {
     //coordonner pour les classes
     private Map<VueClasse, int[]> coordonneesClasse;
     //coordonner pour les fleches
-    private Map<Fleche, VueClasse[]> coordonneesFleche;
+    private Map<VueFleche, VueClasse[]> coordonneesFleche;
 
     private ArrayList<String> menuBar = new ArrayList<>(Arrays.asList("Fichier"));
     // QUAND LE RESTE SERA DEVELOPPE
@@ -89,6 +96,7 @@ public class ModelUML implements Sujet {
         put("Enregistrer sous", false);
         put("Exporter en UML", false);
         put("Exporter en PNG", false);
+        put("Exporter en Java", false);
         put("Personnalisation", false);
         put("Accueil", false);
     }};
@@ -192,12 +200,14 @@ public class ModelUML implements Sujet {
         if (classeExt != null) {
             VueClasse vueClasseExt = vues.get(classeExt.getClassName());
             if (!this.verifExistanceFleche(vueClasse, vues.get(classeExt.getClassName()))) {
-                FlecheExt fleche = new FlecheExt();
+                VueFlecheExt fleche = new VueFlecheExt();
+                VuePointe pointe = new PointePleine(fleche);
                 fleche.toBack();
                 vueDiagramme.getChildren().add(fleche);
-                vueDiagramme.getChildren().add(fleche.getTete());
+                vueDiagramme.getChildren().add(pointe);
                 coordonneesFleche.put(fleche, new VueClasse[]{vueClasse, vueClasseExt});
                 observateurs.add(fleche);
+                observateurs.add(pointe);
             }
         }
     }
@@ -214,11 +224,13 @@ public class ModelUML implements Sujet {
             if (classeImp != null) {
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
                 if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
-                    FlecheImp fleche = new FlecheImp();
+                    VueFlecheImp fleche = new VueFlecheImp();
+                    VuePointe pointe = new PointePleine(fleche);
                     vueDiagramme.getChildren().add(fleche);
-                    vueDiagramme.getChildren().add(fleche.getTete());
+                    vueDiagramme.getChildren().add(pointe);
                     coordonneesFleche.put(fleche, new VueClasse[]{vueClasse, vueClasseImp});
                     observateurs.add(fleche);
+                    observateurs.add(pointe);
                 }
             }
         }
@@ -250,12 +262,14 @@ public class ModelUML implements Sujet {
             if (classeImp != null) {
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
                 if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
-                    FlecheAttri fleche = new FlecheAttri(new Text(i[Analyser.FIELD_MODIFIER]+i[Analyser.FIELD_NAME]));
+                    VueFlecheAttri fleche = new VueFlecheAttri(new Text(i[Analyser.FIELD_MODIFIER] + i[Analyser.FIELD_NAME]));
+                    VuePointe pointe = new PointeCreuse(fleche);
                     vueDiagramme.getChildren().add(fleche);
-                    vueDiagramme.getChildren().add(fleche.getTete());
+                    vueDiagramme.getChildren().add(pointe);
                     vueDiagramme.getChildren().add(fleche.getAttribut());
                     coordonneesFleche.put(fleche, new VueClasse[]{vueClasse, vueClasseImp});
                     observateurs.add(fleche);
+                    observateurs.add(pointe);
                 }
             }
         }
@@ -283,7 +297,7 @@ public class ModelUML implements Sujet {
     private boolean verifExistanceFleche(VueClasse vueClasse1, VueClasse vueClasse2) {
         boolean res = false;
         if (vueClasse1 != null && vueClasse2 != null) {
-            for (Fleche f : coordonneesFleche.keySet()) {
+            for (VueFleche f : coordonneesFleche.keySet()) {
                 VueClasse[] vues = coordonneesFleche.get(f);
                 if (vues[0] == vueClasse1 && vues[1] == vueClasse2) {
                     res = true;
@@ -853,12 +867,12 @@ public class ModelUML implements Sujet {
     /**
      * recupère les classes corréspondant à une fleche
      *
-     * @param fleche
+     * @param vueFleche
      */
-    public VueClasse[] getFleche(Fleche fleche) {
+    public VueClasse[] getFleche(VueFleche vueFleche) {
         VueClasse[] res = new VueClasse[2];
-        if (coordonneesFleche.containsKey(fleche)) {
-            res = coordonneesFleche.get(fleche);
+        if (coordonneesFleche.containsKey(vueFleche)) {
+            res = coordonneesFleche.get(vueFleche);
         }
         return res;
     }
@@ -893,7 +907,7 @@ public class ModelUML implements Sujet {
 
         // Définir la largeur et la hauteur maximales du pane
         int maxWidth = (int) vueDiagramme.getWidth();
-        int maxHeight =(int) vueDiagramme.getHeight();
+        int maxHeight = (int) vueDiagramme.getHeight();
 
         boolean placeTrouvee = false;
 
@@ -922,7 +936,7 @@ public class ModelUML implements Sujet {
 
         // Si aucune place n'a été trouvée, placer la classe à un endroit par défaut
         if (!placeTrouvee) {
-            classe.setCoords(0,0);
+            classe.setCoords(0, 0);
             System.err.println("Aucun emplacement libre trouvé. Classe " + classe.getClassName() + " placée en dernier endroit possible.");
         }
     }
@@ -951,13 +965,14 @@ public class ModelUML implements Sujet {
 
     /**
      * Récupère les coordonnées d'une flèche
-     * @param fleche
+     *
+     * @param vueFleche
      * @return
      */
-    public VueClasse[] getCoordonneesFleche(Fleche fleche) {
+    public VueClasse[] getCoordonneesFleche(VueFleche vueFleche) {
         VueClasse[] res = null;
-        if (coordonneesFleche.containsKey(fleche)) {
-            res = coordonneesFleche.get(fleche);
+        if (coordonneesFleche.containsKey(vueFleche)) {
+            res = coordonneesFleche.get(vueFleche);
         }
         return res;
     }
@@ -1137,7 +1152,6 @@ public class ModelUML implements Sujet {
     public void masquerDependances() {
         //TODO
         System.out.println("masquer les dépendances");
-
         notifierObservateurs();
     }
     /**
@@ -1146,7 +1160,6 @@ public class ModelUML implements Sujet {
     public void masquerHeritages() {
         //TODO
         System.out.println("masquer les héritages");
-
         notifierObservateurs();
     }
 
@@ -1223,14 +1236,14 @@ public class ModelUML implements Sujet {
         this.controllerClickDroit = controllerClickDroitClasse;
     }
 
-    public boolean verifierAttributNonFleche(String[]attribut){
+    public boolean verifierAttributNonFleche(String[] attribut) {
         boolean res = true;
-        for(Fleche fleche : coordonneesFleche.keySet()){
-            if(fleche instanceof FlecheAttri){
-                FlecheAttri flecheAttri = (FlecheAttri) fleche;
+        for (VueFleche vueFleche : coordonneesFleche.keySet()) {
+            if (vueFleche instanceof VueFlecheAttri) {
+                VueFlecheAttri flecheAttri = (VueFlecheAttri) vueFleche;
                 System.out.println(flecheAttri.getAttribut().getText());
-                System.out.println(attribut[Analyser.FIELD_MODIFIER]+attribut[Analyser.FIELD_NAME]);
-                if(flecheAttri.getAttribut().getText().equals(attribut[Analyser.FIELD_MODIFIER]+attribut[Analyser.FIELD_NAME])){
+                System.out.println(attribut[Analyser.FIELD_MODIFIER] + attribut[Analyser.FIELD_NAME]);
+                if (flecheAttri.getAttribut().getText().equals(attribut[Analyser.FIELD_MODIFIER] + attribut[Analyser.FIELD_NAME])) {
                     res = false;
                     break;
                 }
@@ -1238,6 +1251,4 @@ public class ModelUML implements Sujet {
         }
         return res;
     }
-
-
 }
