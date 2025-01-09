@@ -22,7 +22,7 @@ public class Load {
 
             json = Files.readString(Paths.get(file.getAbsolutePath()));
             if (json.trim().isEmpty()) {
-                throw new IOException("Le fichier est vide.");
+                System.out.println("Ouverture d'un fichier sans contenu.");
             }
         } catch (IOException e) {
             System.err.println("Erreur lors de la lecture du fichier : " + e.getMessage());
@@ -40,7 +40,7 @@ public class Load {
                 throw new JsonSyntaxException("Le fichier JSON est mal formé ou vide.");
             }
         } catch (JsonSyntaxException e) {
-            System.err.println("Fichier de sauvegarde incorrect");
+            System.err.println("Fichier de sauvegarde incorrect ou vide");
             return new ArrayList<>();
         }
 
