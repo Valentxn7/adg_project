@@ -1,6 +1,5 @@
 package adg.vues;
 
-import adg.Fleche;
 import adg.ModelUML;
 import adg.Observateur;
 import adg.Sujet;
@@ -11,9 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class VueClasse extends VBox implements Observateur {
