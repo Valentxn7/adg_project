@@ -66,6 +66,7 @@ public class MainUML extends Application {
         MenuItem enregistrerSous = new MenuItem("Enregistrer sous");
         MenuItem exporterUml = new MenuItem("Exporter en UML");
         MenuItem exporterPng = new MenuItem("Exporter en PNG");
+        MenuItem exporterJava = new MenuItem("Exporter en Java");
         Menu personnalisation = new Menu("Personnalisation");
         MenuItem accueil = new MenuItem("Accueil");
 
@@ -75,6 +76,7 @@ public class MainUML extends Application {
         enregistrerSous.setDisable(true);
         exporterUml.setDisable(true);
         exporterPng.setDisable(true);
+        exporterJava.setDisable(true);
         personnalisation.setDisable(true);
         accueil.setDisable(true);
 
@@ -82,7 +84,7 @@ public class MainUML extends Application {
                 nouveau, ouvrirP, ouvrirS, new SeparatorMenuItem(),
                 renommer, supprimer, new SeparatorMenuItem(),
                 enregistrer, enregistrerSous, new SeparatorMenuItem(),
-                exporterUml, exporterPng, new SeparatorMenuItem(),
+                exporterUml, exporterPng, exporterJava, new SeparatorMenuItem(),
                 personnalisation, accueil);
 
         personnalisation.getItems().addAll(
@@ -139,6 +141,7 @@ public class MainUML extends Application {
 
         exporterPng.setOnAction(new ControllerExportPng(modelUML, stage));
         exporterUml.setOnAction(new ControllerExportUml(modelUML, stage));
+        exporterJava.setOnAction(new ControllerExportJava(modelUML, stage));
 
         enregistrerSous.setOnAction(new ControllerSaveAs(modelUML, stage));
         enregistrer.setOnAction(new ControllerSave(modelUML, stage));
