@@ -5,6 +5,8 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -84,15 +86,17 @@ public class MainUML extends Application {
                 personnalisation, accueil);
 
         personnalisation.getItems().addAll(
-                new MenuItem("Masquer les dépendances pour tous"),
-                new MenuItem("Masquer les héritages pour tous"),
-                new MenuItem("Masquer les attributs pour tous"),
-                new MenuItem("Masquer les méthodes pour tous"),
+                createMenuItem("Masquer les dépendances pour tous", "d_gray"),
+                createMenuItem("Masquer les héritages pour tous", "h_gray"),
+                createMenuItem("Masquer les attributs pour tous", "a_gray"),
+                createMenuItem("Masquer les méthodes pour tous", "m_gray"),
+                createMenuItem("Masquer les constructeurs pour tous", "c_gray"),
                 new SeparatorMenuItem(),
-                new MenuItem("Afficher les dépendances pour tous"),
-                new MenuItem("Afficher les héritages pour tous"),
-                new MenuItem("Afficher les attributs pour tous"),
-                new MenuItem("Afficher les méthodes pour tous")
+                createMenuItem("Afficher les dépendances pour tous", "d"),
+                createMenuItem("Afficher les héritages pour tous", "h"),
+                createMenuItem("Afficher les attributs pour tous", "a"),
+                createMenuItem("Afficher les méthodes pour tous", "m"),
+                createMenuItem("Afficher les constructeurs pour tous", "c")
         );
 
         Menu viewMenu = new Menu("Affichage");
@@ -137,6 +141,7 @@ public class MainUML extends Application {
         exporterUml.setOnAction(new ControllerExportUml(modelUML, stage));
 
         enregistrerSous.setOnAction(new ControllerSaveAs(modelUML, stage));
+        enregistrer.setOnAction(new ControllerSave(modelUML, stage));
 
 
 
@@ -263,5 +268,38 @@ public class MainUML extends Application {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    /**
+     * Permet la création d'un MenuItem avec un icône.
+     *
+     * @param text le texte du MenuItem
+     * @param iconPath le chemin de l'icône
+     * @return le MenuItem créé
+     */
+     public static MenuItem createMenuItem(String text, String iconPath) {
+        MenuItem menuItem = new MenuItem(text);
+
+        try {
+            String basePath = "ressource/icones/";
+            File file = new File(basePath + iconPath + ".png");
+            System.out.println("Chemin absolu testé : " + file.getAbsolutePath());
+
+            if (!file.exists()) {
+                System.err.println("Fichier non trouvé : " + file.getAbsolutePath());
+                return menuItem;
+            }
+
+            String fullPath = file.toURI().toString();
+            Image image = new Image(fullPath);
+            ImageView icon = new ImageView(image);
+            icon.setFitWidth(16);
+            icon.setFitHeight(16);
+            menuItem.setGraphic(icon);
+        } catch (Exception e) {
+            System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
+        }
+
+        return menuItem;
     }
 }

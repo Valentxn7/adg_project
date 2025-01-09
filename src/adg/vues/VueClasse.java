@@ -4,6 +4,7 @@ import adg.Fleche;
 import adg.ModelUML;
 import adg.Observateur;
 import adg.Sujet;
+import adg.data.Analyser;
 import adg.data.Classe;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -29,8 +30,7 @@ public class VueClasse extends VBox implements Observateur {
         this.classe = classe;
         this.setSpacing(10); // Espacement entre les éléments
         this.setId("vue-classe");
-        // Génération de la vue
-        afficherClasse();
+
     }
     /**
      * Actualise la vue
@@ -38,8 +38,8 @@ public class VueClasse extends VBox implements Observateur {
      */
     public void actualiser(Sujet mod) {
         this.getChildren().clear();
-        afficherClasse();
         ModelUML model = (ModelUML) mod;
+        afficherClasse(model);
         int[] position = classe.getCoords();
         this.setLayoutX(position[0]);
         this.setLayoutY(position[1]);
@@ -50,11 +50,11 @@ public class VueClasse extends VBox implements Observateur {
     }
 
 
-    private void afficherClasse() {
+    private void afficherClasse(ModelUML model) {
         // Affiche le nom de la classe
         this.getChildren().add(new Label(classe.getClassName()));
         // Affichage des attributs
-        ajouterElements(classe.getFields(), this::creerAttribut);
+        ajouterElements(classe.getFields(), model);
         // Affichage des constructeurs
         ajouterConstructeur();
         // Affichage des méthodes
@@ -64,41 +64,50 @@ public class VueClasse extends VBox implements Observateur {
     /**
      * Ajoute des éléments à la vue principale selon un constructeur d'élément.
      * @param elements Liste des éléments source
-     * @param constructeur Fonction pour transformer chaque élément en HBox
      */
-    private <T> void ajouterElements(List<T> elements, java.util.function.Function<T, HBox> constructeur) {
-        if (!elements.isEmpty()) {
-            VBox box = new VBox();// Espacement entre les éléments
-            box.setId("separation");
-            for (T element : elements) {
-                //System.out.println(element);
-                box.getChildren().add(constructeur.apply(element));
+    private <T> void ajouterElements(List<String[]> elements, ModelUML modelUML) {
+        if (classe.getShowFields()){
+            if (!elements.isEmpty()) {
+                VBox box = new VBox();// Espacement entre les éléments
+                box.setId("separation");
+                for (String[] element : elements) {
+                    //System.out.println(element);
+                    HBox hBox = creerAttribut(element, modelUML);
+                    if(hBox != null) box.getChildren().add(hBox);
+                }
+                this.getChildren().add(box);
             }
-            this.getChildren().add(box);
         }
+
     }
     private void ajouterConstructeur(){
-        List<String[]> constructors = classe.getConstructorsInStrings();
-        if (!constructors.isEmpty()) {
-            VBox box = new VBox();// Espacement entre les éléments
-            box.setId("separation");
-            for (String[] constructor : constructors) {
-                box.getChildren().add(creerConstructeur(constructor));
+        if (classe.getShowConstructors()){
+            List<String[]> constructors = classe.getConstructorsInStrings();
+            if (!constructors.isEmpty()) {
+                VBox box = new VBox();// Espacement entre les éléments
+                box.setId("separation");
+                for (String[] constructor : constructors) {
+                    box.getChildren().add(creerConstructeur(constructor));
+                }
+                this.getChildren().add(box);
             }
-            this.getChildren().add(box);
         }
+
     }
 
     private void ajouterMethodes(){
-        List<String[]>methods = classe.getMethodsInStrings();
-        if (!methods.isEmpty()) {
-            VBox box = new VBox();// Espacement entre les éléments
-            box.setId("separation");
-            for (String[] method : methods) {
-                box.getChildren().add(creerMethode(method));
+        if (classe.getShowMethods()){
+            List<String[]>methods = classe.getMethodsInStrings();
+            if (!methods.isEmpty()) {
+                VBox box = new VBox();// Espacement entre les éléments
+                box.setId("separation");
+                for (String[] method : methods) {
+                    box.getChildren().add(creerMethode(method));
+                }
+                this.getChildren().add(box);
             }
-            this.getChildren().add(box);
         }
+
     }
 
 
@@ -110,23 +119,26 @@ public class VueClasse extends VBox implements Observateur {
     /**
      * Crée une HBox pour un attribut.
      */
-    private HBox creerAttribut(String[] field) {
-        return creerHBox(getVisibilityCircle(field[0]), new Label(field[1] + " : " + field[2]));
+    private HBox creerAttribut(String[] field, ModelUML model) {
+        HBox res = null;
+        if(model.verifierAttributNonFleche(field)) res = creerHBox(getVisibilityCircle(field[Analyser.FIELD_MODIFIER]), new Label(field[Analyser.FIELD_TYPE] + " : " + field[Analyser.FIELD_NAME]));
+        System.out.println("resultat" + res==null);
+    return res;
     }
     /**
      * Crée une HBox pour un constructeur.
      */
     private HBox creerConstructeur(String[] constructor) {
-        String params = constructor[2];
-        return creerHBox(getVisibilityCircle(constructor[0]), new Label(classe.getClassName() + "(" + String.join(", ", params) + ")"));
+        String params = constructor[Analyser.CONSTRUCTOR_PARAMETERS];
+        return creerHBox(getVisibilityCircle(constructor[Analyser.CONSTRUCTOR_MODIFIER]), new Label(classe.getClassName() + "(" + String.join(", ", params) + ")"));
     }
 
     /**
      * Crée une HBox pour une méthode.
      */
     private HBox creerMethode(String[] method) {
-        String params = method[2];
-        return creerHBox(getVisibilityCircle(method[0].toString()), new Label(method[1] + "(" + String.join(", ", params) + ") : " + method[3]));
+        String params = method[Analyser.METHOD_PARAMETERS];
+        return creerHBox(getVisibilityCircle(method[Analyser.METHOD_MODIFIER].toString()), new Label(method[Analyser.METHOD_NAME] + "(" + String.join(", ", params) + ") : " + method[Analyser.METHOD_RETURN_TYPE]));
     }
 
     /**

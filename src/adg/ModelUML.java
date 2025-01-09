@@ -13,7 +13,6 @@ import adg.data.PathToClass;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
-import java.awt.*;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -151,6 +150,30 @@ public class ModelUML implements Sujet {
     }
 
 
+    /**
+     * Place la classe aux coordonnées exactes sans vériier si la place est libre
+     * @param classe la classe à ajouter.
+     */
+    public void ajouterClasseSauvegarde(Classe classe) {
+        if (classes != null)
+            classes.add(classe);
+        VueClasse vue = new VueClasse(classe);
+        vue.setOnMouseClicked(controllerClickDroit);
+        observateurs.add(vue);
+
+        vueDiagramme.getChildren().add(vue);
+        vues.put(classe.getClassName(), vue);
+
+        vue.addEventHandler(MouseEvent.MOUSE_PRESSED, controleurDeplacerClasse);
+        vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
+        this.ajouterFlecheExt(classe, vue);
+        this.ajouterFlecheImp(classe, vue);
+        this.ajouterFlecheAttri(classe, vue);
+        this.ajoutFlecheCorrespondant();
+    }
+
+
+
     private boolean verifExistanceClasse(Classe classe) {
         boolean res = false;
         for (Classe c : classes) {
@@ -216,11 +239,25 @@ public class ModelUML implements Sujet {
     private void ajouterFlecheAttri(Classe classe, VueClasse vueClasse) {
         List<String[]> s = classe.getFields();
         for (String[] i : s) {
-            Classe classeImp = containsClasse(i[Analyser.FIELD_TYPE]);
+            String type = i[Analyser.FIELD_TYPE];
+            if(type.contains("<")){
+                // Trouver les indices de < et >
+                int start = type.indexOf('<');
+                int end = type.indexOf('>');
+
+                // Vérifier que < et > existent
+                if (start != -1 && end != -1 && start < end) {
+                    // Extraire le mot entre < et >
+                    String mot = type.substring(start + 1, end);
+                    type = mot;
+                }
+            }
+            Classe classeImp = containsClasse(type);
+
             if (classeImp != null) {
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
                 if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
-                    FlecheAttri fleche = new FlecheAttri(new Text(i[Analyser.FIELD_MODIFIER] + i[Analyser.FIELD_NAME]));
+                    FlecheAttri fleche = new FlecheAttri(new Text(i[Analyser.FIELD_MODIFIER]+i[Analyser.FIELD_NAME]));
                     vueDiagramme.getChildren().add(fleche);
                     vueDiagramme.getChildren().add(fleche.getTete());
                     vueDiagramme.getChildren().add(fleche.getAttribut());
@@ -1100,6 +1137,9 @@ public class ModelUML implements Sujet {
     public void masquerToutAttributs() {
         //TODO
         System.out.println("masquer tous les attributs");
+        for (Classe c : classes) {
+            c.setShowFields(false);
+        }
         notifierObservateurs();
     }
 
@@ -1109,6 +1149,7 @@ public class ModelUML implements Sujet {
     public void afficherToutesDependances() {
         //TODO
         System.out.println("afficher toutes les dépendances");
+
         notifierObservateurs();
     }
 
@@ -1127,6 +1168,9 @@ public class ModelUML implements Sujet {
     public void afficherTousAttributs() {
         //TODO
         System.out.println("afficher tous les attributs");
+        for (Classe c : classes) {
+            c.setShowFields(true);
+        }
         notifierObservateurs();
     }
 
@@ -1137,6 +1181,9 @@ public class ModelUML implements Sujet {
     public void afficherToutesMethodes() {
         //TODO
         System.out.println("afficher toutes les méthodes");
+        for (Classe c : classes) {
+            c.setShowMethods(true);
+        }
         notifierObservateurs();
     }
 
@@ -1146,6 +1193,7 @@ public class ModelUML implements Sujet {
     public void masquerDependances() {
         //TODO
         System.out.println("masquer les dépendances");
+
         notifierObservateurs();
     }
 
@@ -1155,6 +1203,7 @@ public class ModelUML implements Sujet {
     public void masquerHeritages() {
         //TODO
         System.out.println("masquer les héritages");
+
         notifierObservateurs();
     }
 
@@ -1164,6 +1213,7 @@ public class ModelUML implements Sujet {
     public void masquerAttributs() {
         //TODO
         System.out.println("masquer les attributs");
+        classeSelectionne.setShowFields(false);
         notifierObservateurs();
     }
 
@@ -1191,6 +1241,7 @@ public class ModelUML implements Sujet {
     public void afficherAttributs() {
         //TODO
         System.out.println("afficher les attributs");
+        classeSelectionne.setShowFields(true);
         notifierObservateurs();
     }
 
@@ -1199,7 +1250,21 @@ public class ModelUML implements Sujet {
      */
     public void afficherMethodes() {
         //TODO
-        System.out.println("afficher les méthodes");
+        classeSelectionne.setShowMethods(true);
+        notifierObservateurs();
+    }
+
+    public void masquerMethodes() {
+        System.out.println("masquer les méthodes");
+        classeSelectionne.setShowMethods(false);
+        notifierObservateurs();
+    }
+
+    public void masquerToutesMethodes() {
+        System.out.println("masquer toutes les méthodes");
+        for (Classe c : classes) {
+            c.setShowMethods(false);
+        }
         notifierObservateurs();
     }
 
@@ -1271,4 +1336,22 @@ public class ModelUML implements Sujet {
         }
 
     }
+
+    public boolean verifierAttributNonFleche(String[]attribut){
+        boolean res = true;
+        for(Fleche fleche : coordonneesFleche.keySet()){
+            if(fleche instanceof FlecheAttri){
+                FlecheAttri flecheAttri = (FlecheAttri) fleche;
+                System.out.println(flecheAttri.getAttribut().getText());
+                System.out.println(attribut[Analyser.FIELD_MODIFIER]+attribut[Analyser.FIELD_NAME]);
+                if(flecheAttri.getAttribut().getText().equals(attribut[Analyser.FIELD_MODIFIER]+attribut[Analyser.FIELD_NAME])){
+                    res = false;
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+
+
 }

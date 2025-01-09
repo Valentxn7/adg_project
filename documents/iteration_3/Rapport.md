@@ -55,6 +55,16 @@
 
 - **Avancement** : ✅ Complétée
 
+## Conclusion
+
+- Plan pour l'itération suivante :
+  - Faire fonctionner les flèches après le gros merge.
+  - Ajouter des éléments graphiques.
+  - Assurer le fonctionnement de la sauvegarde du projet.
+  - Refactoriser les erreurs de conception.
+
+
+## Éléments dont nous sommes fiers :
 **Ryan** :
 Le code est plus clair grâce à la création de la nouvelle classe PathToClass qui permet de convertir les fichiers .class en objet Class<?> le modele est donc moins dense.
 

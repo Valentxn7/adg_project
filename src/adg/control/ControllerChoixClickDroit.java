@@ -35,6 +35,8 @@ public class ControllerChoixClickDroit implements EventHandler<ActionEvent> {
             modelUML.afficherTousAttributs();
         } else if (item.getId() == "7") {
             modelUML.afficherToutesMethodes();
+        } else if (item.getId() == "8") {
+            modelUML.masquerToutesMethodes();
         } else if (item.getId() == "A") {
             modelUML.masquerDependances();
         } else if (item.getId() == "B") {
@@ -49,7 +51,8 @@ public class ControllerChoixClickDroit implements EventHandler<ActionEvent> {
             modelUML.afficherAttributs();
         } else if (item.getId() == "G") {
             modelUML.afficherMethodes();
-
+        } else if (item.getId() == "H") {
+            modelUML.masquerMethodes();
         }
     }
 
