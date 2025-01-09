@@ -32,26 +32,11 @@ public class ControllerOpenFile implements EventHandler<ActionEvent> {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers ADG", "*.adg"));
 
         File selectedFile = fileChooser.showOpenDialog(rootStage);
-        if (selectedFile != null) {
-            System.out.println("Ouverture de la sauvegarde : " + selectedFile.getAbsolutePath());
 
-
-            ArrayList<Classe> classes = Load.load(selectedFile.getAbsolutePath());
-
-            for(Classe c : classes){
-                modelUML.ajouterClasse(c);
-            }
-            modelUML.switchState(false);
-
-
-
-
-
-
-
-        } else {
+        if (selectedFile != null)
+            modelUML.loadADGbyPath(selectedFile.getAbsolutePath());
+        else
             System.out.println("Aucun fichier sélectionné.");
-        }
     }
 
 }

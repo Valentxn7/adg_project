@@ -2,14 +2,12 @@ package adg;
 
 import adg.control.ControleurDeplacerClasse;
 import adg.control.ControllerClickDroitClasse;
-import adg.data.PathToClass;
+import adg.data.*;
 import adg.vues.VueClasse;
 import adg.vues.VueDiagramme;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import adg.data.Analyser;
-import adg.data.Classe;
 
 import adg.data.PathToClass;
 import javafx.scene.input.MouseEvent;
@@ -830,7 +828,6 @@ public class ModelUML implements Sujet {
      * @throws Throwable Si une exception se produit lors de l'analyse ou du chargement de la classe.
      */
     public void analyseFichier(String cheminAbsolu) throws Throwable {
-
         // Charge la classe
         Class<?> classe = PathToClass.convertirCheminEnClasse(cheminAbsolu);
 
@@ -860,6 +857,10 @@ public class ModelUML implements Sujet {
      */
     public HashMap<String, VueClasse> getVues() {
         return vues;
+    }
+
+    public String getADGFolferPath() {
+        return ADGFolfer + FileSystems.getDefault().getSeparator();
     }
 
 
@@ -1227,7 +1228,7 @@ public class ModelUML implements Sujet {
             boolean BonChoix = true;
             switch (choix) {
                 case 0:
-                    String path = ADGFolfer + FileSystems.getDefault().getSeparator() + HELP_FILE;
+                    String path = getADGFolferPath() + HELP_FILE;
                     File aideFile = new File(path); // Ajustez le chemin si nécessaire
 
                     // Vérifier si le fichier existe
@@ -1257,5 +1258,17 @@ public class ModelUML implements Sujet {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void loadADGbyPath(String path){
+        System.out.println("Ouverture de la sauvegarde : " + path);
+        if (isHome)
+            switchState(false);
+
+        ArrayList<Classe> classes = Load.load(path);
+        for(Classe c : classes){
+            ajouterClasse(c);
+        }
+
     }
 }

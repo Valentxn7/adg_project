@@ -148,7 +148,7 @@ public class MainUML extends Application {
         rootArborescence.setValue("Projets ADG:");
         rootArborescence.setExpanded(true);
 
-        VueArborescence vueArborescence = new VueArborescence();  // l'item de base
+        VueArborescence vueArborescence = new VueArborescence(new ControllerDoubleClicTreeAdg(modelUML));  // l'item de base
         vueArborescence.setRoot(rootArborescence);
         modelUML.enregistrerObservateur(vueArborescence);
         vueArborescence.actualiser(modelUML);
