@@ -1,9 +1,6 @@
 package adg.data;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,12 +72,39 @@ public class Analyser {
             String[] attributInfo = new String[3];
 
             attributInfo[FIELD_NAME] = field.getName();
-            attributInfo[FIELD_TYPE] = field.getType().getName();
+            attributInfo[FIELD_TYPE] = getFieldType(field);
             attributInfo[FIELD_MODIFIER] = Modifier.toString(field.getModifiers());
 
             fields.add(attributInfo);
         }
         classe.setFields(fields);
+    }
+
+
+    /**
+     * @param field
+     * @return Exemple: "List<String>"
+     */
+    private String getFieldType(Field field) {
+        Type genericType = field.getGenericType();
+
+        if (genericType instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) genericType;
+            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+
+            StringBuilder sb = new StringBuilder();
+            sb.append(field.getType().getSimpleName());
+            sb.append("<");
+            for (int i = 0; i < actualTypeArguments.length; i++) {
+                sb.append(actualTypeArguments[i].getTypeName());
+                if (i < actualTypeArguments.length - 1) {
+                    sb.append(", ");
+                }
+            }
+            sb.append(">");
+            return sb.toString();
+        }
+        return field.getType().getName();
     }
 
     /** Build the fields for the class
