@@ -65,7 +65,7 @@ public class Classe {
 
             uml.append("    ").append(vis).append(" ").append(this.class_name).append("(");
 
-            List<String> parameters = (List<String>) constructor[Analyser.CONSTRUCTOR_PARAMETERS];
+            List<String> parameters = (List<String>) constructor[Analyser.CONSTRUCTOR_PARAMETERS_TYPE];
             uml.append(String.join(", ", parameters)).append(")\n");
         }
 
@@ -77,7 +77,7 @@ public class Classe {
 
             uml.append("    ").append(vis).append(" ").append(method[Analyser.METHOD_NAME]).append("(");
 
-            List<String> parameters = (List<String>) method[Analyser.METHOD_PARAMETERS];
+            List<String> parameters = (List<String>) method[Analyser.METHOD_PARAMETERS_TYPE];
             uml.append(String.join(", ", parameters)).append(") : ")
                     .append(method[Analyser.METHOD_RETURN_TYPE]).append("\n");
         }
@@ -130,7 +130,7 @@ public class Classe {
             java.append("    ").append(constructor[Analyser.CONSTRUCTOR_MODIFIER]).append(" ")
                     .append(this.class_name).append("(");
 
-            List<String> parameters = (List<String>) constructor[Analyser.CONSTRUCTOR_PARAMETERS];
+            List<String> parameters = (List<String>) constructor[Analyser.CONSTRUCTOR_PARAMETERS_TYPE];
             java.append(String.join(", ", parameters)).append(") {\n");
             java.append("        // TODO: constructor implementation\n");
             java.append("    }\n");
@@ -145,7 +145,7 @@ public class Classe {
                     .append(method[Analyser.METHOD_RETURN_TYPE]).append(" ")
                     .append(method[Analyser.METHOD_NAME]).append("(");
 
-            List<String> parameters = (List<String>) method[Analyser.METHOD_PARAMETERS];
+            List<String> parameters = (List<String>) method[Analyser.METHOD_PARAMETERS_TYPE];
             java.append(String.join(", ", parameters)).append(") {\n");
             java.append("        // TODO: method implementation\n");
             java.append("    }\n");
@@ -248,7 +248,7 @@ public class Classe {
             String[] new_constructor = new String[3];
             new_constructor[Analyser.CONSTRUCTOR_NAME] = (String) constructor[Analyser.CONSTRUCTOR_NAME];
             new_constructor[Analyser.CONSTRUCTOR_MODIFIER] = (String) constructor[Analyser.CONSTRUCTOR_MODIFIER];
-            new_constructor[Analyser.CONSTRUCTOR_PARAMETERS] = String.join(", ", (List<String>) constructor[Analyser.CONSTRUCTOR_PARAMETERS]);
+            new_constructor[Analyser.CONSTRUCTOR_PARAMETERS_TYPE] = String.join(", ", (List<String>) constructor[Analyser.CONSTRUCTOR_PARAMETERS_TYPE]);
 
             constructors.add(new_constructor);
         }
@@ -263,7 +263,7 @@ public class Classe {
             new_method[Analyser.METHOD_NAME] = (String) method[Analyser.METHOD_NAME];
             new_method[Analyser.METHOD_RETURN_TYPE] = (String) method[Analyser.METHOD_RETURN_TYPE];
             new_method[Analyser.METHOD_MODIFIER] = (String) method[Analyser.METHOD_MODIFIER];
-            new_method[Analyser.METHOD_PARAMETERS] = String.join(", ", (List<String>) method[Analyser.METHOD_PARAMETERS]);
+            new_method[Analyser.METHOD_PARAMETERS_TYPE] = String.join(", ", (List<String>) method[Analyser.METHOD_PARAMETERS_TYPE]);
 
             methods.add(new_method);
         }
