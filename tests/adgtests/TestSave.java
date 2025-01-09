@@ -48,7 +48,7 @@ public class TestSave {
 
     @Test
     public void save1() throws Exception {
-        Save.save(classes, path1 + pn1 + ".adg", pn1);
+        Save.save(classes, path1 + pn1 + ".adg");
 
         File file = new File(path1 + pn1 + ".adg");
         assertTrue(file.exists());
