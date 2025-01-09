@@ -16,8 +16,6 @@ import adg.vues.*;
 import java.io.File;
 
 public class MainUML extends Application {
-    private ModelUML modelUML;
-    private Stage rootStage;
 
     public static void main(String[] args) {
         Application.launch();
@@ -69,6 +67,7 @@ public class MainUML extends Application {
         MenuItem exporterJava = new MenuItem("Exporter en Java");
         Menu personnalisation = new Menu("Personnalisation");
         MenuItem accueil = new MenuItem("Accueil");
+        MenuItem quitter = new MenuItem("Quitter");
 
         renommer.setDisable(true);
         supprimer.setDisable(true);
@@ -79,13 +78,14 @@ public class MainUML extends Application {
         exporterJava.setDisable(true);
         personnalisation.setDisable(true);
         accueil.setDisable(true);
+        //quitter.setDisable(true);
 
         fileMenu.getItems().addAll(
                 nouveau, ouvrirP, ouvrirS, new SeparatorMenuItem(),
                 renommer, supprimer, new SeparatorMenuItem(),
                 enregistrer, enregistrerSous, new SeparatorMenuItem(),
                 exporterUml, exporterPng, exporterJava, new SeparatorMenuItem(),
-                personnalisation, accueil);
+                personnalisation, accueil, quitter);
 
         personnalisation.getItems().addAll(
                 createMenuItem("Masquer les dépendances pour tous", "d_gray"),
@@ -145,10 +145,12 @@ public class MainUML extends Application {
 
         enregistrerSous.setOnAction(new ControllerSaveAs(modelUML, stage));
         enregistrer.setOnAction(new ControllerSave(modelUML, stage));
+        supprimer.setOnAction(new ControllerDeleteSave(modelUML));
 
 
 
         accueil.setOnAction(new ControllerAccueil(modelUML));
+        quitter.setOnAction(new ControleurQuitter());
 
         /*     ARBORESCENCE       **/
 
@@ -185,7 +187,7 @@ public class MainUML extends Application {
         stage.setScene(scene);
         stage.setTitle("ADG - Home");
         stage.setResizable(true);
-        stage.setMinHeight(460);
+        stage.setMinHeight(500);
         stage.setMinWidth(940);
 
         base.setMinSize(900, 400);
@@ -256,6 +258,8 @@ public class MainUML extends Application {
 
 
         /*       lancement       **/
+        Image image = loadRessource("logo/adg");
+        stage.getIcons().add(image);
         modelUML.switchState(true);
         stage.show();
     }
@@ -277,32 +281,43 @@ public class MainUML extends Application {
      * Permet la création d'un MenuItem avec un icône.
      *
      * @param text le texte du MenuItem
-     * @param iconPath le chemin de l'icône
+     * @param icon_name le chemin de l'icône
      * @return le MenuItem créé
      */
-     public static MenuItem createMenuItem(String text, String iconPath) {
+    public static MenuItem createMenuItem(String text, String icon_name) {
         MenuItem menuItem = new MenuItem(text);
 
+        Image image = loadRessource("icones/" + icon_name);
+        ImageView icon = new ImageView(image);
+        icon.setFitWidth(16);
+        icon.setFitHeight(16);
+
+        if (icon != null) {
+            menuItem.setGraphic(icon);
+        }
+
+        return menuItem;
+    }
+
+    private static Image loadRessource(String ressource) {
         try {
-            String basePath = "ressource/icones/";
-            File file = new File(basePath + iconPath + ".png");
+            String basePath = "ressource/";
+
+            File file = new File(basePath + ressource + ".png");
             System.out.println("Chemin absolu testé : " + file.getAbsolutePath());
 
             if (!file.exists()) {
                 System.err.println("Fichier non trouvé : " + file.getAbsolutePath());
-                return menuItem;
+                return null;
             }
 
             String fullPath = file.toURI().toString();
             Image image = new Image(fullPath);
-            ImageView icon = new ImageView(image);
-            icon.setFitWidth(16);
-            icon.setFitHeight(16);
-            menuItem.setGraphic(icon);
+
+            return image;
         } catch (Exception e) {
             System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
+            return null;
         }
-
-        return menuItem;
     }
 }

@@ -11,12 +11,14 @@ public class Analyser {
 
     public static final int CONSTRUCTOR_NAME = 0; //String: Nom du constructeur
     public static final int CONSTRUCTOR_MODIFIER = 1; //String: Visibilité du constructeur
-    public static final int CONSTRUCTOR_PARAMETERS = 2; //String[]: Paramètres du constructeur
+    public static final int CONSTRUCTOR_PARAMETERS_TYPE = 2; //String[]: Paramètres du constructeur
+    public static final int CONSTRUCTOR_PARAMETERS_NAME = 3; //String[]: Noms des paramètres du constructeur
 
     public static final int METHOD_NAME = 0; //String: Nom de la méthode
     public static final int METHOD_RETURN_TYPE = 1; //String: Type de retour de la méthode (String, int, etc.)
     public static final int METHOD_MODIFIER = 2; //String: Visibilité de la méthode
-    public static final int METHOD_PARAMETERS = 3; //String[]: Paramètres de la méthode
+    public static final int METHOD_PARAMETERS_TYPE = 3; //String[]: Paramètres de la méthode
+    public static final int METHOD_PARAMETERS_NAME = 4; //String[]: Noms des paramètres de la méthode
 
     private final Class<?> row_class;
 
@@ -31,6 +33,7 @@ public class Analyser {
     public Classe analyse() {
         Classe classe = new Classe(row_class.getName());
 
+        checkInterface(classe);
         buildSuperClass(classe);
         buildInterfaces(classe);
         buildFields(classe);
@@ -38,6 +41,15 @@ public class Analyser {
         buildMethods(classe);
 
         return classe;
+    }
+
+    /** Check if the class is an interface
+     * @param classe the class to check if it is an interface
+     */
+    private void checkInterface(Classe classe) {
+        if (row_class.isInterface()) {
+            classe.setInterface(true);
+        }
     }
 
     /** Build the superclass for the class
@@ -114,10 +126,12 @@ public class Analyser {
         List<Object[]> constructors = new ArrayList<>();
 
         for (Constructor<?> constructor : row_class.getDeclaredConstructors()) {
-            Object[] constructeurInfo = new Object[3];
+            Object[] constructeurInfo = new Object[4];
             constructeurInfo[CONSTRUCTOR_NAME] = constructor.getName();
             constructeurInfo[CONSTRUCTOR_MODIFIER] = Modifier.toString(constructor.getModifiers());
-            constructeurInfo[CONSTRUCTOR_PARAMETERS] = getParameterTypeNames(constructor.getParameterTypes());
+
+            constructeurInfo[CONSTRUCTOR_PARAMETERS_TYPE] = getParameterTypeNames(constructor.getParameterTypes());
+            constructeurInfo[CONSTRUCTOR_PARAMETERS_NAME] = getParameterNames(constructor.getParameters());
 
             constructors.add(constructeurInfo);
         }
@@ -131,12 +145,14 @@ public class Analyser {
         List<Object[]> methods = new ArrayList<>();
 
         for (Method method : row_class.getDeclaredMethods()) {
-            Object[] methodeInfo = new Object[4];
+            Object[] methodeInfo = new Object[5];
 
             methodeInfo[METHOD_NAME] = method.getName();
             methodeInfo[METHOD_RETURN_TYPE] = method.getReturnType().getName();
             methodeInfo[METHOD_MODIFIER] = Modifier.toString(method.getModifiers());
-            methodeInfo[METHOD_PARAMETERS] = getParameterTypeNames(method.getParameterTypes());
+
+            methodeInfo[METHOD_PARAMETERS_TYPE] = getParameterTypeNames(method.getParameterTypes());
+            methodeInfo[METHOD_PARAMETERS_NAME] = getParameterNames(method.getParameters());
 
             methods.add(methodeInfo);
         }
@@ -148,6 +164,20 @@ public class Analyser {
         });
 
         classe.setMethods(methods);
+    }
+
+    /**
+     * Get the parameter names (type --> name)
+     * @param parameters the parameters of methods or constructors
+     * @return a list of parameter names
+     */
+    private List<String> getParameterNames(Parameter[] parameters) {
+        List<String> res = new ArrayList<>();
+        for (Parameter parameter : parameters) {
+            res.add(parameter.getName());
+            System.out.println("NOM RECUPERE : " + parameter.getName());
+        }
+        return res;
     }
 
     /**

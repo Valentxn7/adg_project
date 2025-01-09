@@ -2,11 +2,15 @@ package adgtests;
 
 import adg.data.Analyser;
 import adg.data.Classe;
+import adg.data.PathToClass;
 import adgtests_t.ExempleClasse;
 import adgtests_t.ExempleClasse3;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +60,7 @@ public class TestAnalyser {
         Object[] constructor1 =  classe.getConstructors().get(0);
         assertEquals("adgtests_t.ExempleClasse", constructor1[Analyser.CONSTRUCTOR_NAME]);
         assertEquals("public", constructor1[Analyser.CONSTRUCTOR_MODIFIER]);
-        assertEquals("[int, int]", constructor1[Analyser.CONSTRUCTOR_PARAMETERS].toString());
+        assertEquals("[int, int]", constructor1[Analyser.CONSTRUCTOR_PARAMETERS_TYPE].toString());
     }
 
     @Test
@@ -75,14 +79,14 @@ public class TestAnalyser {
         assertEquals("ExempleMethode1", method1[Analyser.METHOD_NAME]);
         assertEquals("void", method1[Analyser.METHOD_RETURN_TYPE]);
         assertEquals("public", method1[Analyser.METHOD_MODIFIER]);
-        assertEquals("[int]", method1[Analyser.METHOD_PARAMETERS].toString());
+        assertEquals("[int]", method1[Analyser.METHOD_PARAMETERS_TYPE].toString());
 
         // Méthode 2 (ExempleMethode2 après tri)
         Object[] method2 = sortedMethods.get(1);
         assertEquals("ExempleMethode2", method2[Analyser.METHOD_NAME]);
         assertEquals("java.lang.String", method2[Analyser.METHOD_RETURN_TYPE]);
         assertEquals("private", method2[Analyser.METHOD_MODIFIER]);
-        assertEquals("[java.lang.String]", method2[Analyser.METHOD_PARAMETERS].toString());
+        assertEquals("[java.lang.String]", method2[Analyser.METHOD_PARAMETERS_TYPE].toString());
     }
 
     @Test

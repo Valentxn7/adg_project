@@ -53,6 +53,7 @@ public class ModelUML implements Sujet {
     private File folder = null;
     private static final String DATA_FILE = ".data.json"; // Nom du fichier des données
     private static final String HELP_FILE = "aide.html"; // Nom du fichier des données
+    private static final String DIRECTORY_SEPARATOR = FileSystems.getDefault().getSeparator();
     private static final int MAX_RECENT_FOLDERS = 10;     // Limite du nombre de dossiers récents
 
     List<String> recentFolders;
@@ -136,27 +137,29 @@ public class ModelUML implements Sujet {
      * @param classe la classe à ajouter.
      */
     public void ajouterClasse(Classe classe) {
-        if (classes != null)
+        if (!verifExistanceClasse(classe)) {
             classes.add(classe);
-        this.trouverPlacePourClassess(classe);
-        VueClasse vue = new VueClasse(classe);
-        vue.setOnMouseClicked(controllerClickDroit);
-        observateurs.add(vue);
+            this.trouverPlacePourClassess(classe);
+            VueClasse vue = new VueClasse(classe);
+            vue.setOnMouseClicked(controllerClickDroit);
+            observateurs.add(vue);
 
-        vueDiagramme.getChildren().add(vue);
-        vues.put(classe.getClassName(), vue);
+            vueDiagramme.getChildren().add(vue);
+            vues.put(classe.getClassName(), vue);
 
-        vue.addEventHandler(MouseEvent.MOUSE_PRESSED, controleurDeplacerClasse);
-        vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
-        this.ajouterFlecheExt(classe, vue);
-        this.ajouterFlecheImp(classe, vue);
-        this.ajouterFlecheAttri(classe, vue);
-        this.ajoutFlecheCorrespondant();
+            vue.addEventHandler(MouseEvent.MOUSE_PRESSED, controleurDeplacerClasse);
+            vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
+            this.ajouterFlecheExt(classe, vue);
+            this.ajouterFlecheImp(classe, vue);
+            this.ajouterFlecheAttri(classe, vue);
+            this.ajoutFlecheCorrespondant();
+        }
     }
 
 
     /**
      * Place la classe aux coordonnées exactes sans vériier si la place est libre
+     *
      * @param classe la classe à ajouter.
      */
     public void ajouterClasseSauvegarde(Classe classe) {
@@ -192,6 +195,7 @@ public class ModelUML implements Sujet {
 
     /**
      * creez une flèche extends
+     *
      * @param classe
      * @param vueClasse
      */
@@ -254,7 +258,7 @@ public class ModelUML implements Sujet {
         List<String[]> s = classe.getFields();
         for (String[] i : s) {
             String type = i[Analyser.FIELD_TYPE];
-            if(type.contains("<")){
+            if (type.contains("<")) {
                 // Trouver les indices de < et >
                 int start = type.indexOf('<');
                 int end = type.indexOf('>');
@@ -290,6 +294,7 @@ public class ModelUML implements Sujet {
     public void ajouterFleches(Fleche fleche) {
         fleches.add(fleche);
     }
+
     /**
      * Ajoute les fleches correspondant à chaque classe
      */
@@ -304,8 +309,10 @@ public class ModelUML implements Sujet {
         }
 
     }
+
     /**
      * vérifie si une flèche existe déjà
+     *
      * @param vueClasse1
      * @param vueClasse2
      * @return
@@ -327,6 +334,7 @@ public class ModelUML implements Sujet {
 
     /**
      * verifie si une classe existe déjà
+     *
      * @param s
      * @return
      */
@@ -375,7 +383,60 @@ public class ModelUML implements Sujet {
     }
 
     /**
+     * @param cont          le contenu du fichier
+     * @param directoryPath le path du dossier mais SANS le nom du dossier
+     * @param fileName      le nom du fichier à écrire
+     */
+    public static boolean ecrireFichier(String cont, String directoryPath, String fileName) {
+        System.out.println("cont : " + cont);
+        System.out.println("directoryPath : " + directoryPath);
+        System.out.println("fileName : " + fileName);
+
+        File directory = new File(directoryPath);
+        File file = new File(directory, fileName);
+
+        try {
+            // Vérifier si le dossier existe, sinon le créer
+            if (!directory.exists()) {
+                if (directory.mkdirs()) {
+                    System.out.println("Dossier créé : " + directoryPath);
+                } else {
+                    System.err.println("Échec de la création du dossier.");
+                    return false;
+                }
+            }
+
+            // Écrire le contenu dans le fichier
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write(cont);
+                System.out.println("Fichier enregistré avec succès : " + file.getAbsolutePath());
+                return true;
+            }
+        } catch (IOException e) {
+            System.err.println("Erreur lors de l'écriture du fichier : " + e.getMessage());
+        }
+        return false;
+    }
+
+
+    public void sauvegarderProjet() {
+        if (folder != null) {
+            System.out.println("Sauvegarde du projet : " + folder.getName() + "...");
+            String path = folder.getAbsolutePath();
+            ecrireFichier(Save.save(classes), path, windowsTitle);
+            System.out.println("Projet sauvegardé.");
+        }
+    }
+
+    public void sauvegarderSousProjet(String path) {
+        System.out.println("Sauvegarde du projet : " + windowsTitle  + " dans " + path + "...");
+        ecrireFichier(Save.save(classes), path, windowsTitle);
+        System.out.println("Projet sauvegardé.");
+    }
+
+    /**
      * Ouvre un projet existant et notifie les observateurs pour basculer
+     *
      * @param folder
      */
     public void ouvrirProjet(File folder) {
@@ -455,6 +516,7 @@ public class ModelUML implements Sujet {
             coordonneesFleche.clear();
             vueDiagramme.getChildren().clear();
 
+            setWindowsTitle("Home");
             stage.setResizable(false);
 
         } else {  // diagramme
@@ -881,7 +943,7 @@ public class ModelUML implements Sujet {
     }
 
     public String getADGFolferPath() {
-        return ADGFolfer + FileSystems.getDefault().getSeparator();
+        return ADGFolfer + DIRECTORY_SEPARATOR;
     }
 
 
@@ -1323,19 +1385,24 @@ public class ModelUML implements Sujet {
         }
     }
 
-    public void loadADGbyPath(String path){
+    public void loadADGbyPath(String path) {
         System.out.println("Ouverture de la sauvegarde : " + path);
+
+        if (windowsTitle.equalsIgnoreCase("Home")) {
+            setWindowsTitle(new File(path).getName());
+        }
+
         if (isHome)
             switchState(false);
 
         ArrayList<Classe> classes = Load.load(path);
-        for(Classe c : classes){
-            ajouterClasse(c);
+        for (Classe c : classes) {
+            ajouterClasseSauvegarde(c);
         }
-
+        notifierObservateurs();
     }
 
-    public boolean verifierAttributNonFleche(String[]attribut){
+    public boolean verifierAttributNonFleche(String[] attribut) {
         boolean res = true;
         for (VueFleche vueFleche : coordonneesFleche.keySet()) {
             if (vueFleche instanceof VueFlecheAttri) {
@@ -1349,5 +1416,23 @@ public class ModelUML implements Sujet {
             }
         }
         return res;
+    }
+
+    public void deleteSave(){
+        String filePath = folderPath + DIRECTORY_SEPARATOR + windowsTitle; // Remplace par le chemin de ton fichier
+        System.out.println("Suppression du fichier : " + filePath + "...");
+
+        File file = new File(filePath);
+
+        if (file.exists()) {
+            if (file.delete()) {
+                System.out.println("Fichier supprimé");
+                switchState(true);
+            } else {
+                System.err.println("Échec de la suppression du fichier.");
+            }
+        } else {
+            System.err.println("Le fichier n'existe pas : " + filePath);
+        }
     }
 }
