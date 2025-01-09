@@ -1,5 +1,6 @@
 package adg;
 
+import adg.control.ControllerClickDroitClasse;
 import adg.data.PathToClass;
 import adg.vues.VueClasse;
 import adg.vues.VueDiagramme;
@@ -97,6 +98,7 @@ public class ModelUML implements Sujet {
     private boolean etatClickDroitClasse = false;
     private int[] coordonneesClickDroit = new int[2];
     private VueDiagramme partieDroite;
+    private ControllerClickDroitClasse controlleurClickDroit;
 
     /**
      * Constructeur par défaut. Initialise les listes d'observateurs,
@@ -1134,5 +1136,9 @@ public class ModelUML implements Sujet {
         //TODO
         //System.out.println("afficher les méthodes");
         notifierObservateurs();
+    }
+
+    public void setControlleurClickDroit(ControllerClickDroitClasse controlleurClickDroit) {
+        this.controlleurClickDroit = controlleurClickDroit;
     }
 }
