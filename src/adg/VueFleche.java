@@ -51,5 +51,4 @@ public abstract class VueFleche extends Line implements Observateur {
     public Fleche getFleche(){
         return fleche;
     }
-
 }

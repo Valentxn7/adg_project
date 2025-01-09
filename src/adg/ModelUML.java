@@ -275,7 +275,7 @@ public class ModelUML implements Sujet {
             if (classeImp != null) {
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
                 if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
-                    Fleche f = new Fleche(classe, classeImp, Fleche.HERITAGE);
+                    Fleche f = new Fleche(classe, classeImp, Fleche.ASSOCIATION);
                     f.setPos();
                     ajouterFleches(f);
                     VueFlecheAttri fleche = new VueFlecheAttri(this,f,new Text(i[Analyser.FIELD_MODIFIER] + i[Analyser.FIELD_NAME]));
@@ -1250,22 +1250,8 @@ public class ModelUML implements Sujet {
         notifierObservateurs();
     }
 
-    /**
-     * Masque les dependances.
-     */
-    public void masquerDependances() {
-        //TODO
-        System.out.println("masquer les dépendances");
-        notifierObservateurs();
-    }
-    /**
-     * Masque les dépandances
-     */
-    public void masquerHeritages() {
-        //TODO
-        System.out.println("masquer les héritages");
-        notifierObservateurs();
-    }
+
+
 
     /**
      * Masque les attributs
@@ -1278,13 +1264,6 @@ public class ModelUML implements Sujet {
     }
 
     /**
-     * affiche les dépendances
-     */
-    public void afficherDependances() {
-        //TODO
-        System.out.println("afficher les dépendances");
-        notifierObservateurs();
-    }
 
     /**
      * affiche les héritages
@@ -1443,5 +1422,17 @@ public class ModelUML implements Sujet {
             return fileName.substring(indexpoint + 1); // l'extension
         }
         return ""; // Pas d'extension
+    }
+
+    public void masquerConstructeur() {
+        System.out.println("masquer les constructeurs");
+        classeSelectionne.setShowConstructors(false);
+        notifierObservateurs();
+    }
+
+    public void afficherConstructeur() {
+        System.out.println("afficher les constructeurs");
+        classeSelectionne.setShowConstructors(true);
+        notifierObservateurs();
     }
 }
