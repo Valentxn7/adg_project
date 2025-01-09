@@ -135,27 +135,29 @@ public class ModelUML implements Sujet {
      * @param classe la classe à ajouter.
      */
     public void ajouterClasse(Classe classe) {
-        if (classes != null)
+        if (!verifExistanceClasse(classe)) {
             classes.add(classe);
-        this.trouverPlacePourClassess(classe);
-        VueClasse vue = new VueClasse(classe);
-        vue.setOnMouseClicked(controllerClickDroit);
-        observateurs.add(vue);
+            this.trouverPlacePourClassess(classe);
+            VueClasse vue = new VueClasse(classe);
+            vue.setOnMouseClicked(controllerClickDroit);
+            observateurs.add(vue);
 
-        vueDiagramme.getChildren().add(vue);
-        vues.put(classe.getClassName(), vue);
+            vueDiagramme.getChildren().add(vue);
+            vues.put(classe.getClassName(), vue);
 
-        vue.addEventHandler(MouseEvent.MOUSE_PRESSED, controleurDeplacerClasse);
-        vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
-        this.ajouterFlecheExt(classe, vue);
-        this.ajouterFlecheImp(classe, vue);
-        this.ajouterFlecheAttri(classe, vue);
-        this.ajoutFlecheCorrespondant();
+            vue.addEventHandler(MouseEvent.MOUSE_PRESSED, controleurDeplacerClasse);
+            vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
+            this.ajouterFlecheExt(classe, vue);
+            this.ajouterFlecheImp(classe, vue);
+            this.ajouterFlecheAttri(classe, vue);
+            this.ajoutFlecheCorrespondant();
+        }
     }
 
 
     /**
      * Place la classe aux coordonnées exactes sans vériier si la place est libre
+     *
      * @param classe la classe à ajouter.
      */
     public void ajouterClasseSauvegarde(Classe classe) {
@@ -177,7 +179,6 @@ public class ModelUML implements Sujet {
     }
 
 
-
     private boolean verifExistanceClasse(Classe classe) {
         boolean res = false;
         for (Classe c : classes) {
@@ -191,6 +192,7 @@ public class ModelUML implements Sujet {
 
     /**
      * creez une flèche extends
+     *
      * @param classe
      * @param vueClasse
      */
@@ -214,6 +216,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Ajoute une flèche d'implémentation à la vue diagramme
+     *
      * @param classe
      * @param vueClasse
      */
@@ -238,6 +241,7 @@ public class ModelUML implements Sujet {
 
     /**
      * creer une flèche d'attribut
+     *
      * @param classe
      * @param vueClasse
      */
@@ -245,7 +249,7 @@ public class ModelUML implements Sujet {
         List<String[]> s = classe.getFields();
         for (String[] i : s) {
             String type = i[Analyser.FIELD_TYPE];
-            if(type.contains("<")){
+            if (type.contains("<")) {
                 // Trouver les indices de < et >
                 int start = type.indexOf('<');
                 int end = type.indexOf('>');
@@ -274,6 +278,7 @@ public class ModelUML implements Sujet {
             }
         }
     }
+
     /**
      * Ajoute les fleches correspondant à chaque classe
      */
@@ -288,8 +293,10 @@ public class ModelUML implements Sujet {
         }
 
     }
+
     /**
      * vérifie si une flèche existe déjà
+     *
      * @param vueClasse1
      * @param vueClasse2
      * @return
@@ -311,6 +318,7 @@ public class ModelUML implements Sujet {
 
     /**
      * verifie si une classe existe déjà
+     *
      * @param s
      * @return
      */
@@ -360,6 +368,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Ouvre un projet existant et notifie les observateurs pour basculer
+     *
      * @param folder
      */
     public void ouvrirProjet(File folder) {
@@ -487,6 +496,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la liste des classes
+     *
      * @return
      */
     public ArrayList<Classe> getClasses() {
@@ -495,6 +505,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la liste des observateurs
+     *
      * @return
      */
     public ArrayList<Observateur> getObservers() {
@@ -503,6 +514,7 @@ public class ModelUML implements Sujet {
 
     /**
      * retourne la vue diagramme
+     *
      * @return
      */
     public VueDiagramme getVueDiagramme() {
@@ -523,6 +535,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne le dossier du projet
+     *
      * @return
      */
     public File getFolder() {
@@ -531,6 +544,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne l'état de l'application
+     *
      * @return
      */
     public boolean getIsHome() {
@@ -539,41 +553,52 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la coordonnée x de la vue arborescence
+     *
      * @return
      */
     public int getVueArbo_x() {
         return vueArbo_x;
     }
+
     /**
      * Retourne la coordonnée y de la vue arborescence
+     *
      * @return
      */
     public int getVueArbo_y() {
         return vueArbo_y;
     }
+
     /**
      * Retourne la coordonnée x de la vue récente
+     *
      * @return
      */
     public int getVueRecent_x() {
         return vueRecent_x;
     }
+
     /**
      * Retourne la coordonnée y de la vue récente
+     *
      * @return
      */
     public int getVueRecent_y() {
         return vueRecent_y;
     }
+
     /**
      * Retourne le style de la vue récente
+     *
      * @return
      */
     public String getVueRecent_style() {
         return vueRecent_style;
     }
+
     /**
      * Retourne la visibilité de la vue récente
+     *
      * @return
      */
     public boolean getVueRecentVisibility() {
@@ -582,41 +607,52 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la coordonnée x de la vue diagramme
+     *
      * @return
      */
     public int getVueDiagramme_x() {
         return vueDiagramme_x;
     }
+
     /**
      * Retourne la coordonnée y de la vue diagramme
+     *
      * @return
      */
     public int getVueDiagramme_y() {
         return vueDiagramme_y;
     }
+
     /**
      * Retourne la coordonnée x du bouton de la vue diagramme
+     *
      * @return
      */
     public int getVueDiagramme_bouton_x() {
         return vueDiagramme_bouton_x;
     }
+
     /**
      * Retourne la coordonnée y du bouton de la vue diagramme
+     *
      * @return
      */
     public int getVueDiagramme_bouton_y() {
         return vueDiagramme_bouton_y;
     }
+
     /**
      * Retourne le style du bouton de la vue diagramme
+     *
      * @return
      */
     public String getVueDiagramme_bouton_style() {
         return vueDiagramme_bouton_style;
     }
+
     /**
      * Retourne la visibilité du bouton de la vue diagramme
+     *
      * @return
      */
     public boolean getVueDiagramme_bouton_visibility() {
@@ -625,6 +661,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la coordonnée x de la partie gauche
+     *
      * @return
      */
     public int getPartieGaucheX() {
@@ -633,6 +670,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la coordonnée y de la partie gauche
+     *
      * @return
      */
     public int getPartieGaucheY() {
@@ -645,6 +683,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la liste MenuBar
+     *
      * @return
      */
     public ArrayList<String> getMenuBar() {
@@ -657,6 +696,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne les items du menu
+     *
      * @param index
      * @return
      */
@@ -691,6 +731,7 @@ public class ModelUML implements Sujet {
             }
         }
     }
+
     /**
      * Crée le dossier ADGProjects dans le répertoire utilisateur.
      */
@@ -731,6 +772,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Ajoute un dossier récent à la liste des dossiers récents.
+     *
      * @param folderPath
      */
     private static void addRecentFolder(String folderPath) {
@@ -752,6 +794,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Récupère la liste des dossiers récents à partir du fichier JSON.
+     *
      * @return
      */
     public static ArrayList<String> getRecentFolders() {
@@ -781,6 +824,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Sauvegarde la liste des dossiers récents dans le fichier JSON.
+     *
      * @param folders
      */
     private static void saveRecentFolders(List<String> folders) {
@@ -898,6 +942,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Trouve une place pour une classe
+     *
      * @param classe
      */
     public void trouverPlacePourClassess(Classe classe) {
@@ -1003,11 +1048,13 @@ public class ModelUML implements Sujet {
 
     /**
      * Recupère l'état du click droit
+     *
      * @return
      */
     public boolean getEtat() {
         return this.etatClickDroit;
     }
+
     /**
      * Recupère l'état du click droit sur la classe
      */
@@ -1159,6 +1206,7 @@ public class ModelUML implements Sujet {
         System.out.println("masquer les dépendances");
         notifierObservateurs();
     }
+
     /**
      * Masque les dépandances
      */
@@ -1244,6 +1292,7 @@ public class ModelUML implements Sujet {
     /**
      * Ouvre la page d'aide dans le navigateur par défaut.
      * Si le fichier d'aide n'est pas trouvé, affiche un message d'erreur.
+     *
      * @param choix le choix de l'aide à ouvrir.
      *              0: web 1: wiki
      */
@@ -1286,19 +1335,19 @@ public class ModelUML implements Sujet {
         }
     }
 
-    public void loadADGbyPath(String path){
+    public void loadADGbyPath(String path) {
         System.out.println("Ouverture de la sauvegarde : " + path);
         if (isHome)
             switchState(false);
 
         ArrayList<Classe> classes = Load.load(path);
-        for(Classe c : classes){
+        for (Classe c : classes) {
             ajouterClasseSauvegarde(c);
         }
 
     }
 
-    public boolean verifierAttributNonFleche(String[]attribut){
+    public boolean verifierAttributNonFleche(String[] attribut) {
         boolean res = true;
         for (VueFleche vueFleche : coordonneesFleche.keySet()) {
             if (vueFleche instanceof VueFlecheAttri) {

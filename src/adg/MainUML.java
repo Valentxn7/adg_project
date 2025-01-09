@@ -16,8 +16,6 @@ import adg.vues.*;
 import java.io.File;
 
 public class MainUML extends Application {
-    private ModelUML modelUML;
-    private Stage rootStage;
 
     public static void main(String[] args) {
         Application.launch();
