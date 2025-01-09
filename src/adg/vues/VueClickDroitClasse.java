@@ -1,5 +1,6 @@
 package adg.vues;
 
+import adg.MainUML;
 import adg.ModelUML;
 import adg.Observateur;
 import adg.Sujet;
@@ -22,16 +23,17 @@ public class VueClickDroitClasse extends ContextMenu implements Observateur {
         this.controllerChoixClickDroit = controllerChoixClickDroit;
 
         // Création des items
-        MenuItem item1 = new MenuItem("Masquer dépendences");
-        MenuItem item2 = new MenuItem("Masquer héritages");
-        MenuItem item3 = new MenuItem("Masquer attributs");
-        MenuItem item4 = new MenuItem("Afficher dépendences");
-        MenuItem item5 = new MenuItem("Afficher héritages");
-        MenuItem item6 = new MenuItem("Afficher attribut");
-        MenuItem item7 = new MenuItem("Afficher méthodes");
+        MenuItem item1 = MainUML.createMenuItem("Masquer dépendances", "d_gray");
+        MenuItem item2 = MainUML.createMenuItem("Masquer héritages", "h_gray");
+        MenuItem item3 = MainUML.createMenuItem("Masquer attributs", "a_gray");
+        MenuItem item8 = MainUML.createMenuItem("Masquer méthodes", "m_gray");
+        MenuItem item4 = MainUML.createMenuItem("Afficher dépendances", "d");
+        MenuItem item5 = MainUML.createMenuItem("Afficher héritages", "h");
+        MenuItem item6 = MainUML.createMenuItem("Afficher attributs", "a");
+        MenuItem item7 = MainUML.createMenuItem("Afficher méthodes", "m");
 
         // Ajout des items au menu
-        this.getItems().addAll(item1, item2, item3,item4,item5,item6,item7);
+        this.getItems().addAll(item1, item2, item3,item8,item4,item5,item6,item7);
 
         // Ajouter des actions aux éléments
         item1.setOnAction(controllerChoixClickDroit);
@@ -48,6 +50,8 @@ public class VueClickDroitClasse extends ContextMenu implements Observateur {
         item6.setId("F");
         item7.setOnAction(controllerChoixClickDroit);
         item7.setId("G");
+        item8.setOnAction(controllerChoixClickDroit);
+        item8.setId("H");
     }
 
     /**

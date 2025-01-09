@@ -17,6 +17,10 @@ public class Classe {
     private int height = 0;
     private int width = 0;
 
+    private boolean showFields = true;
+    private boolean showConstructors = true;
+    private boolean showMethods = true;
+
     public Classe(String path) {
         this.class_name = path;
 
@@ -91,6 +95,63 @@ public class Classe {
         }
 
         return uml.toString();
+    }
+
+    /**
+     * Convertit les données de la classe en une chaîne Java
+     * @return
+     */
+    public String toJava() {
+        StringBuilder java = new StringBuilder();
+
+
+        if (this.interfaces.isEmpty()) {
+            java.append("public class ").append(this.class_name);
+        } else {
+            java.append("public interface ").append(this.class_name);
+        }
+        java.append(" {\n");
+
+
+        List<String[]> fields = this.fields;
+        for (String[] field : fields) {
+            java.append("    ").append(field[Analyser.FIELD_MODIFIER]).append(" ")
+                    .append(field[Analyser.FIELD_TYPE]).append(" ")
+                    .append(field[Analyser.FIELD_NAME]).append(";\n");
+        }
+
+        java.append("\n");
+
+
+        List<Object[]> constructors = this.constructors;
+        for (Object[] constructor : constructors) {
+            java.append("    ").append(constructor[Analyser.CONSTRUCTOR_MODIFIER]).append(" ")
+                    .append(this.class_name).append("(");
+
+            List<String> parameters = (List<String>) constructor[Analyser.CONSTRUCTOR_PARAMETERS];
+            java.append(String.join(", ", parameters)).append(") {\n");
+            java.append("        // TODO: constructor implementation\n");
+            java.append("    }\n");
+        }
+
+        java.append("\n");
+
+
+        List<Object[]> methods = this.methods;
+        for (Object[] method : methods) {
+            java.append("    ").append(method[Analyser.METHOD_MODIFIER]).append(" ")
+                    .append(method[Analyser.METHOD_RETURN_TYPE]).append(" ")
+                    .append(method[Analyser.METHOD_NAME]).append("(");
+
+            List<String> parameters = (List<String>) method[Analyser.METHOD_PARAMETERS];
+            java.append(String.join(", ", parameters)).append(") {\n");
+            java.append("        // TODO: method implementation\n");
+            java.append("    }\n");
+        }
+
+        java.append("}\n");
+
+        return java.toString();
     }
 
     public String save() {
@@ -231,4 +292,29 @@ public class Classe {
     public int getHeight() {
         return this.height;
     }
+
+    public void setShowFields(boolean showFields) {
+        this.showFields = showFields;
+    }
+
+    public void setShowConstructors(boolean showConstructors) {
+        this.showConstructors = showConstructors;
+    }
+
+    public void setShowMethods(boolean showMethods) {
+        this.showMethods = showMethods;
+    }
+
+    public boolean getShowFields() {
+        return this.showFields;
+    }
+
+    public boolean getShowConstructors() {
+        return this.showConstructors;
+    }
+
+    public boolean getShowMethods() {
+        return this.showMethods;
+    }
+
 }

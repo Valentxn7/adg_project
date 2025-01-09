@@ -63,39 +63,48 @@ public class VueClasse extends VBox implements Observateur {
      * @param elements Liste des éléments source
      */
     private <T> void ajouterElements(List<String[]> elements, ModelUML modelUML) {
-        if (!elements.isEmpty()) {
-            VBox box = new VBox();// Espacement entre les éléments
-            box.setId("separation");
-            for (String[] element : elements) {
-                //System.out.println(element);
-                HBox hBox = creerAttribut(element, modelUML);
-                if(hBox != null) box.getChildren().add(hBox);
+        if (classe.getShowFields()){
+            if (!elements.isEmpty()) {
+                VBox box = new VBox();// Espacement entre les éléments
+                box.setId("separation");
+                for (String[] element : elements) {
+                    //System.out.println(element);
+                    HBox hBox = creerAttribut(element, modelUML);
+                    if(hBox != null) box.getChildren().add(hBox);
+                }
+                this.getChildren().add(box);
             }
-            this.getChildren().add(box);
         }
+
     }
     private void ajouterConstructeur(){
-        List<String[]> constructors = classe.getConstructorsInStrings();
-        if (!constructors.isEmpty()) {
-            VBox box = new VBox();// Espacement entre les éléments
-            box.setId("separation");
-            for (String[] constructor : constructors) {
-                box.getChildren().add(creerConstructeur(constructor));
+        if (classe.getShowConstructors()){
+            List<String[]> constructors = classe.getConstructorsInStrings();
+            if (!constructors.isEmpty()) {
+                VBox box = new VBox();// Espacement entre les éléments
+                box.setId("separation");
+                for (String[] constructor : constructors) {
+                    box.getChildren().add(creerConstructeur(constructor));
+                }
+                this.getChildren().add(box);
             }
-            this.getChildren().add(box);
         }
+
     }
 
     private void ajouterMethodes(){
-        List<String[]>methods = classe.getMethodsInStrings();
-        if (!methods.isEmpty()) {
-            VBox box = new VBox();// Espacement entre les éléments
-            box.setId("separation");
-            for (String[] method : methods) {
-                box.getChildren().add(creerMethode(method));
+        if (classe.getShowMethods()){
+            List<String[]>methods = classe.getMethodsInStrings();
+            if (!methods.isEmpty()) {
+                VBox box = new VBox();// Espacement entre les éléments
+                box.setId("separation");
+                for (String[] method : methods) {
+                    box.getChildren().add(creerMethode(method));
+                }
+                this.getChildren().add(box);
             }
-            this.getChildren().add(box);
         }
+
     }
 
 

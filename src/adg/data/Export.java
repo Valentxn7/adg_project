@@ -88,4 +88,43 @@ public class Export {
 
         System.out.println("Image saved to " + file.getAbsolutePath());
     }
+
+    /**
+     * @param classes Liste des classes à exporter
+     * @return String Java
+     * @throws Exception
+     */
+    public static String getJava(List<Classe> classes) throws Exception {
+
+        StringBuilder source = new StringBuilder();
+
+        source.append("package adg;\n\n");
+
+        for (Classe classe : classes) {
+            source.append(classe.toJava());
+        }
+
+        return source.toString();
+    }
+
+    /**
+     * @param classes Liste des classes à exporter
+     * @param dir Répertoire de destination
+     * @param nomFicher Nom du fichier
+     */
+    public static void exportJava(List<Classe> classes, String dir, String nomFicher) {
+        File file = new File(dir, nomFicher);
+        try {
+            if (file.createNewFile() || file.canWrite()) {
+                System.out.println("File created: " + file.getName() + " location: " + file.getAbsolutePath());
+                FileWriter writer = new FileWriter(file);
+                writer.write(getJava(classes));
+                writer.close();
+            } else {
+                System.out.println("Cannot write to file: " + file.getAbsolutePath());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

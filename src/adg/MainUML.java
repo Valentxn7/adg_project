@@ -5,6 +5,8 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -64,6 +66,7 @@ public class MainUML extends Application {
         MenuItem enregistrerSous = new MenuItem("Enregistrer sous");
         MenuItem exporterUml = new MenuItem("Exporter en UML");
         MenuItem exporterPng = new MenuItem("Exporter en PNG");
+        MenuItem exporterJava = new MenuItem("Exporter en Java");
         Menu personnalisation = new Menu("Personnalisation");
         MenuItem accueil = new MenuItem("Accueil");
 
@@ -73,6 +76,7 @@ public class MainUML extends Application {
         enregistrerSous.setDisable(true);
         exporterUml.setDisable(true);
         exporterPng.setDisable(true);
+        exporterJava.setDisable(true);
         personnalisation.setDisable(true);
         accueil.setDisable(true);
 
@@ -80,19 +84,21 @@ public class MainUML extends Application {
                 nouveau, ouvrirP, ouvrirS, new SeparatorMenuItem(),
                 renommer, supprimer, new SeparatorMenuItem(),
                 enregistrer, enregistrerSous, new SeparatorMenuItem(),
-                exporterUml, exporterPng, new SeparatorMenuItem(),
+                exporterUml, exporterPng, exporterJava, new SeparatorMenuItem(),
                 personnalisation, accueil);
 
         personnalisation.getItems().addAll(
-                new MenuItem("Masquer les dépendances pour tous"),
-                new MenuItem("Masquer les héritages pour tous"),
-                new MenuItem("Masquer les attributs pour tous"),
-                new MenuItem("Masquer les méthodes pour tous"),
+                createMenuItem("Masquer les dépendances pour tous", "d_gray"),
+                createMenuItem("Masquer les héritages pour tous", "h_gray"),
+                createMenuItem("Masquer les attributs pour tous", "a_gray"),
+                createMenuItem("Masquer les méthodes pour tous", "m_gray"),
+                createMenuItem("Masquer les constructeurs pour tous", "c_gray"),
                 new SeparatorMenuItem(),
-                new MenuItem("Afficher les dépendances pour tous"),
-                new MenuItem("Afficher les héritages pour tous"),
-                new MenuItem("Afficher les attributs pour tous"),
-                new MenuItem("Afficher les méthodes pour tous")
+                createMenuItem("Afficher les dépendances pour tous", "d"),
+                createMenuItem("Afficher les héritages pour tous", "h"),
+                createMenuItem("Afficher les attributs pour tous", "a"),
+                createMenuItem("Afficher les méthodes pour tous", "m"),
+                createMenuItem("Afficher les constructeurs pour tous", "c")
         );
 
         Menu viewMenu = new Menu("Affichage");
@@ -121,6 +127,12 @@ public class MainUML extends Application {
 
 
         Menu helpMenu = new Menu("Aide");
+        MenuItem aideEnLigne = new MenuItem("Aide en ligne");
+        MenuItem aideSurWiki = new MenuItem("Aide sur le wiki");
+        helpMenu.getItems().addAll(aideEnLigne, aideSurWiki);
+        aideEnLigne.setOnAction(new ControllerAide(modelUML));
+        aideSurWiki.setOnAction(new ControllerAide(modelUML));
+
         menuBar.getMenus().addAll(fileMenu, viewMenu, helpMenu);
 
         nouveau.setOnAction(new ControllerCreateProject(modelUML));
@@ -129,6 +141,7 @@ public class MainUML extends Application {
 
         exporterPng.setOnAction(new ControllerExportPng(modelUML, stage));
         exporterUml.setOnAction(new ControllerExportUml(modelUML, stage));
+        exporterJava.setOnAction(new ControllerExportJava(modelUML, stage));
 
         enregistrerSous.setOnAction(new ControllerSaveAs(modelUML, stage));
         enregistrer.setOnAction(new ControllerSave(modelUML, stage));
@@ -143,7 +156,7 @@ public class MainUML extends Application {
         rootArborescence.setValue("Projets ADG:");
         rootArborescence.setExpanded(true);
 
-        VueArborescence vueArborescence = new VueArborescence();  // l'item de base
+        VueArborescence vueArborescence = new VueArborescence(new ControllerDoubleClicTreeAdg(modelUML));  // l'item de base
         vueArborescence.setRoot(rootArborescence);
         modelUML.enregistrerObservateur(vueArborescence);
         vueArborescence.actualiser(modelUML);
@@ -258,5 +271,38 @@ public class MainUML extends Application {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    /**
+     * Permet la création d'un MenuItem avec un icône.
+     *
+     * @param text le texte du MenuItem
+     * @param iconPath le chemin de l'icône
+     * @return le MenuItem créé
+     */
+     public static MenuItem createMenuItem(String text, String iconPath) {
+        MenuItem menuItem = new MenuItem(text);
+
+        try {
+            String basePath = "ressource/icones/";
+            File file = new File(basePath + iconPath + ".png");
+            System.out.println("Chemin absolu testé : " + file.getAbsolutePath());
+
+            if (!file.exists()) {
+                System.err.println("Fichier non trouvé : " + file.getAbsolutePath());
+                return menuItem;
+            }
+
+            String fullPath = file.toURI().toString();
+            Image image = new Image(fullPath);
+            ImageView icon = new ImageView(image);
+            icon.setFitWidth(16);
+            icon.setFitHeight(16);
+            menuItem.setGraphic(icon);
+        } catch (Exception e) {
+            System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
+        }
+
+        return menuItem;
     }
 }
