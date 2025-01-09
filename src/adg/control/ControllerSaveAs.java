@@ -40,7 +40,8 @@ public class ControllerSaveAs implements EventHandler<ActionEvent> {
         }
 
         String path = selectedFile.getAbsolutePath();
-        Save.save(modelUML.getClasses(), path, modelUML.getProjectName());
+
+        Save.save(modelUML.getClasses(), path);
 
         System.out.println("Enregistrer sous vers: " + path);
     }
