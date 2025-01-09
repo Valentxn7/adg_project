@@ -9,9 +9,11 @@ public class Classe {
     private String class_name;
     private String superclass;
     private List<String> interfaces;
-    private List<String[]>  fields;
+    private List<String[]> fields;
     private List<Object[]> constructors;
     private List<Object[]> methods;
+
+    private boolean isInterface;
 
     private int[] coords = new int[2];
     private int height = 0;
@@ -104,8 +106,7 @@ public class Classe {
     public String toJava() {
         StringBuilder java = new StringBuilder();
 
-
-        if (this.interfaces.isEmpty()) {
+        if (!this.isInterface) {
             java.append("public class ").append(this.class_name);
         } else {
             java.append("public interface ").append(this.class_name);
@@ -130,7 +131,7 @@ public class Classe {
 
             List<String> parameters = (List<String>) constructor[Analyser.CONSTRUCTOR_PARAMETERS];
             java.append(String.join(", ", parameters)).append(") {\n");
-            java.append("        // TODO: constructor implementation\n");
+            java.append("        // TODO: implementation constructeur\n");
             java.append("    }\n");
         }
 
@@ -145,7 +146,7 @@ public class Classe {
 
             List<String> parameters = (List<String>) method[Analyser.METHOD_PARAMETERS];
             java.append(String.join(", ", parameters)).append(") {\n");
-            java.append("        // TODO: method implementation\n");
+            java.append("        // TODO: implementation méthodes\n");
             java.append("    }\n");
         }
 
@@ -175,6 +176,14 @@ public class Classe {
         } else {
             return "~";
         }
+    }
+
+    public void setInterface(boolean isInterface) {
+        this.isInterface = isInterface;
+    }
+
+    public boolean isInterface() {
+        return this.isInterface;
     }
 
     public void setClassName(String className) {

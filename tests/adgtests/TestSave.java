@@ -1,5 +1,6 @@
 package adgtests;
 
+import adg.ModelUML;
 import adg.data.Analyser;
 import adg.data.Classe;
 import adg.data.Save;
@@ -8,6 +9,7 @@ import adgtests_t.ExempleClasse2;
 import adgtests_t.ExempleInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -48,7 +50,7 @@ public class TestSave {
 
     @Test
     public void save1() throws Exception {
-        Save.save(classes, path1 + pn1 + ".adg");
+        ModelUML.ecrireFichier(Save.save(classes), path1, pn1 + ".adg");
 
         File file = new File(path1 + pn1 + ".adg");
         assertTrue(file.exists());

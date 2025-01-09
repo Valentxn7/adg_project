@@ -367,6 +367,58 @@ public class ModelUML implements Sujet {
     }
 
     /**
+     * @param cont          le contenu du fichier
+     * @param directoryPath le path du dossier mais SANS le nom du dossier
+     * @param fileName      le nom du fichier à écrire
+     */
+    public static boolean ecrireFichier(String cont, String directoryPath, String fileName) {
+        System.out.println("cont : " + cont);
+        System.out.println("directoryPath : " + directoryPath);
+        System.out.println("fileName : " + fileName);
+
+        File directory = new File(directoryPath);
+        File file = new File(directory, fileName);
+
+        try {
+            // Vérifier si le dossier existe, sinon le créer
+            if (!directory.exists()) {
+                if (directory.mkdirs()) {
+                    System.out.println("Dossier créé : " + directoryPath);
+                } else {
+                    System.err.println("Échec de la création du dossier.");
+                    return false;
+                }
+            }
+
+            // Écrire le contenu dans le fichier
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write(cont);
+                System.out.println("Fichier enregistré avec succès : " + file.getAbsolutePath());
+                return true;
+            }
+        } catch (IOException e) {
+            System.err.println("Erreur lors de l'écriture du fichier : " + e.getMessage());
+        }
+        return false;
+    }
+
+
+    public void sauvegarderProjet() {
+        if (folder != null) {
+            System.out.println("Sauvegarde du projet : " + folder.getName() + "...");
+            String path = folder.getAbsolutePath();
+            ecrireFichier(Save.save(classes), path, windowsTitle);
+            System.out.println("Projet sauvegardé.");
+        }
+    }
+
+    public void sauvegarderSousProjet(String path) {
+        System.out.println("Sauvegarde du projet : " + windowsTitle  + " dans " + path + "...");
+        ecrireFichier(Save.save(classes), path, windowsTitle);
+        System.out.println("Projet sauvegardé.");
+    }
+
+    /**
      * Ouvre un projet existant et notifie les observateurs pour basculer
      *
      * @param folder
@@ -1337,6 +1389,11 @@ public class ModelUML implements Sujet {
 
     public void loadADGbyPath(String path) {
         System.out.println("Ouverture de la sauvegarde : " + path);
+
+        if (windowsTitle.equalsIgnoreCase("Home")) {
+            setWindowsTitle(new File(path).getName());
+        }
+
         if (isHome)
             switchState(false);
 
@@ -1344,7 +1401,7 @@ public class ModelUML implements Sujet {
         for (Classe c : classes) {
             ajouterClasseSauvegarde(c);
         }
-
+        notifierObservateurs();
     }
 
     public boolean verifierAttributNonFleche(String[] attribut) {
