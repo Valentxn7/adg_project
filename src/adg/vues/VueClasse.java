@@ -118,7 +118,14 @@ public class VueClasse extends VBox implements Observateur {
      */
     private HBox creerAttribut(String[] field, ModelUML model) {
         HBox res = null;
-        if(model.verifierAttributNonFleche(field)) res = creerHBox(getVisibilityCircle(field[Analyser.FIELD_MODIFIER]), new Label(field[Analyser.FIELD_TYPE] + " : " + field[Analyser.FIELD_NAME]));
+        if(model.verifierAttributNonFleche(field)){
+            String type = field[Analyser.FIELD_TYPE];
+            String[] temp = type.split("\\.");
+            if (temp.length > 0)type = temp[temp.length-1];
+            System.out.println("type : "+type);
+            res = creerHBox(getVisibilityCircle(field[Analyser.FIELD_MODIFIER]), new Label(type + " : " + field[Analyser.FIELD_NAME]));
+
+        }
         System.out.println("resultat" + res==null);
     return res;
     }
@@ -127,7 +134,7 @@ public class VueClasse extends VBox implements Observateur {
      */
     private HBox creerConstructeur(String[] constructor) {
         String params = constructor[Analyser.CONSTRUCTOR_PARAMETERS];
-        return creerHBox(getVisibilityCircle(constructor[Analyser.CONSTRUCTOR_MODIFIER]), new Label(classe.getClassName() + "(" + String.join(", ", params) + ")"));
+        return creerHBox(getVisibilityCircle(constructor[Analyser.CONSTRUCTOR_MODIFIER]), new Label(constructor[Analyser.CONSTRUCTOR_NAME] + "(" + String.join(", ", params) + ")"));
     }
 
     /**

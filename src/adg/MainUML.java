@@ -16,8 +16,6 @@ import adg.vues.*;
 import java.io.File;
 
 public class MainUML extends Application {
-    private ModelUML modelUML;
-    private Stage rootStage;
 
     public static void main(String[] args) {
         Application.launch();
@@ -69,6 +67,7 @@ public class MainUML extends Application {
         MenuItem exporterJava = new MenuItem("Exporter en Java");
         Menu personnalisation = new Menu("Personnalisation");
         MenuItem accueil = new MenuItem("Accueil");
+        MenuItem quitter = new MenuItem("Quitter");
 
         renommer.setDisable(true);
         supprimer.setDisable(true);
@@ -79,13 +78,14 @@ public class MainUML extends Application {
         exporterJava.setDisable(true);
         personnalisation.setDisable(true);
         accueil.setDisable(true);
+        //quitter.setDisable(true);
 
         fileMenu.getItems().addAll(
                 nouveau, ouvrirP, ouvrirS, new SeparatorMenuItem(),
                 renommer, supprimer, new SeparatorMenuItem(),
                 enregistrer, enregistrerSous, new SeparatorMenuItem(),
                 exporterUml, exporterPng, exporterJava, new SeparatorMenuItem(),
-                personnalisation, accueil);
+                personnalisation, accueil, quitter);
 
         personnalisation.getItems().addAll(
                 createMenuItem("Masquer les dépendances pour tous", "d_gray"),
@@ -150,6 +150,7 @@ public class MainUML extends Application {
 
 
         accueil.setOnAction(new ControllerAccueil(modelUML));
+        quitter.setOnAction(new ControleurQuitter());
 
         /*     ARBORESCENCE       **/
 

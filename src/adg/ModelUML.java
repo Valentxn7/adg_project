@@ -136,22 +136,23 @@ public class ModelUML implements Sujet {
      * @param classe la classe à ajouter.
      */
     public void ajouterClasse(Classe classe) {
-        if (classes != null)
+        if (!verifExistanceClasse(classe)) {
             classes.add(classe);
-        this.trouverPlacePourClassess(classe);
-        VueClasse vue = new VueClasse(classe);
-        vue.setOnMouseClicked(controllerClickDroit);
-        observateurs.add(vue);
+            this.trouverPlacePourClassess(classe);
+            VueClasse vue = new VueClasse(classe);
+            vue.setOnMouseClicked(controllerClickDroit);
+            observateurs.add(vue);
 
-        vueDiagramme.getChildren().add(vue);
-        vues.put(classe.getClassName(), vue);
+            vueDiagramme.getChildren().add(vue);
+            vues.put(classe.getClassName(), vue);
 
-        vue.addEventHandler(MouseEvent.MOUSE_PRESSED, controleurDeplacerClasse);
-        vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
-        this.ajouterFlecheExt(classe, vue);
-        this.ajouterFlecheImp(classe, vue);
-        this.ajouterFlecheAttri(classe, vue);
-        this.ajoutFlecheCorrespondant();
+            vue.addEventHandler(MouseEvent.MOUSE_PRESSED, controleurDeplacerClasse);
+            vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
+            this.ajouterFlecheExt(classe, vue);
+            this.ajouterFlecheImp(classe, vue);
+            this.ajouterFlecheAttri(classe, vue);
+            this.ajoutFlecheCorrespondant();
+        }
     }
 
 

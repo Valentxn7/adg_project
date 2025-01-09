@@ -9,7 +9,7 @@ public class Classe {
     private String class_name;
     private String superclass;
     private List<String> interfaces;
-    private List<String[]>  fields;
+    private List<String[]> fields;
     private List<Object[]> constructors;
     private List<Object[]> methods;
 
@@ -106,8 +106,7 @@ public class Classe {
     public String toJava() {
         StringBuilder java = new StringBuilder();
 
-
-        if (this.interfaces.isEmpty()) {
+        if (!this.isInterface) {
             java.append("public class ").append(this.class_name);
         } else {
             java.append("public interface ").append(this.class_name);
@@ -132,7 +131,7 @@ public class Classe {
 
             List<String> parameters = (List<String>) constructor[Analyser.CONSTRUCTOR_PARAMETERS];
             java.append(String.join(", ", parameters)).append(") {\n");
-            java.append("        // TODO: constructor implementation\n");
+            java.append("        // TODO: implementation constructeur\n");
             java.append("    }\n");
         }
 
@@ -147,7 +146,7 @@ public class Classe {
 
             List<String> parameters = (List<String>) method[Analyser.METHOD_PARAMETERS];
             java.append(String.join(", ", parameters)).append(") {\n");
-            java.append("        // TODO: method implementation\n");
+            java.append("        // TODO: implementation méthodes\n");
             java.append("    }\n");
         }
 
@@ -246,7 +245,8 @@ public class Classe {
 
         for (Object[] constructor : this.constructors) {
             String[] new_constructor = new String[3];
-            new_constructor[Analyser.CONSTRUCTOR_NAME] = (String) constructor[Analyser.CONSTRUCTOR_NAME];
+
+            new_constructor[Analyser.CONSTRUCTOR_NAME] = getClassNameWithoutPackages();
             new_constructor[Analyser.CONSTRUCTOR_MODIFIER] = (String) constructor[Analyser.CONSTRUCTOR_MODIFIER];
             new_constructor[Analyser.CONSTRUCTOR_PARAMETERS] = String.join(", ", (List<String>) constructor[Analyser.CONSTRUCTOR_PARAMETERS]);
 
@@ -263,8 +263,15 @@ public class Classe {
             new_method[Analyser.METHOD_NAME] = (String) method[Analyser.METHOD_NAME];
             new_method[Analyser.METHOD_RETURN_TYPE] = (String) method[Analyser.METHOD_RETURN_TYPE];
             new_method[Analyser.METHOD_MODIFIER] = (String) method[Analyser.METHOD_MODIFIER];
-            new_method[Analyser.METHOD_PARAMETERS] = String.join(", ", (List<String>) method[Analyser.METHOD_PARAMETERS]);
-
+            new_method[Analyser.METHOD_PARAMETERS] = "";
+            for(String s :(List<String>) method[Analyser.METHOD_PARAMETERS]){
+                String []temp = s.split("\\.");
+                if (temp.length > 0)s = temp[temp.length-1];
+                new_method[Analyser.METHOD_PARAMETERS] += s + ", ";
+            }
+            if (new_method[Analyser.METHOD_PARAMETERS].endsWith(", ")) {
+                new_method[Analyser.METHOD_PARAMETERS] =  new_method[Analyser.METHOD_PARAMETERS].substring(0,  new_method[Analyser.METHOD_PARAMETERS].length() - 2);
+            }
             methods.add(new_method);
         }
         return methods;
