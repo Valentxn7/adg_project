@@ -1,5 +1,6 @@
 package adg;
 
+import adg.data.Fleche;
 import adg.vues.VueClasse;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.VBox;
@@ -9,8 +10,19 @@ import javafx.scene.shape.Polygon;
 
 public abstract class VueFleche extends Line implements Observateur {
 
+
+    private Fleche fleche;
+    private ModelUML mod;
+    public VueFleche(ModelUML modelUML, Fleche fleche){
+        this.fleche = fleche;
+        this.mod = modelUML;
+
+    }
+
+
+
     public void actualiser(Sujet model) {
-        ModelUML mod = (ModelUML) model;
+
         VueClasse[] classe = mod.getCoordonneesFleche(this);
         if (classe != null) {
             setPos(classe[0], classe[1]);
@@ -21,36 +33,40 @@ public abstract class VueFleche extends Line implements Observateur {
 
     public void setPos(VBox start, VBox end) {
         // Obtenir les coordonnées centrales des VBoxes dans le parent (Pane)
-        Point2D sCenter = start.localToParent(start.getWidth() / 2, start.getHeight() / 2);
-        Point2D eCenter = end.localToParent(end.getWidth() / 2, end.getHeight() / 2);
 
         // Calculer la direction de la flèche
-        double deltaX = eCenter.getX() - sCenter.getX();
-        double deltaY = eCenter.getY() - sCenter.getY();
 
-        double deltaX2 = sCenter.getX() - eCenter.getX();
-        double deltaY2 = sCenter.getY() - eCenter.getY();
+//        double deltaX = eCenter.getX() - sCenter.getX();
+//        double deltaY = eCenter.getY() - sCenter.getY();
+//
+//        double deltaX2 = sCenter.getX() - eCenter.getX();
+//        double deltaY2 = sCenter.getY() - eCenter.getY();
+
 
         // Calculer l'angle de la flèche
-        double angle = Math.atan2(deltaY, deltaX);
-        double angle2 = Math.atan2(deltaY2, deltaX2);
+//        double angle = Math.atan2(deltaY, deltaX);
+//        double angle2 = Math.atan2(deltaY2, deltaX2);
         // Calculer les points d'intersection pour le début (start)
-        Point2D startIntersection = getIntersectionPoint(
-                sCenter.getX(), sCenter.getY(), angle, start.getWidth(), start.getHeight()
-        );
+
+
+//        Point2D startIntersection = getIntersectionPoint(
+//                sCenter.getX(), sCenter.getY(), angle, start.getWidth(), start.getHeight()
+//        );
 
         // Calculer les points d'intersection pour la fin (end)
         // Utiliser l'angle opposé pour calculer l'intersection à l'autre extrémité
-        Point2D endIntersection = getIntersectionPoint(
-                eCenter.getX(), eCenter.getY(), angle2, end.getWidth(), end.getHeight()
-        );
 
+//        Point2D endIntersection = getIntersectionPoint(
+//                eCenter.getX(), eCenter.getY(), angle2, end.getWidth(), end.getHeight()
+//        );
+
+        fleche.setPos(start,end);
 
         // Appliquer les positions
-        this.setStartX(startIntersection.getX());
-        this.setStartY(startIntersection.getY());
-        this.setEndX(endIntersection.getX());
-        this.setEndY(endIntersection.getY());
+        this.setStartX(fleche.getStartIntersection().getX());
+        this.setStartY(fleche.getStartIntersection().getY());
+        this.setEndX(fleche.getEndIntersection().getX());
+        this.setEndY(fleche.getEndIntersection().getY());
 
         // Mettre à jour la ligne et la tête de flèche
         setLine();

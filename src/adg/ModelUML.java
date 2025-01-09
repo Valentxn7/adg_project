@@ -82,6 +82,7 @@ public class ModelUML implements Sujet {
     private Map<VueClasse, int[]> coordonneesClasse;
     //coordonner pour les fleches
     private Map<VueFleche, VueClasse[]> coordonneesFleche;
+    private ArrayList<Fleche> fleches;
 
     private ArrayList<String> menuBar = new ArrayList<>(Arrays.asList("Fichier"));
     // QUAND LE RESTE SERA DEVELOPPE
@@ -200,7 +201,7 @@ public class ModelUML implements Sujet {
         if (classeExt != null) {
             VueClasse vueClasseExt = vues.get(classeExt.getClassName());
             if (!this.verifExistanceFleche(vueClasse, vues.get(classeExt.getClassName()))) {
-                VueFlecheExt fleche = new VueFlecheExt();
+                VueFlecheExt fleche = new VueFlecheExt(this,new Fleche());
                 VuePointe pointe = new PointePleine(fleche);
                 fleche.toBack();
                 vueDiagramme.getChildren().add(fleche);
@@ -224,7 +225,7 @@ public class ModelUML implements Sujet {
             if (classeImp != null) {
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
                 if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
-                    VueFlecheImp fleche = new VueFlecheImp();
+                    VueFlecheImp fleche = new VueFlecheImp(this,new Fleche());
                     VuePointe pointe = new PointePleine(fleche);
                     vueDiagramme.getChildren().add(fleche);
                     vueDiagramme.getChildren().add(pointe);
@@ -262,7 +263,7 @@ public class ModelUML implements Sujet {
             if (classeImp != null) {
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
                 if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
-                    VueFlecheAttri fleche = new VueFlecheAttri(new Text(i[Analyser.FIELD_MODIFIER] + i[Analyser.FIELD_NAME]));
+                    VueFlecheAttri fleche = new VueFlecheAttri(this,new Fleche(),new Text(i[Analyser.FIELD_MODIFIER] + i[Analyser.FIELD_NAME]));
                     VuePointe pointe = new PointeCreuse(fleche);
                     vueDiagramme.getChildren().add(fleche);
                     vueDiagramme.getChildren().add(pointe);
@@ -273,6 +274,10 @@ public class ModelUML implements Sujet {
                 }
             }
         }
+    }
+
+    public void ajouterFleches(Fleche fleche) {
+        fleches.add(fleche);
     }
     /**
      * Ajoute les fleches correspondant à chaque classe
