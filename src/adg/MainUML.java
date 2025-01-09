@@ -229,7 +229,7 @@ public class MainUML extends Application {
         ControllerClickDroit controllerClickDroit = new ControllerClickDroit(modelUML);
         ControllerClickDroitClasse controllerClickDroitClasse = new ControllerClickDroitClasse(modelUML);
         ControllerChoixClickDroit controllerChoixClickDroit = new ControllerChoixClickDroit(modelUML);
-        modelUML.setControllerClickDroit(controllerClickDroitClasse);
+        modelUML.setControlleurClickDroit(controllerClickDroitClasse);
 
         VueClickDroit vueClickDroit = new VueClickDroit(modelUML,controllerChoixClickDroit);
         modelUML.enregistrerObservateur(vueClickDroit);
