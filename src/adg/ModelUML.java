@@ -111,12 +111,11 @@ public class ModelUML implements Sujet {
         observateurs = new ArrayList<Observateur>();
         chemins = new ArrayList<>();
         classes = new ArrayList<Classe>();
+        coordonneesClasse = new HashMap<>();
+        coordonneesFleche = new HashMap<>();
         this.stage = stage;
-        this.setADGFolder();
-        this.switchState(true);
-        System.out.flush();
-        System.out.println("ModelUML initialisé.");
         setADGFolder();
+        System.out.println("ModelUML initialisé.");
         isHome = true;
         coordonneesClasse = new HashMap<>();
         coordonneesFleche = new HashMap<>();
@@ -381,6 +380,13 @@ public class ModelUML implements Sujet {
             String[] entete = {"Nouveau", "Ouvrir un projet", "Ouvrir une sauvegarde"};
             for (String item : entete)
                 menuFichier.put(item, true);
+
+            // on supprime les classes
+            classes.clear();
+            vues.clear();
+            coordonneesClasse.clear();
+            coordonneesFleche.clear();
+            vueDiagramme.getChildren().clear();
 
             stage.setResizable(false);
 
