@@ -10,6 +10,7 @@ import javafx.scene.shape.Polygon;
 
 public abstract class Fleche extends Line implements Observateur {
     protected Polygon tete = new Polygon();
+    protected boolean display = true;
     private int decalage;
     private int decalagePos;
     public Fleche(int d) {
@@ -102,14 +103,17 @@ public abstract class Fleche extends Line implements Observateur {
 
 
     public void setArrowHead() {
-        Point2D e = new Point2D(this.getEndX(), this.getEndY());
-        double x = e.getX() + decalagePos;
-        double y = e.getY();
-        double angle = Math.atan2(this.getEndY() - this.getStartY(), this.getEndX() - this.getStartX()) * 180 / Math.PI;
+        if(display){
+            Point2D e = new Point2D(this.getEndX(), this.getEndY());
+            double x = e.getX() + decalagePos;
+            double y = e.getY();
+            double angle = Math.atan2(this.getEndY() - this.getStartY(), this.getEndX() - this.getStartX()) * 180 / Math.PI;
 
-        tete.setLayoutX(x);
-        tete.setLayoutY(y);
-        tete.setRotate(angle+decalage);
+            tete.setLayoutX(x);
+            tete.setLayoutY(y);
+            tete.setRotate(angle+decalage);
+        }
+
     }
     public void setDecalagePos(int d){
         decalagePos = d;
@@ -119,6 +123,14 @@ public abstract class Fleche extends Line implements Observateur {
 
     public Polygon getTete() {
         return tete;
+    }
+
+    public void setDisplay(boolean display) {
+        this.display = display;
+    }
+
+    public boolean getDisplay() {
+        return display;
     }
 
 }

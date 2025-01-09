@@ -15,13 +15,18 @@
 ### Fonctionnalité 1 : Gestion de l'état d'affichage des Classes
 - **Responsable** : Ryan Korban
 - **Description** :
-  -
+  - Ajout de la possibilité de cacher/afficher les attributs.
+  - Ajout de la possibilité de cacher/afficher les méthodes.
+  - Ajout de la possibilité de cacher/afficher toutes les dépendances.
+  - Ajout de la possibilité de cacher/afficher les dépendence d'une classe précise.
+  - Ajout de la possibilité de cacher/afficher les attributs d'une classe précise.
+  - Ajout de la possibilité de cacher/afficher les méthodes d'une classe précise.
 - **Avancement** : ✅ Complétée
+
 
 
 ## Conclusion
 
-- Plan pour l'itération suivante :
 
 
 ## Éléments dont nous sommes fiers :

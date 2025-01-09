@@ -1094,7 +1094,6 @@ public class ModelUML implements Sujet {
     public void afficherToutesDependances() {
         //TODO
         System.out.println("afficher toutes les dépendances");
-
         notifierObservateurs();
     }
 
