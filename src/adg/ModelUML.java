@@ -141,17 +141,12 @@ public class ModelUML implements Sujet {
     }
 
 
-    private boolean verifExistanceClasse(Classe classe) {
-        boolean res = false;
-        for (Classe c : classes) {
-            if (c.getClassName().equals(classe.getClassName())) {
-                res = true;
-                break;
-            }
-        }
-        return res;
-    }
 
+    /**
+     * creez une flèche extends
+     * @param classe
+     * @param vueClasse
+     */
     private void ajouterFlecheExt(Classe classe, VueClasse vueClasse) {
         String s = classe.getSuperclass();
         Classe classeExt = containsClasse(s);
@@ -190,6 +185,11 @@ public class ModelUML implements Sujet {
         }
     }
 
+    /**
+     * creer une flèche d'attribut
+     * @param classe
+     * @param vueClasse
+     */
     private void ajouterFlecheAttri(Classe classe, VueClasse vueClasse) {
         List<String[]> s = classe.getFields();
         for (String[] i : s) {
@@ -207,7 +207,9 @@ public class ModelUML implements Sujet {
             }
         }
     }
-
+    /**
+     * Ajoute les fleches correspondant à chaque classe
+     */
     private void ajoutFlecheCorrespondant() {
         for (Classe c : classes) {
             //System.out.println("classe : " + c.getClassName());
@@ -219,7 +221,12 @@ public class ModelUML implements Sujet {
         }
 
     }
-
+    /**
+     * vérifie si une flèche existe déjà
+     * @param vueClasse1
+     * @param vueClasse2
+     * @return
+     */
     private boolean verifExistanceFleche(VueClasse vueClasse1, VueClasse vueClasse2) {
         boolean res = false;
         if (vueClasse1 != null && vueClasse2 != null) {
@@ -235,6 +242,11 @@ public class ModelUML implements Sujet {
         return res;
     }
 
+    /**
+     * verifie si une classe existe déjà
+     * @param s
+     * @return
+     */
     private Classe containsClasse(String s) {
         Classe res = null;
         for (Classe classe : classes) {
@@ -279,6 +291,10 @@ public class ModelUML implements Sujet {
         return false;
     }
 
+    /**
+     * Ouvre un projet existant et notifie les observateurs pour basculer
+     * @param folder
+     */
     public void ouvrirProjet(File folder) {
         this.folder = folder;
         System.out.println("Ouverture du projet : " + folder.getName() + "...");
@@ -395,14 +411,26 @@ public class ModelUML implements Sujet {
         this.stage.setTitle(getWindowsTitle());
     }
 
+    /**
+     * Retourne la liste des classes
+     * @return
+     */
     public ArrayList<Classe> getClasses() {
         return classes;
     }
 
+    /**
+     * Retourne la liste des observateurs
+     * @return
+     */
     public ArrayList<Observateur> getObservers() {
         return observateurs;
     }
 
+    /**
+     * retourne la vue diagramme
+     * @return
+     */
     public VueDiagramme getVueDiagramme() {
         return vueDiagramme;
     }
@@ -419,66 +447,120 @@ public class ModelUML implements Sujet {
         this.folder = folder;
     }
 
+    /**
+     * Retourne le dossier du projet
+     * @return
+     */
     public File getFolder() {
         return folder;
     }
 
+    /**
+     * Retourne l'état de l'application
+     * @return
+     */
     public boolean getIsHome() {
         return isHome;
     }
 
+    /**
+     * Retourne la coordonnée x de la vue arborescence
+     * @return
+     */
     public int getVueArbo_x() {
         return vueArbo_x;
     }
-
+    /**
+     * Retourne la coordonnée y de la vue arborescence
+     * @return
+     */
     public int getVueArbo_y() {
         return vueArbo_y;
     }
-
+    /**
+     * Retourne la coordonnée x de la vue récente
+     * @return
+     */
     public int getVueRecent_x() {
         return vueRecent_x;
     }
-
+    /**
+     * Retourne la coordonnée y de la vue récente
+     * @return
+     */
     public int getVueRecent_y() {
         return vueRecent_y;
     }
-
+    /**
+     * Retourne le style de la vue récente
+     * @return
+     */
     public String getVueRecent_style() {
         return vueRecent_style;
     }
-
+    /**
+     * Retourne la visibilité de la vue récente
+     * @return
+     */
     public boolean getVueRecentVisibility() {
         return vueRecent_visible;
     }
 
+    /**
+     * Retourne la coordonnée x de la vue diagramme
+     * @return
+     */
     public int getVueDiagramme_x() {
         return vueDiagramme_x;
     }
-
+    /**
+     * Retourne la coordonnée y de la vue diagramme
+     * @return
+     */
     public int getVueDiagramme_y() {
         return vueDiagramme_y;
     }
-
+    /**
+     * Retourne la coordonnée x du bouton de la vue diagramme
+     * @return
+     */
     public int getVueDiagramme_bouton_x() {
         return vueDiagramme_bouton_x;
     }
-
+    /**
+     * Retourne la coordonnée y du bouton de la vue diagramme
+     * @return
+     */
     public int getVueDiagramme_bouton_y() {
         return vueDiagramme_bouton_y;
     }
-
+    /**
+     * Retourne le style du bouton de la vue diagramme
+     * @return
+     */
     public String getVueDiagramme_bouton_style() {
         return vueDiagramme_bouton_style;
     }
-
+    /**
+     * Retourne la visibilité du bouton de la vue diagramme
+     * @return
+     */
     public boolean getVueDiagramme_bouton_visibility() {
         return vueDiagramme_bouton_visible;
     }
 
+    /**
+     * Retourne la coordonnée x de la partie gauche
+     * @return
+     */
     public int getPartieGaucheX() {
         return PARTIE_GAUCHE_X;
     }
 
+    /**
+     * Retourne la coordonnée y de la partie gauche
+     * @return
+     */
     public int getPartieGaucheY() {
         return PARTIE_GAUCHE_Y;
     }
@@ -487,6 +569,10 @@ public class ModelUML implements Sujet {
         return stage.getMinHeight() - 20 - 20;
     }
 
+    /**
+     * Retourne la liste MenuBar
+     * @return
+     */
     public ArrayList<String> getMenuBar() {
         return menuBar;
     }
@@ -495,6 +581,11 @@ public class ModelUML implements Sujet {
         return menuFichier;
     }
 
+    /**
+     * Retourne les items du menu
+     * @param index
+     * @return
+     */
     public HashMap<String, Boolean> getMenuItems(int index) {
         String menu = menuBar.get(index);
         //System.out.println("Menu: " + menu);
@@ -504,6 +595,9 @@ public class ModelUML implements Sujet {
         return null;
     }
 
+    /**
+     * creer l'emplacement du projet
+     */
     public void setADGFolder() {
         String userHome = System.getProperty("user.home"); // C:\Users\NomUtilisateur sur Windows par ex
         File appFolder = new File(userHome, "ADGProjects"); // définie emplacement mais ne le créé pas encore
@@ -522,7 +616,9 @@ public class ModelUML implements Sujet {
             }
         }
     }
-
+    /**
+     * Crée le dossier ADGProjects dans le répertoire utilisateur.
+     */
     private void createADGfolder() {
         String userHome = System.getProperty("user.home"); // C:\Users\NomUtilisateur sur Windows par ex
         File appFolder = new File(userHome, "ADGProjects"); // définie emplacement mais ne le créé pas encore
@@ -558,7 +654,10 @@ public class ModelUML implements Sujet {
     }
 
 
-    // Ajoute un dossier récent au fichier JSON
+    /**
+     * Ajoute un dossier récent à la liste des dossiers récents.
+     * @param folderPath
+     */
     private static void addRecentFolder(String folderPath) {
         // Lire les dossiers actuels
         List<String> recentFolders = getRecentFolders();
@@ -576,7 +675,10 @@ public class ModelUML implements Sujet {
         saveRecentFolders(new ArrayList<>(folderSet));
     }
 
-    // Récupère la liste des dossiers récents
+    /**
+     * Récupère la liste des dossiers récents à partir du fichier JSON.
+     * @return
+     */
     public static ArrayList<String> getRecentFolders() {
         ArrayList<String> recentFolders = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(DATA_FILE))) {
@@ -602,7 +704,10 @@ public class ModelUML implements Sujet {
         return recentFolders;
     }
 
-    // Sauvegarde la liste des dossiers récents dans un fichier JSON
+    /**
+     * Sauvegarde la liste des dossiers récents dans le fichier JSON.
+     * @param folders
+     */
     private static void saveRecentFolders(List<String> folders) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATA_FILE))) {
             writer.write("{\n");
@@ -712,7 +817,10 @@ public class ModelUML implements Sujet {
         return res;
     }
 
-
+    /**
+     * Trouve une place pour une classe
+     * @param classe
+     */
     public void trouverPlacePourClassess(Classe classe) {
         // Récupérer les dimensions de la nouvelle classe
         int width = classe.getWidth();
@@ -784,6 +892,11 @@ public class ModelUML implements Sujet {
         return res;
     }
 
+    /**
+     * Récupère les coordonnées d'une flèche
+     * @param fleche
+     * @return
+     */
     public VueClasse[] getCoordonneesFleche(Fleche fleche) {
         VueClasse[] res = null;
         if (coordonneesFleche.containsKey(fleche)) {
@@ -802,6 +915,12 @@ public class ModelUML implements Sujet {
         return res;
     }
 
+    /**
+     * Change la position d'une classe
+     * @param classe
+     * @param x
+     * @param y
+     */
     public void changerPositionClasse(VueClasse classe, Double x, Double y) {
         int[] coordonnees = new int[2];
         coordonnees[0] = x.intValue();
@@ -811,11 +930,16 @@ public class ModelUML implements Sujet {
     }
 
 
-
+    /**
+     * Recupère l'état du click droit
+     * @return
+     */
     public boolean getEtat() {
         return this.etatClickDroit;
     }
-
+    /**
+     * Recupère l'état du click droit sur la classe
+     */
     public boolean getEtatClickDroitClasse() {
         return etatClickDroitClasse;
     }
@@ -946,50 +1070,69 @@ public class ModelUML implements Sujet {
      */
     public void afficherToutesMethodes() {
         //TODO
-        System.out.println("afficher toutes les méthodes");
+        //System.out.println("afficher toutes les méthodes");
         notifierObservateurs();
     }
 
-
+    /**
+     * Masque les dependances.
+     */
     public void masquerDependances() {
         //TODO
-        System.out.println("masquer les dépendances");
+        //System.out.println("masquer les dépendances");
         notifierObservateurs();
     }
-
+    /**
+     * Masque les dépandances
+     */
     public void masquerHeritages() {
         //TODO
-        System.out.println("masquer les héritages");
+        //System.out.println("masquer les héritages");
         notifierObservateurs();
     }
 
+    /**
+     * Masque les attributs
+     */
     public void masquerAttributs() {
         //TODO
-        System.out.println("masquer les attributs");
+        //System.out.println("masquer les attributs");
         notifierObservateurs();
     }
 
+    /**
+     * affiche les dépendances
+     */
     public void afficherDependances() {
         //TODO
-        System.out.println("afficher les dépendances");
+        //System.out.println("afficher les dépendances");
         notifierObservateurs();
     }
 
+    /**
+     * affiche les héritages
+     */
     public void afficherHeritages() {
         //TODO
-        System.out.println("afficher les héritages");
+        //System.out.println("afficher les héritages");
         notifierObservateurs();
     }
 
+    /**
+     * affiche les attributs
+     */
     public void afficherAttributs() {
         //TODO
-        System.out.println("afficher les attributs");
+        //System.out.println("afficher les attributs");
         notifierObservateurs();
     }
 
+    /**
+     * affiche les méthodes
+     */
     public void afficherMethodes() {
         //TODO
-        System.out.println("afficher les méthodes");
+        //System.out.println("afficher les méthodes");
         notifierObservateurs();
     }
 }
