@@ -26,7 +26,7 @@ public class VueMenu extends MenuBar implements Observateur {
                 for (MenuItem mi : m.getItems()) {  // on parcourt les items du menu
                     if (!(mi.getText() == null)) {
                         if (menuItems.containsKey(mi.getText())) {  // si l'item est dans la liste des items à afficher
-                            System.out.println("Item: " + mi.getText() + " | " + menuItems.get(mi.getText()));
+                            // System.out.println("Item: " + mi.getText() + " | " + menuItems.get(mi.getText()));
                             mi.setDisable(!menuItems.get(mi.getText()));  // on active ou désactive l'item
                         }
                     }

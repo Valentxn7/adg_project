@@ -6,7 +6,7 @@ import javafx.scene.text.Text;
 
 public class FlecheImp extends Fleche {
     public FlecheImp(){
-        super();
+        super(0);
         this.tete.getPoints().addAll(new Double[]{
                 0.0, 0.0,    // Point de départ (sommet de la flèche)
                 -15.0, -10.0, // Point gauche inversé
