@@ -1,5 +1,6 @@
 package adg;
 
+import adg.control.ControleurDeplacerClasse;
 import adg.control.ControllerClickDroitClasse;
 import adg.data.PathToClass;
 import adg.vues.VueClasse;
