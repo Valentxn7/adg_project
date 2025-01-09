@@ -678,6 +678,7 @@ public class ModelUML implements Sujet {
         if (!appFolder.exists()) {  // Si le dossier n'existe pas
             createADGfolder();
         }
+        this.ADGFolfer = appFolder.getAbsolutePath();
         this.folderPath = appFolder.getAbsolutePath();
         this.folder = new File(appFolder.getAbsolutePath());
     }
@@ -861,6 +862,10 @@ public class ModelUML implements Sujet {
      */
     public HashMap<String, VueClasse> getVues() {
         return vues;
+    }
+
+    public String getADGFolferPath() {
+        return ADGFolfer + FileSystems.getDefault().getSeparator();
     }
 
 
@@ -1236,7 +1241,64 @@ public class ModelUML implements Sujet {
         this.controllerClickDroit = controllerClickDroitClasse;
     }
 
-    public boolean verifierAttributNonFleche(String[] attribut) {
+    /**
+     * Ouvre la page d'aide dans le navigateur par défaut.
+     * Si le fichier d'aide n'est pas trouvé, affiche un message d'erreur.
+     * @param choix le choix de l'aide à ouvrir.
+     *              0: web 1: wiki
+     */
+    public void ouvrirPageAide(int choix) {
+        try {
+            // Localisation du fichier aide.html
+            URI chemin = null;
+            boolean BonChoix = true;
+            switch (choix) {
+                case 0:
+                    String path = getADGFolferPath() + HELP_FILE;
+                    File aideFile = new File(path); // Ajustez le chemin si nécessaire
+
+                    // Vérifier si le fichier existe
+                    if (!aideFile.exists()) {
+                        System.err.println("Fichier d'aide introuvable : " + chemin);
+                        return;
+                    }
+                    chemin = aideFile.toURI();
+                    break;
+                case 1:
+                    chemin = new URI("https://github.com/Valentxn7/adg_project/wiki");
+                    break;
+                default:
+                    BonChoix = false;
+                    break;
+            }
+
+            System.out.println(chemin);
+            if (BonChoix) {
+                // Ouvrir dans le navigateur par défaut
+                Desktop desktop = Desktop.getDesktop();
+                desktop.browse(chemin);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void loadADGbyPath(String path){
+        System.out.println("Ouverture de la sauvegarde : " + path);
+        if (isHome)
+            switchState(false);
+
+        ArrayList<Classe> classes = Load.load(path);
+        for(Classe c : classes){
+            ajouterClasse(c);
+        }
+
+    }
+
+    public boolean verifierAttributNonFleche(String[]attribut){
         boolean res = true;
         for (VueFleche vueFleche : coordonneesFleche.keySet()) {
             if (vueFleche instanceof VueFlecheAttri) {
