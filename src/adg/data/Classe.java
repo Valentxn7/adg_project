@@ -13,6 +13,8 @@ public class Classe {
     private List<Object[]> constructors;
     private List<Object[]> methods;
 
+    private boolean isInterface;
+
     private int[] coords = new int[2];
     private int height = 0;
     private int width = 0;
@@ -175,6 +177,14 @@ public class Classe {
         } else {
             return "~";
         }
+    }
+
+    public void setInterface(boolean isInterface) {
+        this.isInterface = isInterface;
+    }
+
+    public boolean isInterface() {
+        return this.isInterface;
     }
 
     public void setClassName(String className) {
