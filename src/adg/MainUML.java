@@ -256,6 +256,8 @@ public class MainUML extends Application {
 
 
         /*       lancement       **/
+        Image image = loadRessource("logo/adg");
+        stage.getIcons().add(image);
         modelUML.switchState(true);
         stage.show();
     }
@@ -277,32 +279,43 @@ public class MainUML extends Application {
      * Permet la création d'un MenuItem avec un icône.
      *
      * @param text le texte du MenuItem
-     * @param iconPath le chemin de l'icône
+     * @param icon_name le chemin de l'icône
      * @return le MenuItem créé
      */
-     public static MenuItem createMenuItem(String text, String iconPath) {
+    public static MenuItem createMenuItem(String text, String icon_name) {
         MenuItem menuItem = new MenuItem(text);
 
+        Image image = loadRessource("icones/" + icon_name);
+        ImageView icon = new ImageView(image);
+        icon.setFitWidth(16);
+        icon.setFitHeight(16);
+
+        if (icon != null) {
+            menuItem.setGraphic(icon);
+        }
+
+        return menuItem;
+    }
+
+    private static Image loadRessource(String ressource) {
         try {
-            String basePath = "ressource/icones/";
-            File file = new File(basePath + iconPath + ".png");
+            String basePath = "ressource/";
+
+            File file = new File(basePath + ressource + ".png");
             System.out.println("Chemin absolu testé : " + file.getAbsolutePath());
 
             if (!file.exists()) {
                 System.err.println("Fichier non trouvé : " + file.getAbsolutePath());
-                return menuItem;
+                return null;
             }
 
             String fullPath = file.toURI().toString();
             Image image = new Image(fullPath);
-            ImageView icon = new ImageView(image);
-            icon.setFitWidth(16);
-            icon.setFitHeight(16);
-            menuItem.setGraphic(icon);
+
+            return image;
         } catch (Exception e) {
             System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
+            return null;
         }
-
-        return menuItem;
     }
 }
