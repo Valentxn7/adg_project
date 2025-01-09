@@ -34,18 +34,13 @@ public class ControllerOpenFile implements EventHandler<ActionEvent> {
         File selectedFile = fileChooser.showOpenDialog(rootStage);
         if (selectedFile != null) {
             System.out.println("Ouverture de la sauvegarde : " + selectedFile.getAbsolutePath());
-
-
             ArrayList<Classe> classes = Load.load(selectedFile.getAbsolutePath());
 
             for(Classe c : classes){
-                modelUML.ajouterClasse(c);
+                modelUML.ajouterClasseSauvegarde(c);
             }
+            modelUML.setFolderPath(selectedFile.getAbsolutePath());
             modelUML.switchState(false);
-
-
-
-
 
 
 
