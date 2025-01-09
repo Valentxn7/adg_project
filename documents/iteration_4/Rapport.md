@@ -43,6 +43,18 @@
 - **Avancement** : ✅ Complétée
 
 
+## Conclusion
+
+- Plan pour l'itération suivante :
+  - Corriger les bugs de l'affichage de flèches
+  - Correction de l'affichage des vues Classes
+  - Finir les fonctionnalités du menuBar
+  - Gérer l'aspect graphique des classes
+  - Rendre cliquable et utilisable le TreeView
+  - Continuer a corriger les coordonnées qui sont mal stoquées
+  - Améliorer l'analyser pour récupérer les sous-types des classes
+  - implémentation de la fonctionnalité squelette des classes 
+
 ## Éléments dont nous sommes fiers :
 
 **Ryan** :
