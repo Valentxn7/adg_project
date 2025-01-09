@@ -43,6 +43,22 @@
 - **Avancement** : ✅ Complétée
 
 
+### Fonctionnalité 5 : Déplacement des classes
+- **Responsable** : Thomas Fuchs
+- **Description** :
+  - Ajout de la possibilité de déplacer les classes dans le diagramme.
+  - Ajout de la gestion des limites du pane, qui empêche les classes de sortir de la partie droite.
+- **Avancement** : ✅ Complétée
+
+### Fonctionnalité 6 : Flèches d'attributs 
+- **Responsable** : Geoffrey Gros
+- **Description** :
+  - Ajout de la possibilité de créer des flèches entre les classes pour représenter les attributs.
+  - Ajout de la Javadoc dans le modèle.
+  - correction de bugs liés aux flèches.
+- **Avancement** : ✅ Complétée
+
+
 ## Conclusion
 
 - Plan pour l'itération suivante :
@@ -65,3 +81,4 @@ J'ai commencé à résoudre un problème de conception dans le programme : les c
 **Zacharie**:
 Après de grosses phases de fix dans le model, j'ai pu implémenter les controllers pour l'exportation et le système de sauvegarde. Malgré quelques difficultés de conception, le système est désormais fonctionnel et permet d'enregistrer le projet sans passer par une simple sérialisation mais par un vrai fichier de sauvegarde.
 
+**Geoffrey** : comportement dynamique des flèches, indépendamment de la position des classes, les flèches s'adaptent.
