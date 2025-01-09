@@ -147,6 +147,29 @@ public class ModelUML implements Sujet {
     }
 
 
+    /**
+     * Place la classe aux coordonnées exactes sans vériier si la place est libre
+     * @param classe la classe à ajouter.
+     */
+    public void ajouterClasseSauvegarde(Classe classe) {
+        if (classes != null)
+            classes.add(classe);
+        VueClasse vue = new VueClasse(classe);
+        vue.setOnMouseClicked(controllerClickDroit);
+        observateurs.add(vue);
+
+        vueDiagramme.getChildren().add(vue);
+        vues.put(classe.getClassName(), vue);
+
+        vue.addEventHandler(MouseEvent.MOUSE_PRESSED, controleurDeplacerClasse);
+        vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
+        this.ajouterFlecheExt(classe, vue);
+        this.ajouterFlecheImp(classe, vue);
+        this.ajouterFlecheAttri(classe, vue);
+        this.ajoutFlecheCorrespondant();
+    }
+
+
 
     private boolean verifExistanceClasse(Classe classe) {
         boolean res = false;
