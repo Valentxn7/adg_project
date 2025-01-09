@@ -1,11 +1,13 @@
 package adg;
 
+import adg.data.Fleche;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class VueFlecheAttri extends VueFleche {
     private Text  attribut;
-    public VueFlecheAttri(Text attribut){
+    public VueFlecheAttri(ModelUML modelUML, Fleche fleche, Text attribut){
+        super(modelUML, fleche);
         this.attribut = attribut;
     }
     public void setLine(){
