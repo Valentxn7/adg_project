@@ -17,6 +17,10 @@ public class Classe {
     private int height = 0;
     private int width = 0;
 
+    private boolean showFields = true;
+    private boolean showConstructors = true;
+    private boolean showMethods = true;
+
     public Classe(String path) {
         this.class_name = path;
 
@@ -231,4 +235,29 @@ public class Classe {
     public int getHeight() {
         return this.height;
     }
+
+    public void setShowFields(boolean showFields) {
+        this.showFields = showFields;
+    }
+
+    public void setShowConstructors(boolean showConstructors) {
+        this.showConstructors = showConstructors;
+    }
+
+    public void setShowMethods(boolean showMethods) {
+        this.showMethods = showMethods;
+    }
+
+    public boolean getShowFields() {
+        return this.showFields;
+    }
+
+    public boolean getShowConstructors() {
+        return this.showConstructors;
+    }
+
+    public boolean getShowMethods() {
+        return this.showMethods;
+    }
+
 }

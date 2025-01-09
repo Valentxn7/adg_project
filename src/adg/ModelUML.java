@@ -1069,6 +1069,9 @@ public class ModelUML implements Sujet {
     public void masquerToutAttributs() {
         //TODO
         System.out.println("masquer tous les attributs");
+        for (Classe c : classes) {
+            c.setShowFields(false);
+        }
         notifierObservateurs();
     }
 
@@ -1078,6 +1081,7 @@ public class ModelUML implements Sujet {
     public void afficherToutesDependances() {
         //TODO
         System.out.println("afficher toutes les dépendances");
+
         notifierObservateurs();
     }
 
@@ -1096,6 +1100,9 @@ public class ModelUML implements Sujet {
     public void afficherTousAttributs() {
         //TODO
         System.out.println("afficher tous les attributs");
+        for (Classe c : classes) {
+            c.setShowFields(true);
+        }
         notifierObservateurs();
     }
 
@@ -1106,6 +1113,9 @@ public class ModelUML implements Sujet {
     public void afficherToutesMethodes() {
         //TODO
         System.out.println("afficher toutes les méthodes");
+        for (Classe c : classes) {
+            c.setShowMethods(true);
+        }
         notifierObservateurs();
     }
 
@@ -1115,6 +1125,7 @@ public class ModelUML implements Sujet {
     public void masquerDependances() {
         //TODO
         System.out.println("masquer les dépendances");
+
         notifierObservateurs();
     }
     /**
@@ -1123,6 +1134,7 @@ public class ModelUML implements Sujet {
     public void masquerHeritages() {
         //TODO
         System.out.println("masquer les héritages");
+
         notifierObservateurs();
     }
 
@@ -1132,6 +1144,7 @@ public class ModelUML implements Sujet {
     public void masquerAttributs() {
         //TODO
         System.out.println("masquer les attributs");
+        classeSelectionne.setShowFields(false);
         notifierObservateurs();
     }
 
@@ -1159,6 +1172,7 @@ public class ModelUML implements Sujet {
     public void afficherAttributs() {
         //TODO
         System.out.println("afficher les attributs");
+        classeSelectionne.setShowFields(true);
         notifierObservateurs();
     }
 
@@ -1167,7 +1181,21 @@ public class ModelUML implements Sujet {
      */
     public void afficherMethodes() {
         //TODO
-        System.out.println("afficher les méthodes");
+        classeSelectionne.setShowMethods(true);
+        notifierObservateurs();
+    }
+
+    public void masquerMethodes() {
+        System.out.println("masquer les méthodes");
+        classeSelectionne.setShowMethods(false);
+        notifierObservateurs();
+    }
+
+    public void masquerToutesMethodes() {
+        System.out.println("masquer toutes les méthodes");
+        for (Classe c : classes) {
+            c.setShowMethods(false);
+        }
         notifierObservateurs();
     }
 
@@ -1198,4 +1226,6 @@ public class ModelUML implements Sujet {
         }
         return res;
     }
+
+
 }

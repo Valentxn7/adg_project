@@ -26,13 +26,14 @@ public class VueClickDroit extends ContextMenu implements Observateur {
         MenuItem item1 = new MenuItem("Masquer dépendences pour tous");
         MenuItem item2 = new MenuItem("Masquer héritages pour tous");
         MenuItem item3 = new MenuItem("Masquer attributs pour tous");
+        MenuItem item8 = new MenuItem("Masquer méthodes pour tous");
         MenuItem item4 = new MenuItem("Afficher dépendences pour tous");
         MenuItem item5 = new MenuItem("Afficher héritages pour tous");
         MenuItem item6 = new MenuItem("Afficher attributs pour tous");
         MenuItem item7 = new MenuItem("Afficher méthodes pour tous");
 
         // Ajout des items au menu
-        this.getItems().addAll(item1, item2, item3,item4,item5,item6,item7);
+        this.getItems().addAll(item1, item2, item3,item8,item4,item5,item6,item7);
 
         // Ajouter des actions aux éléments
         item1.setOnAction(controllerChoixClickDroit);
@@ -49,6 +50,8 @@ public class VueClickDroit extends ContextMenu implements Observateur {
         item6.setId("6");
         item7.setOnAction(controllerChoixClickDroit);
         item7.setId("7");
+        item8.setOnAction(controllerChoixClickDroit);
+        item8.setId("8");
     }
 
     /**
