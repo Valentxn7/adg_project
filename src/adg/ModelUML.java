@@ -232,7 +232,8 @@ public class ModelUML implements Sujet {
     private void ajouterFlecheAttri(Classe classe, VueClasse vueClasse) {
         List<String[]> s = classe.getFields();
         for (String[] i : s) {
-            Classe classeImp = containsClasse(i[Analyser.FIELD_TYPE]);
+            String type = i[Analyser.FIELD_TYPE];
+            Classe classeImp = containsClasse(type);
             if (classeImp != null) {
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
                 if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
@@ -1180,5 +1181,21 @@ public class ModelUML implements Sujet {
 
     public void setControlleurClickDroit(ControllerClickDroitClasse controllerClickDroitClasse) {
         this.controllerClickDroit = controllerClickDroitClasse;
+    }
+
+    public boolean verifierAttributNonFleche(String[]attribut){
+        boolean res = true;
+        for(Fleche fleche : coordonneesFleche.keySet()){
+            if(fleche instanceof FlecheAttri){
+                FlecheAttri flecheAttri = (FlecheAttri) fleche;
+                System.out.println(flecheAttri.getAttribut().getText());
+                System.out.println(attribut[Analyser.FIELD_MODIFIER]+attribut[Analyser.FIELD_NAME]);
+                if(flecheAttri.getAttribut().getText().equals(attribut[Analyser.FIELD_MODIFIER]+attribut[Analyser.FIELD_NAME])){
+                    res = false;
+                    break;
+                }
+            }
+        }
+        return res;
     }
 }

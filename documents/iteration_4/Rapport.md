@@ -7,7 +7,7 @@
 - **Nom du projet** : ADG Project (Automatic Diagram Generator)
 - **Durée de l'itération** : 8 heures
 - **Membres** : HEUERTZ KNORST KORBAN GROS FUCHS
-- **Objectif principal** : L'objectif principal est globalement de rendre le code plus lisible et de corriger les bugs restants suite au gros merge qui a eu lieu.
+- **Objectif principal** : Après le gros merge, je dois faire fonctionner les flèches, ajouter des éléments graphiques, assurer le bon fonctionnement de la sauvegarde du projet et refactoriser les erreurs de conception.
 
 ---
 ## Fonctionnalités implémentées
@@ -42,6 +42,37 @@
   - Ajout de la possibilité de charger un projet depuis un .adg (permet de garder les positions des classes).
 - **Avancement** : ✅ Complétée
 
+
+### Fonctionnalité 5 : Déplacement des classes
+- **Responsable** : Thomas Fuchs
+- **Description** :
+  - Ajout de la possibilité de déplacer les classes dans le diagramme.
+  - Ajout de la gestion des limites du pane, qui empêche les classes de sortir de la partie droite.
+- **Avancement** : ✅ Complétée
+
+### Fonctionnalité 6 : Flèches d'attributs 
+- **Responsable** : Geoffrey Gros
+- **Description** :
+  - Ajout de la possibilité de créer des flèches entre les classes pour représenter les attributs.
+  - Ajout de la Javadoc dans le modèle.
+  - correction de bugs liés aux flèches.
+- **Avancement** : ✅ Complétée
+
+
+## Conclusion
+
+- Plan pour l'itération suivante :
+  - Corriger les bugs de l'affichage de flèches
+  - Correction de l'affichage des vues Classes
+  - Finir les fonctionnalités du menuBar
+  - Gérer l'aspect graphique des classes
+  - Rendre cliquable et utilisable le TreeView
+  - Continuer a corriger les coordonnées qui sont mal stoquées
+  - Améliorer l'analyser pour récupérer les sous-types des classes
+  - implémentation de la fonctionnalité squelette des classes 
+
+## Éléments dont nous sommes fiers :
+
 **Ryan** :
 J'ai commencé à résoudre un problème de conception dans le programme : les coordonnées des classes étaient stockées dans le modèle, alors qu'elles devraient l'être directement dans l'objet Classe. Cette mauvaise répartition des responsabilités causait des problèmes, notamment lors de l'utilisation du clic droit. J'ai donc entrepris un refactoring pour corriger et améliorer cet aspect. Cependant, le même problème persiste avec les flèches, mais je n'aurai pas le temps de le traiter dans cette itération.
 
@@ -50,3 +81,4 @@ J'ai commencé à résoudre un problème de conception dans le programme : les c
 **Zacharie**:
 Après de grosses phases de fix dans le model, j'ai pu implémenter les controllers pour l'exportation et le système de sauvegarde. Malgré quelques difficultés de conception, le système est désormais fonctionnel et permet d'enregistrer le projet sans passer par une simple sérialisation mais par un vrai fichier de sauvegarde.
 
+**Geoffrey** : comportement dynamique des flèches, indépendamment de la position des classes, les flèches s'adaptent.
