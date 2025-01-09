@@ -201,7 +201,7 @@ public class ModelUML implements Sujet {
         if (classeExt != null) {
             VueClasse vueClasseExt = vues.get(classeExt.getClassName());
             if (!this.verifExistanceFleche(vueClasse, vues.get(classeExt.getClassName()))) {
-                Fleche f = new Fleche(classe, classeExt);
+                Fleche f = new Fleche(classe, classeExt, Fleche.HERITAGE);
                 f.setPos();
                 ajouterFleches(f);
                 VueFlecheExt fleche = new VueFlecheExt(this,f);
@@ -229,7 +229,7 @@ public class ModelUML implements Sujet {
             if (classeImp != null) {
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
                 if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
-                    Fleche f = new Fleche(classe, classeImp);
+                    Fleche f = new Fleche(classe, classeImp, Fleche.HERITAGE);
                     f.setPos();
                     ajouterFleches(f);
                     VueFlecheImp fleche = new VueFlecheImp(this,f);
@@ -271,7 +271,7 @@ public class ModelUML implements Sujet {
             if (classeImp != null) {
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
                 if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
-                    Fleche f = new Fleche(classe, classeImp);
+                    Fleche f = new Fleche(classe, classeImp, Fleche.IMPLEMENTATION);
                     f.setPos();
                     ajouterFleches(f);
                     VueFlecheAttri fleche = new VueFlecheAttri(this,f,new Text(i[Analyser.FIELD_MODIFIER] + i[Analyser.FIELD_NAME]));
@@ -1100,6 +1100,11 @@ public class ModelUML implements Sujet {
     public void masquerToutesDependances() {
         //TODO
         System.out.println("masquer toutes les dépendances");
+        for (Fleche f : fleches) {
+            if(f.getType() == Fleche.ASSOCIATION){
+                f.setVisible(false);
+            }
+        }
         notifierObservateurs();
     }
 
@@ -1110,8 +1115,10 @@ public class ModelUML implements Sujet {
         //TODO
         System.out.println("masquer tous les héritages");
         for(Fleche f : fleches){
-            System.out.println("---------------------------------------------------------------------------");
-            f.setVisible(false);
+            if(f.getType() == Fleche.HERITAGE){
+                f.setVisible(false);
+            }
+
         }
         notifierObservateurs();
     }
@@ -1134,6 +1141,12 @@ public class ModelUML implements Sujet {
     public void afficherToutesDependances() {
         //TODO
         System.out.println("afficher toutes les dépendances");
+        for (Fleche f : fleches) {
+            if(f.getType() == Fleche.ASSOCIATION){
+                f.setVisible(true);
+            }
+
+        }
         notifierObservateurs();
     }
 

@@ -5,6 +5,7 @@ import javafx.scene.layout.VBox;
 
 public class Fleche {
 
+
     private Point2D sCenter;
     private Point2D eCenter;
     private boolean visible;
@@ -26,12 +27,19 @@ public class Fleche {
     private Classe start;
     private Classe end;
 
-    public Fleche(Classe start, Classe end){
+    private String type;
+
+    final public static String ASSOCIATION = "Association";
+    final public static String HERITAGE = "Heritage";
+
+
+    public Fleche(Classe start, Classe end, String type){
         this.start = start;
         this.end = end;
         this.visible = true;
         this.coordsDebut[0] = 0;
         this.coordsDebut[1] = 0;
+        this.type = type;
     }
 
     public Fleche(double deltaX,double deltaY, double deltaX2, double deltaY2, double angle, double angle2, Point2D startIntersection, Point2D endIntersection, Point2D sCenter, Point2D eCenter){
@@ -242,6 +250,10 @@ public class Fleche {
 
     public Point2D getEndIntersection(){
         return this.endIntersection;
+    }
+
+    public String getType(){
+        return this.type;
     }
 
 
