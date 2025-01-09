@@ -24,7 +24,6 @@ public class ControllerOpenFile implements EventHandler<ActionEvent> {
 
     /**
      * Ouvre un explorateur pour sélectionner un fichier .adg (sauvegarde).
-     *
      */
     public void handle(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -33,12 +32,11 @@ public class ControllerOpenFile implements EventHandler<ActionEvent> {
 
         File selectedFile = fileChooser.showOpenDialog(rootStage);
 
-        if (selectedFile != null){
+        if (selectedFile != null) {
             modelUML.setFolderPath(selectedFile.getAbsolutePath());
             modelUML.loadADGbyPath(selectedFile.getAbsolutePath());
-        }else
+        } else
             System.out.println("Aucun fichier sélectionné.");
-        }
     }
-
 }
+

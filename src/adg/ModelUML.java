@@ -13,6 +13,7 @@ import adg.data.PathToClass;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
+import java.awt.*;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
