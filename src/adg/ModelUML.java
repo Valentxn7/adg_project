@@ -111,12 +111,11 @@ public class ModelUML implements Sujet {
         observateurs = new ArrayList<Observateur>();
         chemins = new ArrayList<>();
         classes = new ArrayList<Classe>();
+        coordonneesClasse = new HashMap<>();
+        coordonneesFleche = new HashMap<>();
         this.stage = stage;
-        this.setADGFolder();
-        this.switchState(true);
-        System.out.flush();
-        System.out.println("ModelUML initialisé.");
         setADGFolder();
+        System.out.println("ModelUML initialisé.");
         isHome = true;
         coordonneesClasse = new HashMap<>();
         coordonneesFleche = new HashMap<>();
@@ -131,6 +130,29 @@ public class ModelUML implements Sujet {
         if (classes != null)
             classes.add(classe);
         this.trouverPlacePourClassess(classe);
+        VueClasse vue = new VueClasse(classe);
+        vue.setOnMouseClicked(controllerClickDroit);
+        observateurs.add(vue);
+
+        vueDiagramme.getChildren().add(vue);
+        vues.put(classe.getClassName(), vue);
+
+        vue.addEventHandler(MouseEvent.MOUSE_PRESSED, controleurDeplacerClasse);
+        vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
+        this.ajouterFlecheExt(classe, vue);
+        this.ajouterFlecheImp(classe, vue);
+        this.ajouterFlecheAttri(classe, vue);
+        this.ajoutFlecheCorrespondant();
+    }
+
+
+    /**
+     * Place la classe aux coordonnées exactes sans vériier si la place est libre
+     * @param classe la classe à ajouter.
+     */
+    public void ajouterClasseSauvegarde(Classe classe) {
+        if (classes != null)
+            classes.add(classe);
         VueClasse vue = new VueClasse(classe);
         vue.setOnMouseClicked(controllerClickDroit);
         observateurs.add(vue);
@@ -382,6 +404,13 @@ public class ModelUML implements Sujet {
             String[] entete = {"Nouveau", "Ouvrir un projet", "Ouvrir une sauvegarde"};
             for (String item : entete)
                 menuFichier.put(item, true);
+
+            // on supprime les classes
+            classes.clear();
+            vues.clear();
+            coordonneesClasse.clear();
+            coordonneesFleche.clear();
+            vueDiagramme.getChildren().clear();
 
             stage.setResizable(false);
 

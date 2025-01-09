@@ -3,7 +3,7 @@ package adg.data;
 import java.util.List;
 
 public class Save {
-    public static void save(List<Classe> classes, String path, String project_name) {
+    public static void save(List<Classe> classes, String path) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("[\n");
