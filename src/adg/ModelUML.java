@@ -499,6 +499,7 @@ public class ModelUML implements Sujet {
             coordonneesFleche.clear();
             vueDiagramme.getChildren().clear();
 
+            setWindowsTitle("Home");
             stage.setResizable(false);
 
         } else {  // diagramme
@@ -1417,5 +1418,23 @@ public class ModelUML implements Sujet {
             }
         }
         return res;
+    }
+
+    public void deleteSave(){
+        String filePath = folderPath + windowsTitle + ".adg"; // Remplace par le chemin de ton fichier
+        System.out.println("Suppression du fichier : " + filePath + "...");
+
+        File file = new File(filePath);
+
+        if (file.exists()) {
+            if (file.delete()) {
+                System.out.println("Fichier supprimé");
+                switchState(true);
+            } else {
+                System.err.println("Échec de la suppression du fichier.");
+            }
+        } else {
+            System.err.println("Le fichier n'existe pas : " + filePath);
+        }
     }
 }
