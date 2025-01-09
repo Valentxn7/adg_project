@@ -233,7 +233,20 @@ public class ModelUML implements Sujet {
         List<String[]> s = classe.getFields();
         for (String[] i : s) {
             String type = i[Analyser.FIELD_TYPE];
+            if(type.contains("<")){
+                // Trouver les indices de < et >
+                int start = type.indexOf('<');
+                int end = type.indexOf('>');
+
+                // Vérifier que < et > existent
+                if (start != -1 && end != -1 && start < end) {
+                    // Extraire le mot entre < et >
+                    String mot = type.substring(start + 1, end);
+                    type = mot;
+                }
+            }
             Classe classeImp = containsClasse(type);
+
             if (classeImp != null) {
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
                 if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {

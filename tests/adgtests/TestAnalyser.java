@@ -3,6 +3,7 @@ package adgtests;
 import adg.data.Analyser;
 import adg.data.Classe;
 import adgtests_t.ExempleClasse;
+import adgtests_t.ExempleClasse3;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -94,6 +95,19 @@ public class TestAnalyser {
         assertEquals(1, classe.getInterfaces().size());
 
         assertEquals("adgtests_t.ExempleInterface", classe.getInterfaces().get(0));
+    }
+
+    @Test
+    public void test_field_type() throws Exception {
+        Analyser field_analyser = new Analyser(ExempleClasse3.class);
+        Classe field_classe = field_analyser.analyse();
+
+        assertEquals(1, field_classe.getFields().size());
+
+        String[] field1 = field_classe.getFields().get(0);
+        assertEquals("ex4", field1[Analyser.FIELD_NAME]);
+        assertEquals("List<adgtests_t.ExempleClasse2>", field1[Analyser.FIELD_TYPE]);
+        assertEquals("private", field1[Analyser.FIELD_MODIFIER]);
     }
 }
 
