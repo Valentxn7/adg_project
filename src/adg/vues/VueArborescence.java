@@ -28,7 +28,9 @@ public class VueArborescence extends TreeView<String> implements Observateur {
         this.getRoot().getChildren().clear();
 
         for (File child : root.listFiles()) {
-            this.getRoot().getChildren().add(RefreshArboresence(child));
+            if (ModelUML.getFileExtension(child).equals("adg")){
+                this.getRoot().getChildren().add(RefreshArboresence(child));
+            }
         }
 
     }

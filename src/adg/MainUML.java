@@ -145,6 +145,7 @@ public class MainUML extends Application {
 
         enregistrerSous.setOnAction(new ControllerSaveAs(modelUML, stage));
         enregistrer.setOnAction(new ControllerSave(modelUML, stage));
+        supprimer.setOnAction(new ControllerDeleteSave(modelUML));
 
 
 
@@ -186,7 +187,7 @@ public class MainUML extends Application {
         stage.setScene(scene);
         stage.setTitle("ADG - Home");
         stage.setResizable(true);
-        stage.setMinHeight(460);
+        stage.setMinHeight(500);
         stage.setMinWidth(940);
 
         base.setMinSize(900, 400);
