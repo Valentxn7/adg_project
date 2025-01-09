@@ -1,4 +1,4 @@
-package adg;
+package adg.vues;
 
 import javafx.scene.paint.Color;
 

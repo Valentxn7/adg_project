@@ -3,9 +3,7 @@ package adg;
 import adg.control.ControleurDeplacerClasse;
 import adg.control.ControllerClickDroitClasse;
 import adg.data.*;
-import adg.vues.VueClasse;
-import adg.vues.VueDiagramme;
-import javafx.scene.layout.Pane;
+import adg.vues.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import adg.data.Analyser;
@@ -13,7 +11,6 @@ import adg.data.Classe;
 
 import adg.data.PathToClass;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 
 import java.awt.*;
 import java.io.*;
@@ -25,15 +22,10 @@ import java.nio.file.Path;
 import java.nio.file.attribute.DosFileAttributeView;
 import java.util.*;
 
-import java.util.*;
-
 import java.util.ArrayList;
 import java.io.File;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.List;
 
 /**

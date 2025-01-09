@@ -270,7 +270,6 @@ public class Classe {
             new_constructor[Analyser.CONSTRUCTOR_NAME] = (String) constructor[Analyser.CONSTRUCTOR_NAME];
             new_constructor[Analyser.CONSTRUCTOR_MODIFIER] = (String) constructor[Analyser.CONSTRUCTOR_MODIFIER];
             new_constructor[Analyser.CONSTRUCTOR_PARAMETERS_TYPE] = String.join(", ", (List<String>) constructor[Analyser.CONSTRUCTOR_PARAMETERS_TYPE]);
-
             constructors.add(new_constructor);
         }
         return constructors;
@@ -284,8 +283,20 @@ public class Classe {
             new_method[Analyser.METHOD_NAME] = (String) method[Analyser.METHOD_NAME];
             new_method[Analyser.METHOD_RETURN_TYPE] = (String) method[Analyser.METHOD_RETURN_TYPE];
             new_method[Analyser.METHOD_MODIFIER] = (String) method[Analyser.METHOD_MODIFIER];
-            new_method[Analyser.METHOD_PARAMETERS_TYPE] = String.join(", ", (List<String>) method[Analyser.METHOD_PARAMETERS_TYPE]);
+            List<String> typePara= (List<String>) method[Analyser.METHOD_PARAMETERS_TYPE];
+            List<String> namePara= (List<String>) method[Analyser.METHOD_PARAMETERS_NAME];
+            new_method[Analyser.METHOD_PARAMETERS_TYPE] = "";
+            for(int i = 0; i < typePara.size(); i++){
+                String[] temp = typePara.get(i).split("\\.");
+                String type = typePara.get(i);
+                if (temp.length > 0)type = temp[temp.length-1];
+                new_method[Analyser.METHOD_PARAMETERS_TYPE] += type + " : " + namePara.get(i);
 
+                new_method[Analyser.METHOD_PARAMETERS_TYPE] += ", ";
+            }
+            if(new_method[Analyser.METHOD_PARAMETERS_TYPE].length() > 0){
+                new_method[Analyser.METHOD_PARAMETERS_TYPE] = new_method[Analyser.METHOD_PARAMETERS_TYPE].substring(0, new_method[Analyser.METHOD_PARAMETERS_TYPE].length() - 2);
+            }
             methods.add(new_method);
         }
         return methods;

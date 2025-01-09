@@ -1,14 +1,10 @@
-package adg;
+package adg.vues;
 
+import adg.ModelUML;
+import adg.Observateur;
+import adg.Sujet;
 import adg.data.Fleche;
-import adg.vues.VueClasse;
-import javafx.geometry.Point2D;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
-
-import java.awt.*;
 
 public abstract class VueFleche extends Line implements Observateur {
     private Fleche fleche;

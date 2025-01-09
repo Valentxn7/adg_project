@@ -1,5 +1,6 @@
-package adg;
+package adg.vues;
 
+import adg.ModelUML;
 import adg.data.Fleche;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
