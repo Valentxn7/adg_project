@@ -94,6 +94,7 @@ public class ModelUML implements Sujet {
         put("Enregistrer sous", false);
         put("Exporter en UML", false);
         put("Exporter en PNG", false);
+        put("Exporter en Java", false);
         put("Personnalisation", false);
         put("Accueil", false);
     }};
