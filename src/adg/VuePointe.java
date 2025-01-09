@@ -14,7 +14,13 @@ public class VuePointe extends Polygon implements Observateur {
     @Override
     public void actualiser(Sujet mod) {
         ModelUML model = (ModelUML) mod;
-        setArrowHead(fleche);
+        if(fleche.getFleche().getVisible()){
+            setArrowHead(fleche);
+            this.setVisible(true);
+        } else{
+            this.setVisible(false);
+        }
+
     }
 
 

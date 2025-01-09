@@ -22,7 +22,13 @@ public class Fleche {
     private Point2D startIntersection;
     private Point2D endIntersection;
 
-    public Fleche(){
+
+    private Classe start;
+    private Classe end;
+
+    public Fleche(Classe start, Classe end){
+        this.start = start;
+        this.end = end;
         this.visible = true;
         this.coordsDebut[0] = 0;
         this.coordsDebut[1] = 0;
@@ -106,10 +112,21 @@ public class Fleche {
         }
     }
 
-    public void setPos(VBox start, VBox end){
+    public void setPos(){
+
+        int startCenterX = start.getCoords()[0] + start.getWidth() / 2;
+        int startCenterY = start.getCoords()[1] + start.getHeight() / 2;
+
+        // Calculer les coordonnées centrales pour la classe de fin
+        int endCenterX = end.getCoords()[0] + end.getWidth() / 2;
+        int endCenterY = end.getCoords()[1] + end.getHeight() / 2;
+
+        // Définir les centres pour le tracé ou une autre logique
+        this.setSCenter(new Point2D(startCenterX, startCenterY));
+        this.setECenter(new Point2D(endCenterX, endCenterY));
         // Obtenir les coordonnées centrales des VBoxes dans le parent (Pane)
-        this.setSCenter(start.localToParent(start.getWidth() / 2, start.getHeight() / 2));
-        this.setECenter(end.localToParent(end.getWidth() / 2, end.getHeight() / 2));
+//        this.setSCenter(start.localToParent(start.getWidth() / 2, start.getHeight() / 2));
+//        this.setECenter(end.localToParent(end.getWidth() / 2, end.getHeight() / 2));
 
         // Calculer la direction de la flèche
         this.claculerDirectionFleche();

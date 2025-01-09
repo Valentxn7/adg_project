@@ -82,7 +82,7 @@ public class ModelUML implements Sujet {
     private Map<VueClasse, int[]> coordonneesClasse;
     //coordonner pour les fleches
     private Map<VueFleche, VueClasse[]> coordonneesFleche;
-    private ArrayList<Fleche> fleches;
+    private ArrayList<Fleche> fleches = new ArrayList<>();
 
     private ArrayList<String> menuBar = new ArrayList<>(Arrays.asList("Fichier"));
     // QUAND LE RESTE SERA DEVELOPPE
@@ -201,7 +201,11 @@ public class ModelUML implements Sujet {
         if (classeExt != null) {
             VueClasse vueClasseExt = vues.get(classeExt.getClassName());
             if (!this.verifExistanceFleche(vueClasse, vues.get(classeExt.getClassName()))) {
-                VueFlecheExt fleche = new VueFlecheExt(this,new Fleche());
+                Fleche f = new Fleche(classe, classeExt);
+                f.setPos();
+                ajouterFleches(f);
+                VueFlecheExt fleche = new VueFlecheExt(this,f);
+
                 VuePointe pointe = new PointePleine(fleche);
                 fleche.toBack();
                 vueDiagramme.getChildren().add(fleche);
@@ -225,7 +229,11 @@ public class ModelUML implements Sujet {
             if (classeImp != null) {
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
                 if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
-                    VueFlecheImp fleche = new VueFlecheImp(this,new Fleche());
+                    Fleche f = new Fleche(classe, classeImp);
+                    f.setPos();
+                    ajouterFleches(f);
+                    VueFlecheImp fleche = new VueFlecheImp(this,f);
+
                     VuePointe pointe = new PointePleine(fleche);
                     vueDiagramme.getChildren().add(fleche);
                     vueDiagramme.getChildren().add(pointe);
@@ -263,7 +271,10 @@ public class ModelUML implements Sujet {
             if (classeImp != null) {
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
                 if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
-                    VueFlecheAttri fleche = new VueFlecheAttri(this,new Fleche(),new Text(i[Analyser.FIELD_MODIFIER] + i[Analyser.FIELD_NAME]));
+                    Fleche f = new Fleche(classe, classeImp);
+                    f.setPos();
+                    ajouterFleches(f);
+                    VueFlecheAttri fleche = new VueFlecheAttri(this,f,new Text(i[Analyser.FIELD_MODIFIER] + i[Analyser.FIELD_NAME]));
                     VuePointe pointe = new PointeCreuse(fleche);
                     vueDiagramme.getChildren().add(fleche);
                     vueDiagramme.getChildren().add(pointe);
@@ -1098,6 +1109,10 @@ public class ModelUML implements Sujet {
     public void masquerToutHeritages() {
         //TODO
         System.out.println("masquer tous les héritages");
+        for(Fleche f : fleches){
+            System.out.println("---------------------------------------------------------------------------");
+            f.setVisible(false);
+        }
         notifierObservateurs();
     }
 
@@ -1128,6 +1143,10 @@ public class ModelUML implements Sujet {
     public void afficherTousHeritages() {
         //TODO
         System.out.println("afficher tous les héritages");
+        for(Fleche f : fleches){
+            System.out.println("----------------------------AFFICHAGE-----------------------------------------------");
+            f.setVisible(true);
+        }
         notifierObservateurs();
     }
 
