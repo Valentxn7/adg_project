@@ -3,6 +3,8 @@ package adg.control;
 import adg.ModelUML;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.MenuItem;
 
 public class ControllerChoixClickDroit implements EventHandler<ActionEvent> {
@@ -33,6 +35,22 @@ public class ControllerChoixClickDroit implements EventHandler<ActionEvent> {
             modelUML.afficherTousAttributs();
         } else if (item.getId() == "7") {
             modelUML.afficherToutesMethodes();
+        } else if (item.getId() == "A") {
+            modelUML.masquerDependances();
+        } else if (item.getId() == "B") {
+            modelUML.masquerHeritages();
+        } else if (item.getId() == "C") {
+            modelUML.masquerAttributs();
+        } else if (item.getId() == "D") {
+            modelUML.afficherDependances();
+        } else if (item.getId() == "E") {
+            modelUML.afficherHeritages();
+        } else if (item.getId() == "F") {
+            modelUML.afficherAttributs();
+        } else if (item.getId() == "G") {
+            modelUML.afficherMethodes();
+
         }
     }
+
 }

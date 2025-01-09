@@ -28,7 +28,7 @@ public class ControllerOpenFolder implements EventHandler<ActionEvent> {
 
         if (selectedDirectory != null) {
             String path = selectedDirectory.getAbsolutePath();
-            System.out.println("Ouverture du projet : " + path);
+//            System.out.println("Ouverture du projet : " + path);
             modelUML.ouvrirProjet(selectedDirectory);
         }
     }

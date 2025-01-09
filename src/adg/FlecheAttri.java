@@ -6,7 +6,7 @@ import javafx.scene.text.Text;
 public class FlecheAttri extends Fleche {
     private Text  attribut;
     public FlecheAttri( Text attribut){
-        super();
+        super(90);
         this.tete.setFill(Color.BLUE);
         this.attribut = attribut;
         this.tete.getPoints().addAll(new Double[]{
@@ -16,6 +16,7 @@ public class FlecheAttri extends Fleche {
                 15.0, 10.0,   // Point droit haut
                 1.0, -10.0,// Point droit bas
         });
+        setDecalagePos(0);
     }
     public void setLine(){
         this.setStrokeWidth(2);

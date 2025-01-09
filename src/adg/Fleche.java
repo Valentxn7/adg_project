@@ -1,4 +1,5 @@
 package adg;
+
 import adg.vues.VueClasse;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -9,19 +10,22 @@ import javafx.scene.shape.Polygon;
 
 public abstract class Fleche extends Line implements Observateur {
     protected Polygon tete = new Polygon();
-    public Fleche(){
+    private int decalage;
+    private int decalagePos;
+    public Fleche(int d) {
         this.setStroke(Color.BLACK);
         this.setStrokeWidth(2);
+        this.decalage = d;
+        decalagePos = 10;
     }
 
-    public void actualiser(Sujet model){
+    public void actualiser(Sujet model) {
         ModelUML mod = (ModelUML) model;
         VueClasse[] classe = mod.getCoordonneesFleche(this);
-        if(classe!= null){
+        if (classe != null) {
             setPos(classe[0], classe[1]);
         }
     }
-
 
 
     public void setPos(VBox start, VBox end) {
@@ -38,7 +42,7 @@ public abstract class Fleche extends Line implements Observateur {
 
         // Calculer l'angle de la flèche
         double angle = Math.atan2(deltaY, deltaX);
-        double angle2= Math.atan2(deltaY2, deltaX2);
+        double angle2 = Math.atan2(deltaY2, deltaX2);
         // Calculer les points d'intersection pour le début (start)
         Point2D startIntersection = getIntersectionPoint(
                 sCenter.getX(), sCenter.getY(), angle, start.getWidth(), start.getHeight()
@@ -47,9 +51,8 @@ public abstract class Fleche extends Line implements Observateur {
         // Calculer les points d'intersection pour la fin (end)
         // Utiliser l'angle opposé pour calculer l'intersection à l'autre extrémité
         Point2D endIntersection = getIntersectionPoint(
-                eCenter.getX(), eCenter.getY(), angle2 , end.getWidth(), end.getHeight()
+                eCenter.getX(), eCenter.getY(), angle2, end.getWidth(), end.getHeight()
         );
-
 
 
         // Appliquer les positions
@@ -98,25 +101,23 @@ public abstract class Fleche extends Line implements Observateur {
     }
 
 
-
-
-
-
-
-
-
-    public void setArrowHead(){
+    public void setArrowHead() {
         Point2D e = new Point2D(this.getEndX(), this.getEndY());
-        double x = e.getX()+10;
+        double x = e.getX() + decalagePos;
         double y = e.getY();
+        double angle = Math.atan2(this.getEndY() - this.getStartY(), this.getEndX() - this.getStartX()) * 180 / Math.PI;
 
         tete.setLayoutX(x);
         tete.setLayoutY(y);
-        tete.setRotate(-90);
+        tete.setRotate(angle+decalage);
+    }
+    public void setDecalagePos(int d){
+        decalagePos = d;
     }
 
     public abstract void setLine();
-    public Polygon getTete(){
+
+    public Polygon getTete() {
         return tete;
     }
 
