@@ -1,5 +1,6 @@
 package adg;
 
+import adg.control.ControleurDeplacerClasse;
 import adg.control.ControllerClickDroitClasse;
 import adg.data.PathToClass;
 import adg.vues.VueClasse;
@@ -20,10 +21,15 @@ import java.nio.file.Path;
 import java.nio.file.attribute.DosFileAttributeView;
 import java.util.*;
 
+import java.util.*;
+
 import java.util.ArrayList;
 import java.io.File;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 /**
  * Classe représentant le modèle UML. Cette classe gère les classes UML,
@@ -92,8 +98,8 @@ public class ModelUML implements Sujet {
     private boolean etatClickDroit = false;
     private boolean etatClickDroitClasse = false;
     private int[] coordonneesClickDroit = new int[2];
-    private VueDiagramme partieDroite;
-    private ControllerClickDroitClasse controlleurClickDroit;
+    private ControllerClickDroitClasse controllerClickDroit;
+    private Classe classeSelectionne;
 
     /**
      * Constructeur par défaut. Initialise les listes d'observateurs,
@@ -123,11 +129,14 @@ public class ModelUML implements Sujet {
     public void ajouterClasse(Classe classe) {
         if (classes != null)
             classes.add(classe);
+        this.trouverPlacePourClassess(classe);
         VueClasse vue = new VueClasse(classe);
+        vue.setOnMouseClicked(controllerClickDroit);
         observateurs.add(vue);
+
         vueDiagramme.getChildren().add(vue);
         vues.put(classe.getClassName(), vue);
-        this.trouverPlacePourClassess(classe);
+
         vue.addEventHandler(MouseEvent.MOUSE_PRESSED, controleurDeplacerClasse);
         vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
         this.ajouterFlecheExt(classe, vue);
@@ -137,6 +146,17 @@ public class ModelUML implements Sujet {
     }
 
 
+
+    private boolean verifExistanceClasse(Classe classe) {
+        boolean res = false;
+        for (Classe c : classes) {
+            if (c.getClassName().equals(classe.getClassName())) {
+                res = true;
+                break;
+            }
+        }
+        return res;
+    }
 
     /**
      * creez une flèche extends
@@ -778,6 +798,11 @@ public class ModelUML implements Sujet {
         notifierObservateurs();
     }
 
+
+    public void setVueDiagramme(VueDiagramme vueDiagramme) {
+        this.vueDiagramme = vueDiagramme;
+    }
+
     /**
      * Retourne liste de classes avec leur vue
      *
@@ -787,111 +812,6 @@ public class ModelUML implements Sujet {
         return vues;
     }
 
-    /**
-     * Ajoute une classe UML au modèle.
-     *
-     * @param classe la classe à ajouter.
-     */
-    public void ajouterClasse(Classe classe) {
-        if (classes != null)
-            classes.add(classe);
-        VueClasse vue = new VueClasse(classe);
-        observateurs.add(vue);
-        vueDiagramme.getChildren().add(vue);
-        vues.put(classe.getClassName(), vue);
-        this.trouverPlacePourClassess(vue);
-        vue.addEventHandler(MouseEvent.MOUSE_PRESSED, controleurDeplacerClasse);
-        vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
-        this.ajouterFlecheExt(classe, vue);
-        this.ajouterFlecheImp(classe, vue);
-        this.ajoutFlecheCorrespondant();
-    }
-
-
-    private boolean verifExistanceClasse(Classe classe) {
-        boolean res = false;
-        for (Classe c : classes) {
-            if (c.getClassName().equals(classe.getClassName())) {
-                res = true;
-                break;
-            }
-        }
-        return res;
-    }
-
-    private void ajouterFlecheExt(Classe classe, VueClasse vueClasse) {
-        String s = classe.getSuperclass();
-        Classe classeExt = containsClasse(s);
-        if (classeExt != null) {
-            VueClasse vueClasseExt = vues.get(classeExt.getClassName());
-            if (!this.verifExistanceFleche(vueClasse, vues.get(classeExt.getClassName()))) {
-                FlecheExt fleche = new FlecheExt();
-                fleche.toBack();
-                vueDiagramme.getChildren().add(fleche);
-                vueDiagramme.getChildren().add(fleche.getTete());
-                coordonneesFleche.put(fleche, new VueClasse[]{vueClasse, vueClasseExt});
-                observateurs.add(fleche);
-            }
-        }
-    }
-
-    /**
-     * Ajoute une flèche d'implémentation à la vue diagramme
-     * @param classe
-     * @param vueClasse
-     */
-    private void ajouterFlecheImp(Classe classe, VueClasse vueClasse) {
-        List<String> s = classe.getInterfaces();
-        for (String i : s) {
-            Classe classeImp = containsClasse(i);
-            if (classeImp != null) {
-                VueClasse vueClasseImp = vues.get(classeImp.getClassName());
-                if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
-                    FlecheImp fleche = new FlecheImp();
-                    vueDiagramme.getChildren().add(fleche);
-                    vueDiagramme.getChildren().add(fleche.getTete());
-                    coordonneesFleche.put(fleche, new VueClasse[]{vueClasse, vueClasseImp});
-                    observateurs.add(fleche);
-                }
-            }
-        }
-    }
-
-    private void ajoutFlecheCorrespondant() {
-        for (Classe c : classes) {
-            System.out.println("classe : " + c.getClassName());
-            String nameC = c.getClassName();
-            VueClasse vueClasse = vues.get(nameC);
-            ajouterFlecheExt(c, vueClasse);
-            ajouterFlecheImp(c, vueClasse);
-        }
-
-    }
-
-    private boolean verifExistanceFleche(VueClasse vueClasse1, VueClasse vueClasse2) {
-        boolean res = false;
-        if (vueClasse1 != null && vueClasse2 != null) {
-            for (Fleche f : coordonneesFleche.keySet()) {
-                VueClasse[] vues = coordonneesFleche.get(f);
-                if (vues[0] == vueClasse1 && vues[1] == vueClasse2) {
-                    res = true;
-                    break;
-                }
-            }
-        }
-        System.out.println("res : " + res);
-        return res;
-    }
-
-    private Classe containsClasse(String s) {
-        Classe res = null;
-        for (Classe classe : classes) {
-            if (classe.getClassName().equals(s)) {
-                res = classe;
-            }
-        }
-        return res;
-    }
 
     /**
      * recupère les classes corréspondant à une fleche
@@ -934,79 +854,63 @@ public class ModelUML implements Sujet {
         int x = marge;
         int y = marge;
 
-        /**
-         * Trouve une place pour une classe
-         * @param classe
-         */
-        public void trouverPlacePourClassess(Classe classe) {
-            // Récupérer les dimensions de la nouvelle classe
+        // Définir la largeur et la hauteur maximales du pane
+        int maxWidth = (int) vueDiagramme.getWidth();
+        int maxHeight =(int) vueDiagramme.getHeight();
+
+        boolean placeTrouvee = false;
+
+        // Boucle pour trouver un emplacement libre
+        while (y + height <= maxHeight) {
+            while (x + width <= maxWidth) {
+                // Vérifier si l'emplacement est libre
+                if (estLibre(x, y)) {
+                    // Si c'est libre, on place la classe ici et on met à jour ses coordonnées
+                    classe.setCoords(x, y);
+                    placeTrouvee = true;
+                    break; // Sortir de la boucle interne si la place a été trouvée
+                }
+                // Déplacer l'élément sur l'axe X
+                x += width + marge;
+            }
+
+            if (placeTrouvee) {
+                break; // Sortir de la boucle externe si la place a été trouvée
+            }
+
+            // Si aucune place trouvée, passer à la ligne suivante
+            x = marge;
+            y += height + marge;
+        }
+
+        // Si aucune place n'a été trouvée, placer la classe à un endroit par défaut
+        if (!placeTrouvee) {
+            classe.setCoords(0,0);
+            System.err.println("Aucun emplacement libre trouvé. Classe " + classe.getClassName() + " placée en dernier endroit possible.");
+        }
+    }
+
+
+    /**
+     * Vérifie si une case est libre
+     *
+     * @param x Coordonnée x du clic
+     * @param y Coordonnée y du clic
+     * @return true si la case est libre, false sinon
+     */
+    public boolean estLibre(int x, int y) {
+        boolean res = true;
+        for (Classe classe : classes) {
+            int[] coordonnees = classe.getCoords();
             int width = classe.getWidth();
             int height = classe.getHeight();
-
-            // Commencer à tester à partir du coin supérieur gauche avec une marge
-            int marge = 10; // marge autour de la classe pour éviter de la placer trop près d'autres
-            int x = marge;
-            int y = marge;
-
-            // Définir la largeur et la hauteur maximales du pane
-            int maxWidth = (int) vueDiagramme.getWidth();
-            int maxHeight =(int) vueDiagramme.getHeight();
-
-            System.out.println("maxWidth : " + maxWidth);
-            System.out.println("maxHeight : " + maxHeight);
-            boolean placeTrouvee = false;
-
-            // Boucle pour trouver un emplacement libre
-            while (y + height <= maxHeight) {
-                while (x + width <= maxWidth) {
-                    // Vérifier si l'emplacement est libre
-                    if (estLibre(x, y)) {
-                        // Si c'est libre, on place la classe ici et on met à jour ses coordonnées
-                        classe.setCoords(x, y);
-                        System.err.println("Classe " + classe.getClassName() + " placée en (" + x + ", " + y + ")");
-                        placeTrouvee = true;
-                        break; // Sortir de la boucle interne si la place a été trouvée
-                    }
-                    // Déplacer l'élément sur l'axe X
-                    x += width + marge;
-                }
-
-                if (placeTrouvee) {
-                    break; // Sortir de la boucle externe si la place a été trouvée
-                }
-
-                // Si aucune place trouvée, passer à la ligne suivante
-                x = marge;
-                y += height + marge;
-            }
-
-            // Si aucune place n'a été trouvée, placer la classe à un endroit par défaut
-            if (!placeTrouvee) {
-                classe.setCoords(0,0);
-                System.err.println("Aucun emplacement libre trouvé. Classe " + classe.getClassName() + " placée en dernier endroit possible.");
+            if (x >= coordonnees[0] && x <= coordonnees[0] + width && y >= coordonnees[1] && y <= coordonnees[1] + height) {
+                res = false;
+                break;
             }
         }
-
-        /**
-         * Vérifie si une case est libre
-         *
-         * @param x Coordonnée x du clic
-         * @param y Coordonnée y du clic
-         * @return true si la case est libre, false sinon
-         */
-        public boolean estLibre(int x, int y) {
-            boolean res = true;
-            for (Classe classe : classes) {
-                int[] coordonnees = classe.getCoords();
-                int width = classe.getWidth();
-                int height = classe.getHeight();
-                if (x >= coordonnees[0] && x <= coordonnees[0] + width && y >= coordonnees[1] && y <= coordonnees[1] + height) {
-                    res = false;
-                    break;
-                }
-            }
-            return res;
-        }
+        return res;
+    }
 
     /**
      * Récupère les coordonnées d'une flèche
@@ -1031,17 +935,11 @@ public class ModelUML implements Sujet {
         return res;
     }
 
-    /**
-     * Change la position d'une classe
-     * @param classe
-     * @param x
-     * @param y
-     */
-    public void changerPositionClasse(VueClasse classe, Double x, Double y) {
+    public void changerPositionClasse(Classe classe, Double x, Double y) {
         int[] coordonnees = new int[2];
         coordonnees[0] = x.intValue();
         coordonnees[1] = y.intValue();
-        coordonneesClasse.put(classe, coordonnees);
+        classe.setCoords(coordonnees[0], coordonnees[1]);
         notifierObservateurs();
     }
 
@@ -1068,19 +966,17 @@ public class ModelUML implements Sujet {
      */
     public void afficherClickDroit(int x, int y) {
         etatClickDroit = true;
+        etatClickDroitClasse = false;
         coordonneesClickDroit[0] = x;
         coordonneesClickDroit[1] = y;
-        System.out.println("click droit : " + x + " " + y);
-        System.out.println("etat click droit : " + etatClickDroit);
         notifierObservateurs();
     }
 
     public void afficherClickDroitClasse(int x, int y) {
         etatClickDroitClasse = true;
+        etatClickDroit = false;
         coordonneesClickDroit[0] = x;
         coordonneesClickDroit[1] = y;
-        System.err.println("click droit Classe : " + x + " " + y);
-        System.err.println("etat click droit Classe : " + etatClickDroitClasse);
         notifierObservateurs();
     }
 
@@ -1093,13 +989,9 @@ public class ModelUML implements Sujet {
         notifierObservateurs();
     }
 
-    /**
-     * Getter la partie droite de l'application
-     *
-     * @return
-     */
-    public VueDiagramme getPaneCLickDroit() {
-        return vueDiagramme;
+    public void masquerClickDroitClass() {
+        etatClickDroitClasse = false;
+        notifierObservateurs();
     }
 
     /**
@@ -1107,7 +999,7 @@ public class ModelUML implements Sujet {
      *
      * @param pane
      */
-    public void setVueDiagramme(VueDiagramme pane) {
+    public void setPaneClickDroit(VueDiagramme pane) {
         this.vueDiagramme = pane;
     }
 
@@ -1135,6 +1027,7 @@ public class ModelUML implements Sujet {
     public void masquerToutesDependances() {
         //TODO
         System.out.println("masquer toutes les dépendances");
+        notifierObservateurs();
     }
 
     /**
@@ -1143,6 +1036,7 @@ public class ModelUML implements Sujet {
     public void masquerToutHeritages() {
         //TODO
         System.out.println("masquer tous les héritages");
+        notifierObservateurs();
     }
 
     /**
@@ -1151,6 +1045,7 @@ public class ModelUML implements Sujet {
     public void masquerToutAttributs() {
         //TODO
         System.out.println("masquer tous les attributs");
+        notifierObservateurs();
     }
 
     /**
@@ -1186,7 +1081,7 @@ public class ModelUML implements Sujet {
      */
     public void afficherToutesMethodes() {
         //TODO
-        //System.out.println("afficher toutes les méthodes");
+        System.out.println("afficher toutes les méthodes");
         notifierObservateurs();
     }
 
@@ -1195,7 +1090,7 @@ public class ModelUML implements Sujet {
      */
     public void masquerDependances() {
         //TODO
-        //System.out.println("masquer les dépendances");
+        System.out.println("masquer les dépendances");
         notifierObservateurs();
     }
     /**
@@ -1203,7 +1098,7 @@ public class ModelUML implements Sujet {
      */
     public void masquerHeritages() {
         //TODO
-        //System.out.println("masquer les héritages");
+        System.out.println("masquer les héritages");
         notifierObservateurs();
     }
 
@@ -1212,7 +1107,7 @@ public class ModelUML implements Sujet {
      */
     public void masquerAttributs() {
         //TODO
-        //System.out.println("masquer les attributs");
+        System.out.println("masquer les attributs");
         notifierObservateurs();
     }
 
@@ -1221,7 +1116,7 @@ public class ModelUML implements Sujet {
      */
     public void afficherDependances() {
         //TODO
-        //System.out.println("afficher les dépendances");
+        System.out.println("afficher les dépendances");
         notifierObservateurs();
     }
 
@@ -1230,7 +1125,7 @@ public class ModelUML implements Sujet {
      */
     public void afficherHeritages() {
         //TODO
-        //System.out.println("afficher les héritages");
+        System.out.println("afficher les héritages");
         notifierObservateurs();
     }
 
@@ -1239,7 +1134,7 @@ public class ModelUML implements Sujet {
      */
     public void afficherAttributs() {
         //TODO
-        //System.out.println("afficher les attributs");
+        System.out.println("afficher les attributs");
         notifierObservateurs();
     }
 
@@ -1248,11 +1143,19 @@ public class ModelUML implements Sujet {
      */
     public void afficherMethodes() {
         //TODO
-        //System.out.println("afficher les méthodes");
+        System.out.println("afficher les méthodes");
         notifierObservateurs();
     }
 
-    public void setControlleurClickDroit(ControllerClickDroitClasse controlleurClickDroit) {
-        this.controlleurClickDroit = controlleurClickDroit;
+    public void setControllerClickDroit(ControllerClickDroitClasse controllerClickDroit) {
+        this.controllerClickDroit = controllerClickDroit;
+    }
+
+    public void setClasseSelectionne(Classe c) {
+        classeSelectionne = c;
+    }
+
+    public void setControlleurClickDroit(ControllerClickDroitClasse controllerClickDroitClasse) {
+        this.controllerClickDroit = controllerClickDroitClasse;
     }
 }
