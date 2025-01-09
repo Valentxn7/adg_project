@@ -234,12 +234,11 @@ public class MainUML extends Application {
         VueClickDroit vueClickDroit = new VueClickDroit(modelUML,controllerChoixClickDroit);
         modelUML.enregistrerObservateur(vueClickDroit);
         partieDroite.setOnMouseClicked(controllerClickDroit);
+        modelUML.setPaneClickDroit(partieDroite);
 
         VueClickDroitClasse vueClickDroitClasse = new VueClickDroitClasse(modelUML,controllerChoixClickDroit);
 
         modelUML.enregistrerObservateur(vueClickDroitClasse);
-
-
 
 
         /*       lancement       **/
