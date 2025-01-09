@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.List;
 
 /**
  * Classe représentant le modèle UML. Cette classe gère les classes UML,
@@ -866,7 +867,7 @@ public class ModelUML implements Sujet {
     /**
      * recupère les classes corréspondant à une fleche
      *
-     * @param fleche
+     * @param vueFleche
      */
     public VueClasse[] getFleche(VueFleche vueFleche) {
         VueClasse[] res = new VueClasse[2];
