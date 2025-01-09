@@ -36,8 +36,8 @@ public class MainUML extends Application {
         VuePartieGauche partieGauche = new VuePartieGauche(0);  // TreeView et MenuBar
         modelUML.enregistrerObservateur(partieGauche);
         VueDiagramme partieDroite = new VueDiagramme();  // bouton add projet
-        modelUML.enregistrerObservateur(partieDroite);
         modelUML.setVueDiagramme(partieDroite);
+        modelUML.enregistrerObservateur(partieDroite);
         ControllerDragDrop controllerDragDrop = new ControllerDragDrop(modelUML);
 
         controllerDragDrop.activerDragAndDrop(partieDroite);
@@ -230,7 +230,6 @@ public class MainUML extends Application {
         VueClickDroit vueClickDroit = new VueClickDroit(modelUML);
         modelUML.enregistrerObservateur(vueClickDroit);
         partieDroite.setOnMouseClicked(controllerClickDroit);
-        modelUML.setPaneClickDroit(partieDroite);
 
 
 

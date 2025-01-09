@@ -3,14 +3,11 @@ package adg;
 import adg.data.PathToClass;
 import adg.vues.VueClasse;
 import adg.vues.VueDiagramme;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import adg.data.Analyser;
 import adg.data.Classe;
 
-import adg.data.PathToClass;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -18,15 +15,10 @@ import java.nio.file.Path;
 import java.nio.file.attribute.DosFileAttributeView;
 import java.util.*;
 
-import java.util.*;
-
 import java.util.ArrayList;
 import java.io.File;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
 
 /**
  * Classe représentant le modèle UML. Cette classe gère les classes UML,
@@ -94,7 +86,6 @@ public class ModelUML implements Sujet {
 
     private boolean etatClickDroit = false;
     private int[] coordonneesClickDroit = new int[2];
-    private VueDiagramme partieDroite;
 
     /**
      * Constructeur par défaut. Initialise les listes d'observateurs,
@@ -106,121 +97,12 @@ public class ModelUML implements Sujet {
         observateurs = new ArrayList<Observateur>();
         chemins = new ArrayList<>();
         classes = new ArrayList<Classe>();
-        this.stage = stage;
-        this.setADGFolder();
-        this.switchState(true);
-        System.out.flush();
-        System.out.println("ModelUML initialisé.");
-        setADGFolder();
-        isHome = true;
         coordonneesClasse = new HashMap<>();
         coordonneesFleche = new HashMap<>();
-    }
-
-    /**
-     * Ajoute une classe UML au modèle.
-     *
-     * @param classe la classe à ajouter.
-     */
-    public void ajouterClasse(Classe classe) {
-        if (classes != null)
-            classes.add(classe);
-        VueClasse vue = new VueClasse(classe);
-        observateurs.add(vue);
-        vueDiagramme.getChildren().add(vue);
-        vues.put(classe.getClassName(), vue);
-        this.trouverPlacePourClassess(vue);
-        vue.addEventHandler(MouseEvent.MOUSE_PRESSED, controleurDeplacerClasse);
-        vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
-        this.ajouterFlecheExt(classe, vue);
-        this.ajouterFlecheImp(classe, vue);
-        this.ajoutFlecheCorrespondant();
-    }
-
-
-    private boolean verifExistanceClasse(Classe classe) {
-        boolean res = false;
-        for (Classe c : classes) {
-            if (c.getClassName().equals(classe.getClassName())) {
-                res = true;
-                break;
-            }
-        }
-        return res;
-    }
-
-    private void ajouterFlecheExt(Classe classe, VueClasse vueClasse) {
-        String s = classe.getSuperclass();
-        Classe classeExt = containsClasse(s);
-        if (classeExt != null) {
-            VueClasse vueClasseExt = vues.get(classeExt.getClassName());
-            if (!this.verifExistanceFleche(vueClasse, vues.get(classeExt.getClassName()))) {
-                FlecheExt fleche = new FlecheExt();
-                fleche.toBack();
-                vueDiagramme.getChildren().add(fleche);
-                vueDiagramme.getChildren().add(fleche.getTete());
-                coordonneesFleche.put(fleche, new VueClasse[]{vueClasse, vueClasseExt});
-                observateurs.add(fleche);
-            }
-        }
-    }
-
-    /**
-     * Ajoute une flèche d'implémentation à la vue diagramme
-     * @param classe
-     * @param vueClasse
-     */
-    private void ajouterFlecheImp(Classe classe, VueClasse vueClasse) {
-        List<String> s = classe.getInterfaces();
-        for (String i : s) {
-            Classe classeImp = containsClasse(i);
-            if (classeImp != null) {
-                VueClasse vueClasseImp = vues.get(classeImp.getClassName());
-                if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
-                    FlecheImp fleche = new FlecheImp();
-                    vueDiagramme.getChildren().add(fleche);
-                    vueDiagramme.getChildren().add(fleche.getTete());
-                    coordonneesFleche.put(fleche, new VueClasse[]{vueClasse, vueClasseImp});
-                    observateurs.add(fleche);
-                }
-            }
-        }
-    }
-
-    private void ajoutFlecheCorrespondant() {
-        for (Classe c : classes) {
-            System.out.println("classe : " + c.getClassName());
-            String nameC = c.getClassName();
-            VueClasse vueClasse = vues.get(nameC);
-            ajouterFlecheExt(c, vueClasse);
-            ajouterFlecheImp(c, vueClasse);
-        }
-
-    }
-
-    private boolean verifExistanceFleche(VueClasse vueClasse1, VueClasse vueClasse2) {
-        boolean res = false;
-        if (vueClasse1 != null && vueClasse2 != null) {
-            for (Fleche f : coordonneesFleche.keySet()) {
-                VueClasse[] vues = coordonneesFleche.get(f);
-                if (vues[0] == vueClasse1 && vues[1] == vueClasse2) {
-                    res = true;
-                    break;
-                }
-            }
-        }
-        System.out.println("res : " + res);
-        return res;
-    }
-
-    private Classe containsClasse(String s) {
-        Classe res = null;
-        for (Classe classe : classes) {
-            if (classe.getClassName().equals(s)) {
-                res = classe;
-            }
-        }
-        return res;
+        this.stage = stage;
+        setADGFolder();
+        System.out.println("ModelUML initialisé.");
+        isHome = true;
     }
 
     /**
@@ -326,6 +208,13 @@ public class ModelUML implements Sujet {
             String[] entete = {"Nouveau", "Ouvrir un projet", "Ouvrir une sauvegarde"};
             for (String item : entete)
                 menuFichier.put(item, true);
+
+            // on supprime les classes
+            classes.clear();
+            vues.clear();
+            coordonneesClasse.clear();
+            coordonneesFleche.clear();
+            vueDiagramme.getChildren().clear();
 
             stage.setResizable(false);
 
@@ -648,11 +537,6 @@ public class ModelUML implements Sujet {
         notifierObservateurs();
     }
 
-
-    public void setVueDiagramme(VueDiagramme vueDiagramme) {
-        this.vueDiagramme = vueDiagramme;
-    }
-
     /**
      * Retourne liste de classes avec leur vue
      *
@@ -662,6 +546,111 @@ public class ModelUML implements Sujet {
         return vues;
     }
 
+    /**
+     * Ajoute une classe UML au modèle.
+     *
+     * @param classe la classe à ajouter.
+     */
+    public void ajouterClasse(Classe classe) {
+        if (classes != null)
+            classes.add(classe);
+        VueClasse vue = new VueClasse(classe);
+        observateurs.add(vue);
+        vueDiagramme.getChildren().add(vue);
+        vues.put(classe.getClassName(), vue);
+        this.trouverPlacePourClassess(vue);
+        vue.addEventHandler(MouseEvent.MOUSE_PRESSED, controleurDeplacerClasse);
+        vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
+        this.ajouterFlecheExt(classe, vue);
+        this.ajouterFlecheImp(classe, vue);
+        this.ajoutFlecheCorrespondant();
+    }
+
+
+    private boolean verifExistanceClasse(Classe classe) {
+        boolean res = false;
+        for (Classe c : classes) {
+            if (c.getClassName().equals(classe.getClassName())) {
+                res = true;
+                break;
+            }
+        }
+        return res;
+    }
+
+    private void ajouterFlecheExt(Classe classe, VueClasse vueClasse) {
+        String s = classe.getSuperclass();
+        Classe classeExt = containsClasse(s);
+        if (classeExt != null) {
+            VueClasse vueClasseExt = vues.get(classeExt.getClassName());
+            if (!this.verifExistanceFleche(vueClasse, vues.get(classeExt.getClassName()))) {
+                FlecheExt fleche = new FlecheExt();
+                fleche.toBack();
+                vueDiagramme.getChildren().add(fleche);
+                vueDiagramme.getChildren().add(fleche.getTete());
+                coordonneesFleche.put(fleche, new VueClasse[]{vueClasse, vueClasseExt});
+                observateurs.add(fleche);
+            }
+        }
+    }
+
+    /**
+     * Ajoute une flèche d'implémentation à la vue diagramme
+     * @param classe
+     * @param vueClasse
+     */
+    private void ajouterFlecheImp(Classe classe, VueClasse vueClasse) {
+        List<String> s = classe.getInterfaces();
+        for (String i : s) {
+            Classe classeImp = containsClasse(i);
+            if (classeImp != null) {
+                VueClasse vueClasseImp = vues.get(classeImp.getClassName());
+                if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
+                    FlecheImp fleche = new FlecheImp();
+                    vueDiagramme.getChildren().add(fleche);
+                    vueDiagramme.getChildren().add(fleche.getTete());
+                    coordonneesFleche.put(fleche, new VueClasse[]{vueClasse, vueClasseImp});
+                    observateurs.add(fleche);
+                }
+            }
+        }
+    }
+
+    private void ajoutFlecheCorrespondant() {
+        for (Classe c : classes) {
+            System.out.println("classe : " + c.getClassName());
+            String nameC = c.getClassName();
+            VueClasse vueClasse = vues.get(nameC);
+            ajouterFlecheExt(c, vueClasse);
+            ajouterFlecheImp(c, vueClasse);
+        }
+
+    }
+
+    private boolean verifExistanceFleche(VueClasse vueClasse1, VueClasse vueClasse2) {
+        boolean res = false;
+        if (vueClasse1 != null && vueClasse2 != null) {
+            for (Fleche f : coordonneesFleche.keySet()) {
+                VueClasse[] vues = coordonneesFleche.get(f);
+                if (vues[0] == vueClasse1 && vues[1] == vueClasse2) {
+                    res = true;
+                    break;
+                }
+            }
+        }
+        System.out.println("res : " + res);
+        return res;
+    }
+
+    private Classe containsClasse(String s) {
+        Classe res = null;
+        for (Classe classe : classes) {
+            if (classe.getClassName().equals(s)) {
+                res = classe;
+            }
+        }
+        return res;
+    }
 
     /**
      * recupère les classes corréspondant à une fleche
@@ -787,7 +776,7 @@ public class ModelUML implements Sujet {
      * @return
      */
     public VueDiagramme getPaneCLickDroit() {
-        return partieDroite;
+        return vueDiagramme;
     }
 
     /**
@@ -795,8 +784,8 @@ public class ModelUML implements Sujet {
      *
      * @param pane
      */
-    public void setPaneClickDroit(VueDiagramme pane) {
-        this.partieDroite = pane;
+    public void setVueDiagramme(VueDiagramme pane) {
+        this.vueDiagramme = pane;
     }
 
     /**
