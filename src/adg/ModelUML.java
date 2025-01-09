@@ -5,7 +5,6 @@ import adg.control.ControllerClickDroitClasse;
 import adg.data.*;
 import adg.vues.VueClasse;
 import adg.vues.VueDiagramme;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import adg.data.Analyser;
@@ -13,7 +12,6 @@ import adg.data.Classe;
 
 import adg.data.PathToClass;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 
 import java.awt.*;
 import java.io.*;
@@ -25,15 +23,10 @@ import java.nio.file.Path;
 import java.nio.file.attribute.DosFileAttributeView;
 import java.util.*;
 
-import java.util.*;
-
 import java.util.ArrayList;
 import java.io.File;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.List;
 
 /**
@@ -179,8 +172,7 @@ public class ModelUML implements Sujet {
         this.ajoutFlecheCorrespondant();
     }
 
-    public static String getFileExtension(File file) {
-        String fileName = file.getName();
+    public static String getFileExtensionByName(String fileName) {
         int indexpoint = fileName.lastIndexOf('.');
 
         if (indexpoint > 0 && indexpoint < fileName.length() - 1) {
@@ -512,6 +504,7 @@ public class ModelUML implements Sujet {
             vueDiagramme.getChildren().clear();
 
             setWindowsTitle("Home");
+            setFolder(new File(ADGFolfer));
             stage.setResizable(false);
 
         } else {  // diagramme
@@ -1399,7 +1392,12 @@ public class ModelUML implements Sujet {
         }
     }
 
-    public void loadADGbyPath(String path) {
+    /**
+     * Charge une sauvegarde de projet ADG.
+     * @param nom son nom, le path est créer avec le dossier courant
+     */
+    public void loadADGbyName(String nom) {
+        String path = getFolderPath() + DIRECTORY_SEPARATOR + nom;
         System.out.println("Ouverture de la sauvegarde : " + path);
 
         if (windowsTitle.equalsIgnoreCase("Home")) {

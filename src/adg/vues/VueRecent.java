@@ -4,12 +4,17 @@ package adg.vues;
 import adg.ModelUML;
 import adg.Observateur;
 import adg.Sujet;
+import adg.control.ControllerDoubleClicTreeRec;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
 import java.util.ArrayList;
 
 public class VueRecent extends TreeView<String> implements Observateur {
+
+    public VueRecent(ControllerDoubleClicTreeRec cont){
+        this.setOnMouseClicked(cont);
+    }
 
     @Override
     public void actualiser(Sujet mod) {

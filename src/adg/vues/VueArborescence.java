@@ -8,6 +8,8 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class VueArborescence extends TreeView<String> implements Observateur {
 
@@ -27,10 +29,19 @@ public class VueArborescence extends TreeView<String> implements Observateur {
         this.getRoot().setValue(root.getName());
         this.getRoot().getChildren().clear();
 
-        for (File child : root.listFiles()) {
-            if (ModelUML.getFileExtension(child).equals("adg")){
+        String[] list = {"adg", "class"};
+        ArrayList<String> extension = new ArrayList<String>(Arrays.asList(list));
+
+        //RefreshArboresencev2(this.getRoot(), root, new ArrayList<>(Arrays.asList("adg", "class", "java")));
+
+        /*for (File child : root.listFiles()) {
+            if (extension.contains(ModelUML.getFileExtension(child)) || child.isDirectory()) {
                 this.getRoot().getChildren().add(RefreshArboresence(child));
             }
+        }*/
+
+        for (File child : root.listFiles()) {
+            RefreshArboresencev2(this.getRoot(), child, extension);
         }
 
     }
@@ -54,6 +65,40 @@ public class VueArborescence extends TreeView<String> implements Observateur {
             }
         }
         return treeItem;
+    }
+
+    /**
+     * Remplit un TreeItem de manière récursive en ne gardant que les fichiers et dossiers pertinents.
+     *
+     * @param base     le TreeItem parent
+     * @param file       le fichier/dossier à analyser
+     * @param extensions les extensions valides
+     * @return true si le fichier/dossier contient des éléments valides, false sinon
+     */
+    private boolean RefreshArboresencev2(TreeItem<String> base, File file, ArrayList<String> extensions) {
+        if (file.isFile()) {  // si on a une feuille
+            if (extensions.contains(ModelUML.getFileExtensionByName(file.getName()))) { // vérifier si le fichier a une extension valide
+                base.getChildren().add(new TreeItem<>(file.getName()));
+                return true;
+            }
+            return false;
+
+        } else if (file.isDirectory()) {
+            TreeItem<String> dossier = new TreeItem<>(file.getName());
+            boolean isOK = false;
+
+            for (File child : file.listFiles()) {
+                if (RefreshArboresencev2(dossier, child, extensions)) {
+                    isOK = true;
+                }
+            }
+
+            if (isOK) {
+                base.getChildren().add(dossier);
+                return true;
+            }
+        }
+        return false;
     }
 }
 
