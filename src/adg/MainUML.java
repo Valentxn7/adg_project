@@ -131,6 +131,7 @@ public class MainUML extends Application {
         exporterUml.setOnAction(new ControllerExportUml(modelUML, stage));
 
         enregistrerSous.setOnAction(new ControllerSaveAs(modelUML, stage));
+        enregistrer.setOnAction(new ControllerSave(modelUML, stage));
 
 
 
