@@ -12,12 +12,13 @@
 ---
 ## Fonctionnalités implémentées
 
-### Fonctionnalité 1 : Exportation PNG
+### Fonctionnalité 1 : Exportation
 - **Responsable** : Heuertz Zacharie
 - **Description** :
   - Ajout de la possibilité d'exporter le diagramme en PNG.
+  - Ajout de la possibilité d'exporter le diagramme en UML (puml).
 
-- **Avancement** : ?? A tester
+- **Avancement** : ✅ Complétée
 
 ### Fonctionnalité 2 : Click droit
 - **Responsable** : Ryan Korban
@@ -34,6 +35,12 @@
   - Refactoring des coordonnées pour une meilleure gestion des coordonnées. (les coordonnées des classes étaient stoker dans le modèle alors qu'elles devraient être stockées dans l'objet Classe).
 - **Avancement** : ✅ Complétée
 
+### Fonctionnalité 4 : Sauvegarde effective
+- **Responsable** : Heuertz Zacharie
+- **Description** :
+  - Ajout de la possibilité d'enregistrer un projet dans un .adg.
+  - Ajout de la possibilité de charger un projet depuis un .adg (permet de garder les positions des classes).
+- **Avancement** : ✅ Complétée
 
 **Ryan** :
 J'ai commencé à résoudre un problème de conception dans le programme : les coordonnées des classes étaient stockées dans le modèle, alors qu'elles devraient l'être directement dans l'objet Classe. Cette mauvaise répartition des responsabilités causait des problèmes, notamment lors de l'utilisation du clic droit. J'ai donc entrepris un refactoring pour corriger et améliorer cet aspect. Cependant, le même problème persiste avec les flèches, mais je n'aurai pas le temps de le traiter dans cette itération.
@@ -41,4 +48,5 @@ J'ai commencé à résoudre un problème de conception dans le programme : les c
 **Valentin** :
 
 **Zacharie**:
+Après de grosses phases de fix dans le model, j'ai pu implémenter les controllers pour l'exportation et le système de sauvegarde. Malgré quelques difficultés de conception, le système est désormais fonctionnel et permet d'enregistrer le projet sans passer par une simple sérialisation mais par un vrai fichier de sauvegarde.
 
