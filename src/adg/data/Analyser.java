@@ -31,6 +31,7 @@ public class Analyser {
     public Classe analyse() {
         Classe classe = new Classe(row_class.getName());
 
+        checkInterface(classe);
         buildSuperClass(classe);
         buildInterfaces(classe);
         buildFields(classe);
@@ -38,6 +39,15 @@ public class Analyser {
         buildMethods(classe);
 
         return classe;
+    }
+
+    /** Check if the class is an interface
+     * @param classe the class to check if it is an interface
+     */
+    private void checkInterface(Classe classe) {
+        if (row_class.isInterface()) {
+            classe.setInterface(true);
+        }
     }
 
     /** Build the superclass for the class
