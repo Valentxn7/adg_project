@@ -107,7 +107,7 @@ public class Classe {
         StringBuilder java = new StringBuilder();
 
 
-        if (this.interfaces.isEmpty()) {
+        if (!this.isInterface) {
             java.append("public class ").append(this.class_name);
         } else {
             java.append("public interface ").append(this.class_name);
