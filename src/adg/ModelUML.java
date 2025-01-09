@@ -15,7 +15,11 @@ import adg.data.PathToClass;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
+import java.awt.*;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.DosFileAttributeView;
@@ -30,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.List;
 
 /**
  * Classe représentant le modèle UML. Cette classe gère les classes UML,
@@ -43,9 +48,11 @@ public class ModelUML implements Sujet {
 
     private HashMap<String, VueClasse> vues;  // hashmap qui associe le nom de la classe à sa vue
     private String windowsTitle = "Home";
+    private String ADGFolfer;
     private String folderPath = null;
     private File folder = null;
     private static final String DATA_FILE = ".data.json"; // Nom du fichier des données
+    private static final String HELP_FILE = "aide.html"; // Nom du fichier des données
     private static final int MAX_RECENT_FOLDERS = 10;     // Limite du nombre de dossiers récents
 
     List<String> recentFolders;
@@ -146,7 +153,6 @@ public class ModelUML implements Sujet {
     }
 
 
-
     private boolean verifExistanceClasse(Classe classe) {
         boolean res = false;
         for (Classe c : classes) {
@@ -160,6 +166,7 @@ public class ModelUML implements Sujet {
 
     /**
      * creez une flèche extends
+     *
      * @param classe
      * @param vueClasse
      */
@@ -181,6 +188,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Ajoute une flèche d'implémentation à la vue diagramme
+     *
      * @param classe
      * @param vueClasse
      */
@@ -203,6 +211,7 @@ public class ModelUML implements Sujet {
 
     /**
      * creer une flèche d'attribut
+     *
      * @param classe
      * @param vueClasse
      */
@@ -213,7 +222,7 @@ public class ModelUML implements Sujet {
             if (classeImp != null) {
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
                 if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
-                    FlecheAttri fleche = new FlecheAttri(new Text(i[Analyser.FIELD_MODIFIER]+i[Analyser.FIELD_NAME]));
+                    FlecheAttri fleche = new FlecheAttri(new Text(i[Analyser.FIELD_MODIFIER] + i[Analyser.FIELD_NAME]));
                     vueDiagramme.getChildren().add(fleche);
                     vueDiagramme.getChildren().add(fleche.getTete());
                     vueDiagramme.getChildren().add(fleche.getAttribut());
@@ -223,6 +232,7 @@ public class ModelUML implements Sujet {
             }
         }
     }
+
     /**
      * Ajoute les fleches correspondant à chaque classe
      */
@@ -237,8 +247,10 @@ public class ModelUML implements Sujet {
         }
 
     }
+
     /**
      * vérifie si une flèche existe déjà
+     *
      * @param vueClasse1
      * @param vueClasse2
      * @return
@@ -260,6 +272,7 @@ public class ModelUML implements Sujet {
 
     /**
      * verifie si une classe existe déjà
+     *
      * @param s
      * @return
      */
@@ -309,6 +322,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Ouvre un projet existant et notifie les observateurs pour basculer
+     *
      * @param folder
      */
     public void ouvrirProjet(File folder) {
@@ -436,6 +450,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la liste des classes
+     *
      * @return
      */
     public ArrayList<Classe> getClasses() {
@@ -444,6 +459,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la liste des observateurs
+     *
      * @return
      */
     public ArrayList<Observateur> getObservers() {
@@ -452,6 +468,7 @@ public class ModelUML implements Sujet {
 
     /**
      * retourne la vue diagramme
+     *
      * @return
      */
     public VueDiagramme getVueDiagramme() {
@@ -472,6 +489,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne le dossier du projet
+     *
      * @return
      */
     public File getFolder() {
@@ -480,6 +498,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne l'état de l'application
+     *
      * @return
      */
     public boolean getIsHome() {
@@ -488,41 +507,52 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la coordonnée x de la vue arborescence
+     *
      * @return
      */
     public int getVueArbo_x() {
         return vueArbo_x;
     }
+
     /**
      * Retourne la coordonnée y de la vue arborescence
+     *
      * @return
      */
     public int getVueArbo_y() {
         return vueArbo_y;
     }
+
     /**
      * Retourne la coordonnée x de la vue récente
+     *
      * @return
      */
     public int getVueRecent_x() {
         return vueRecent_x;
     }
+
     /**
      * Retourne la coordonnée y de la vue récente
+     *
      * @return
      */
     public int getVueRecent_y() {
         return vueRecent_y;
     }
+
     /**
      * Retourne le style de la vue récente
+     *
      * @return
      */
     public String getVueRecent_style() {
         return vueRecent_style;
     }
+
     /**
      * Retourne la visibilité de la vue récente
+     *
      * @return
      */
     public boolean getVueRecentVisibility() {
@@ -531,41 +561,52 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la coordonnée x de la vue diagramme
+     *
      * @return
      */
     public int getVueDiagramme_x() {
         return vueDiagramme_x;
     }
+
     /**
      * Retourne la coordonnée y de la vue diagramme
+     *
      * @return
      */
     public int getVueDiagramme_y() {
         return vueDiagramme_y;
     }
+
     /**
      * Retourne la coordonnée x du bouton de la vue diagramme
+     *
      * @return
      */
     public int getVueDiagramme_bouton_x() {
         return vueDiagramme_bouton_x;
     }
+
     /**
      * Retourne la coordonnée y du bouton de la vue diagramme
+     *
      * @return
      */
     public int getVueDiagramme_bouton_y() {
         return vueDiagramme_bouton_y;
     }
+
     /**
      * Retourne le style du bouton de la vue diagramme
+     *
      * @return
      */
     public String getVueDiagramme_bouton_style() {
         return vueDiagramme_bouton_style;
     }
+
     /**
      * Retourne la visibilité du bouton de la vue diagramme
+     *
      * @return
      */
     public boolean getVueDiagramme_bouton_visibility() {
@@ -574,6 +615,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la coordonnée x de la partie gauche
+     *
      * @return
      */
     public int getPartieGaucheX() {
@@ -582,6 +624,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la coordonnée y de la partie gauche
+     *
      * @return
      */
     public int getPartieGaucheY() {
@@ -594,6 +637,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la liste MenuBar
+     *
      * @return
      */
     public ArrayList<String> getMenuBar() {
@@ -606,6 +650,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne les items du menu
+     *
      * @param index
      * @return
      */
@@ -627,6 +672,7 @@ public class ModelUML implements Sujet {
         if (!appFolder.exists()) {  // Si le dossier n'existe pas
             createADGfolder();
         }
+        this.ADGFolfer = appFolder.getAbsolutePath();
         this.folderPath = appFolder.getAbsolutePath();
         this.folder = new File(appFolder.getAbsolutePath());
     }
@@ -639,6 +685,7 @@ public class ModelUML implements Sujet {
             }
         }
     }
+
     /**
      * Crée le dossier ADGProjects dans le répertoire utilisateur.
      */
@@ -679,6 +726,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Ajoute un dossier récent à la liste des dossiers récents.
+     *
      * @param folderPath
      */
     private static void addRecentFolder(String folderPath) {
@@ -700,6 +748,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Récupère la liste des dossiers récents à partir du fichier JSON.
+     *
      * @return
      */
     public static ArrayList<String> getRecentFolders() {
@@ -729,6 +778,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Sauvegarde la liste des dossiers récents dans le fichier JSON.
+     *
      * @param folders
      */
     private static void saveRecentFolders(List<String> folders) {
@@ -842,6 +892,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Trouve une place pour une classe
+     *
      * @param classe
      */
     public void trouverPlacePourClassess(Classe classe) {
@@ -856,7 +907,7 @@ public class ModelUML implements Sujet {
 
         // Définir la largeur et la hauteur maximales du pane
         int maxWidth = (int) vueDiagramme.getWidth();
-        int maxHeight =(int) vueDiagramme.getHeight();
+        int maxHeight = (int) vueDiagramme.getHeight();
 
         boolean placeTrouvee = false;
 
@@ -885,7 +936,7 @@ public class ModelUML implements Sujet {
 
         // Si aucune place n'a été trouvée, placer la classe à un endroit par défaut
         if (!placeTrouvee) {
-            classe.setCoords(0,0);
+            classe.setCoords(0, 0);
             System.err.println("Aucun emplacement libre trouvé. Classe " + classe.getClassName() + " placée en dernier endroit possible.");
         }
     }
@@ -914,6 +965,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Récupère les coordonnées d'une flèche
+     *
      * @param fleche
      * @return
      */
@@ -946,11 +998,13 @@ public class ModelUML implements Sujet {
 
     /**
      * Recupère l'état du click droit
+     *
      * @return
      */
     public boolean getEtat() {
         return this.etatClickDroit;
     }
+
     /**
      * Recupère l'état du click droit sur la classe
      */
@@ -1093,6 +1147,7 @@ public class ModelUML implements Sujet {
         System.out.println("masquer les dépendances");
         notifierObservateurs();
     }
+
     /**
      * Masque les dépandances
      */
@@ -1157,5 +1212,50 @@ public class ModelUML implements Sujet {
 
     public void setControlleurClickDroit(ControllerClickDroitClasse controllerClickDroitClasse) {
         this.controllerClickDroit = controllerClickDroitClasse;
+    }
+
+    /**
+     * Ouvre la page d'aide dans le navigateur par défaut.
+     * Si le fichier d'aide n'est pas trouvé, affiche un message d'erreur.
+     * @param choix le choix de l'aide à ouvrir.
+     *              0: web 1: wiki
+     */
+    public void ouvrirPageAide(int choix) {
+        try {
+            // Localisation du fichier aide.html
+            URI chemin = null;
+            boolean BonChoix = true;
+            switch (choix) {
+                case 0:
+                    String path = ADGFolfer + FileSystems.getDefault().getSeparator() + HELP_FILE;
+                    File aideFile = new File(path); // Ajustez le chemin si nécessaire
+
+                    // Vérifier si le fichier existe
+                    if (!aideFile.exists()) {
+                        System.err.println("Fichier d'aide introuvable : " + chemin);
+                        return;
+                    }
+                    chemin = aideFile.toURI();
+                    break;
+                case 1:
+                    chemin = new URI("https://github.com/Valentxn7/adg_project/wiki");
+                    break;
+                default:
+                    BonChoix = false;
+                    break;
+            }
+
+            System.out.println(chemin);
+            if (BonChoix) {
+                // Ouvrir dans le navigateur par défaut
+                Desktop desktop = Desktop.getDesktop();
+                desktop.browse(chemin);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

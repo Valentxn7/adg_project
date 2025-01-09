@@ -121,6 +121,12 @@ public class MainUML extends Application {
 
 
         Menu helpMenu = new Menu("Aide");
+        MenuItem aideEnLigne = new MenuItem("Aide en ligne");
+        MenuItem aideSurWiki = new MenuItem("Aide sur le wiki");
+        helpMenu.getItems().addAll(aideEnLigne, aideSurWiki);
+        aideEnLigne.setOnAction(new ControllerAide(modelUML));
+        aideSurWiki.setOnAction(new ControllerAide(modelUML));
+
         menuBar.getMenus().addAll(fileMenu, viewMenu, helpMenu);
 
         nouveau.setOnAction(new ControllerCreateProject(modelUML));
