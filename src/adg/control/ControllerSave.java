@@ -25,8 +25,7 @@ public class ControllerSave implements EventHandler<ActionEvent> {
     public void handle(ActionEvent event) {
         String path = modelUML.getFolderPath();
 
-
-        Save.save(modelUML.getClasses(), path);
+        modelUML.sauvegarderProjet();
 
         System.out.println("Enregistrer vers: " + path);
     }

@@ -19,11 +19,30 @@
 - **Avancement** : ✅ Complétée
 
 
+### Fonctionnalité 2 : Export des diagrammes en squelette Java et bouton quitter
+- **Responsable** : Thomas Fuchs
+- **Description** :
+  -ajout de la possibilité d'exporter le squelette Java du diagramme
+  -ajout d'un bouton quitter 
+- **Avancement** : ✅ Complétée
+
+### Fonctionnalité 3 : Refactoring de la partie graphique des flèches
+- **Responsable** : Gros Geoffrey
+- **Description** :
+  - Ajout de la Classe VuePointe avec PointePleine et PointeCreuse
+  - Refonte du code de VueFleche VuePointe
+- **Avancement** : ✅ Complétée
+### Fonctionnalité 4 : Correction des bugs liée à l'affichage de la classe
+- **Responsable** : Gros Geoffrey
+- **Description** :
+  - Modification de la classe Classe afin d'améliorer le texte de l'affichage
+  - Modification de la classe VueClasse afin d'améliorer le texte de l'affichage
+- **Avancement** : ✅ Complétée
 ## Conclusion
 
 - Plan pour l'itération suivante :
 
-
+  
 ## Éléments dont nous sommes fiers :
 
 **Ryan** :
@@ -32,4 +51,4 @@
 
 **Zacharie**:
 
-**Geoffrey** : 
+**Geoffrey** : L'affichage de la classe fonctionne enfin parfaitement. Les Types sont claires et les flèches sont bien placées.

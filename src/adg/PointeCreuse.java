@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 
 public class PointeCreuse extends VuePointe {
     public PointeCreuse(VueFleche f) {
-        super(90, f);
+        super(90, f, 0);
         this.setFill(Color.AQUA);
         this.getPoints().addAll(new Double[]{
                 -1.0, -10.0, // Point gauche bas
