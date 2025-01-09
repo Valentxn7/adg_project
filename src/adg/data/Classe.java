@@ -107,7 +107,7 @@ public class Classe {
         StringBuilder java = new StringBuilder();
 
 
-        if (this.interfaces.isEmpty()) {
+        if (!this.isInterface) {
             java.append("public class ").append(this.class_name);
         } else {
             java.append("public interface ").append(this.class_name);
@@ -117,9 +117,11 @@ public class Classe {
 
         List<String[]> fields = this.fields;
         for (String[] field : fields) {
-            java.append("    ").append(field[Analyser.FIELD_MODIFIER]).append(" ")
-                    .append(field[Analyser.FIELD_TYPE]).append(" ")
-                    .append(field[Analyser.FIELD_NAME]).append(";\n");
+            if (field.length > Analyser.FIELD_NAME) {
+                java.append("    ").append(field[Analyser.FIELD_MODIFIER]).append(" ")
+                        .append(field[Analyser.FIELD_TYPE]).append(" ")
+                        .append(field[Analyser.FIELD_NAME]).append(";\n");
+            }
         }
 
         java.append("\n");
@@ -127,13 +129,23 @@ public class Classe {
 
         List<Object[]> constructors = this.constructors;
         for (Object[] constructor : constructors) {
-            java.append("    ").append(constructor[Analyser.CONSTRUCTOR_MODIFIER]).append(" ")
-                    .append(this.class_name).append("(");
+            if (constructor.length > Analyser.CONSTRUCTOR_PARAMETERS_NAME) {
+                java.append("    ").append(constructor[Analyser.CONSTRUCTOR_MODIFIER]).append(" ")
+                        .append(this.class_name).append("(");
 
-            List<String> parameters = (List<String>) constructor[Analyser.CONSTRUCTOR_PARAMETERS_TYPE];
-            java.append(String.join(", ", parameters)).append(") {\n");
-            java.append("        // TODO: constructor implementation\n");
-            java.append("    }\n");
+                List<String> parameters = (List<String>) constructor[Analyser.CONSTRUCTOR_PARAMETERS_TYPE];
+                List<String> parameters_name = (List<String>) constructor[Analyser.CONSTRUCTOR_PARAMETERS_NAME];
+
+                for (int i = 0; i < parameters.size(); i++) {
+                    java.append(parameters.get(i)).append(" ").append(parameters_name.get(i));
+                    if (i < parameters.size() - 1) {
+                        java.append(", ");
+                    }
+                }
+                java.append(") {\n");
+                java.append("        // TODO: constructor implementation\n");
+                java.append("    }\n");
+            }
         }
 
         java.append("\n");
@@ -141,14 +153,23 @@ public class Classe {
 
         List<Object[]> methods = this.methods;
         for (Object[] method : methods) {
-            java.append("    ").append(method[Analyser.METHOD_MODIFIER]).append(" ")
-                    .append(method[Analyser.METHOD_RETURN_TYPE]).append(" ")
-                    .append(method[Analyser.METHOD_NAME]).append("(");
+            if (method.length > Analyser.METHOD_PARAMETERS_NAME) {
+                java.append("    ").append(method[Analyser.METHOD_MODIFIER]).append(" ")
+                        .append(method[Analyser.METHOD_RETURN_TYPE]).append(" ")
+                        .append(method[Analyser.METHOD_NAME]).append("(");
 
-            List<String> parameters = (List<String>) method[Analyser.METHOD_PARAMETERS_TYPE];
-            java.append(String.join(", ", parameters)).append(") {\n");
-            java.append("        // TODO: method implementation\n");
-            java.append("    }\n");
+                List<String> parameters = (List<String>) method[Analyser.METHOD_PARAMETERS_TYPE];
+                List<String> parameters_name = (List<String>) method[Analyser.METHOD_PARAMETERS_NAME];
+                for (int i = 0; i < parameters.size(); i++) {
+                    java.append(parameters.get(i)).append(" ").append(parameters_name.get(i));
+                    if (i < parameters.size() - 1) {
+                        java.append(", ");
+                    }
+                }
+                java.append(") {\n");
+                java.append("        // TODO: method implementation\n");
+                java.append("    }\n");
+            }
         }
 
         java.append("}\n");
