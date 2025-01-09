@@ -53,6 +53,7 @@ public class ModelUML implements Sujet {
     private File folder = null;
     private static final String DATA_FILE = ".data.json"; // Nom du fichier des données
     private static final String HELP_FILE = "aide.html"; // Nom du fichier des données
+    private static final String DIRECTORY_SEPARATOR = FileSystems.getDefault().getSeparator();
     private static final int MAX_RECENT_FOLDERS = 10;     // Limite du nombre de dossiers récents
 
     List<String> recentFolders;
@@ -175,6 +176,16 @@ public class ModelUML implements Sujet {
         this.ajouterFlecheImp(classe, vue);
         this.ajouterFlecheAttri(classe, vue);
         this.ajoutFlecheCorrespondant();
+    }
+
+    public static String getFileExtension(File file) {
+        String fileName = file.getName();
+        int indexpoint = fileName.lastIndexOf('.');
+
+        if (indexpoint > 0 && indexpoint < fileName.length() - 1) {
+            return fileName.substring(indexpoint + 1); // l'extension
+        }
+        return ""; // Pas d'extension
     }
 
 
@@ -961,7 +972,7 @@ public class ModelUML implements Sujet {
     }
 
     public String getADGFolferPath() {
-        return ADGFolfer + FileSystems.getDefault().getSeparator();
+        return ADGFolfer + DIRECTORY_SEPARATOR;
     }
 
 
@@ -1421,7 +1432,7 @@ public class ModelUML implements Sujet {
     }
 
     public void deleteSave(){
-        String filePath = folderPath + windowsTitle + ".adg"; // Remplace par le chemin de ton fichier
+        String filePath = folderPath + DIRECTORY_SEPARATOR + windowsTitle; // Remplace par le chemin de ton fichier
         System.out.println("Suppression du fichier : " + filePath + "...");
 
         File file = new File(filePath);
