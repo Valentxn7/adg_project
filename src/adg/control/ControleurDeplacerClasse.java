@@ -55,7 +55,7 @@ public class ControleurDeplacerClasse implements EventHandler<MouseEvent> {
                 y = partieDroiteMaxY - classe.getHeight();
             }
 
-            model.changerPositionClasse(classe, x, y);
+            model.changerPositionClasse(classe.getClasse(), x, y);
 
         } else if (event.getEventType() == MouseEvent.MOUSE_PRESSED) { // Quand on appuie sur la souris
             decalageSouris[0] = event.getSceneX() - classe.getLayoutX(); //On récupère les coordonnées de la souris

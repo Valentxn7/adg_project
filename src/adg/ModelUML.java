@@ -97,8 +97,8 @@ public class ModelUML implements Sujet {
     private boolean etatClickDroit = false;
     private boolean etatClickDroitClasse = false;
     private int[] coordonneesClickDroit = new int[2];
-    private VueDiagramme partieDroite;
-    private ControllerClickDroitClasse controlleurClickDroit;
+    private ControllerClickDroitClasse controllerClickDroit;
+    private Classe classeSelectionne;
 
     /**
      * Constructeur par défaut. Initialise les listes d'observateurs,
@@ -129,11 +129,14 @@ public class ModelUML implements Sujet {
     public void ajouterClasse(Classe classe) {
         if (classes != null)
             classes.add(classe);
+        this.trouverPlacePourClassess(classe);
         VueClasse vue = new VueClasse(classe);
+        vue.setOnMouseClicked(controllerClickDroit);
         observateurs.add(vue);
+
         vueDiagramme.getChildren().add(vue);
         vues.put(classe.getClassName(), vue);
-        this.trouverPlacePourClassess(classe);
+
         vue.addEventHandler(MouseEvent.MOUSE_PRESSED, controleurDeplacerClasse);
         vue.addEventHandler(MouseEvent.MOUSE_DRAGGED, controleurDeplacerClasse);
         this.ajouterFlecheExt(classe, vue);
@@ -143,6 +146,17 @@ public class ModelUML implements Sujet {
     }
 
 
+
+    private boolean verifExistanceClasse(Classe classe) {
+        boolean res = false;
+        for (Classe c : classes) {
+            if (c.getClassName().equals(classe.getClassName())) {
+                res = true;
+                break;
+            }
+        }
+        return res;
+    }
 
     /**
      * creez une flèche extends
@@ -837,8 +851,6 @@ public class ModelUML implements Sujet {
         int maxWidth = (int) vueDiagramme.getWidth();
         int maxHeight =(int) vueDiagramme.getHeight();
 
-        System.out.println("maxWidth : " + maxWidth);
-        System.out.println("maxHeight : " + maxHeight);
         boolean placeTrouvee = false;
 
         // Boucle pour trouver un emplacement libre
@@ -848,7 +860,6 @@ public class ModelUML implements Sujet {
                 if (estLibre(x, y)) {
                     // Si c'est libre, on place la classe ici et on met à jour ses coordonnées
                     classe.setCoords(x, y);
-                    System.err.println("Classe " + classe.getClassName() + " placée en (" + x + ", " + y + ")");
                     placeTrouvee = true;
                     break; // Sortir de la boucle interne si la place a été trouvée
                 }
@@ -917,17 +928,11 @@ public class ModelUML implements Sujet {
         return res;
     }
 
-    /**
-     * Change la position d'une classe
-     * @param classe
-     * @param x
-     * @param y
-     */
-    public void changerPositionClasse(VueClasse classe, Double x, Double y) {
+    public void changerPositionClasse(Classe classe, Double x, Double y) {
         int[] coordonnees = new int[2];
         coordonnees[0] = x.intValue();
         coordonnees[1] = y.intValue();
-        coordonneesClasse.put(classe, coordonnees);
+        classe.setCoords(coordonnees[0], coordonnees[1]);
         notifierObservateurs();
     }
 
@@ -954,19 +959,17 @@ public class ModelUML implements Sujet {
      */
     public void afficherClickDroit(int x, int y) {
         etatClickDroit = true;
+        etatClickDroitClasse = false;
         coordonneesClickDroit[0] = x;
         coordonneesClickDroit[1] = y;
-        System.out.println("click droit : " + x + " " + y);
-        System.out.println("etat click droit : " + etatClickDroit);
         notifierObservateurs();
     }
 
     public void afficherClickDroitClasse(int x, int y) {
         etatClickDroitClasse = true;
+        etatClickDroit = false;
         coordonneesClickDroit[0] = x;
         coordonneesClickDroit[1] = y;
-        System.err.println("click droit Classe : " + x + " " + y);
-        System.err.println("etat click droit Classe : " + etatClickDroitClasse);
         notifierObservateurs();
     }
 
@@ -979,13 +982,9 @@ public class ModelUML implements Sujet {
         notifierObservateurs();
     }
 
-    /**
-     * Getter la partie droite de l'application
-     *
-     * @return
-     */
-    public VueDiagramme getPaneCLickDroit() {
-        return partieDroite;
+    public void masquerClickDroitClass() {
+        etatClickDroitClasse = false;
+        notifierObservateurs();
     }
 
     /**
@@ -994,7 +993,7 @@ public class ModelUML implements Sujet {
      * @param pane
      */
     public void setPaneClickDroit(VueDiagramme pane) {
-        this.partieDroite = pane;
+        this.vueDiagramme = pane;
     }
 
     /**
@@ -1021,6 +1020,7 @@ public class ModelUML implements Sujet {
     public void masquerToutesDependances() {
         //TODO
         System.out.println("masquer toutes les dépendances");
+        notifierObservateurs();
     }
 
     /**
@@ -1029,6 +1029,7 @@ public class ModelUML implements Sujet {
     public void masquerToutHeritages() {
         //TODO
         System.out.println("masquer tous les héritages");
+        notifierObservateurs();
     }
 
     /**
@@ -1037,6 +1038,7 @@ public class ModelUML implements Sujet {
     public void masquerToutAttributs() {
         //TODO
         System.out.println("masquer tous les attributs");
+        notifierObservateurs();
     }
 
     /**
@@ -1072,7 +1074,7 @@ public class ModelUML implements Sujet {
      */
     public void afficherToutesMethodes() {
         //TODO
-        //System.out.println("afficher toutes les méthodes");
+        System.out.println("afficher toutes les méthodes");
         notifierObservateurs();
     }
 
@@ -1081,7 +1083,7 @@ public class ModelUML implements Sujet {
      */
     public void masquerDependances() {
         //TODO
-        //System.out.println("masquer les dépendances");
+        System.out.println("masquer les dépendances");
         notifierObservateurs();
     }
     /**
@@ -1089,7 +1091,7 @@ public class ModelUML implements Sujet {
      */
     public void masquerHeritages() {
         //TODO
-        //System.out.println("masquer les héritages");
+        System.out.println("masquer les héritages");
         notifierObservateurs();
     }
 
@@ -1098,7 +1100,7 @@ public class ModelUML implements Sujet {
      */
     public void masquerAttributs() {
         //TODO
-        //System.out.println("masquer les attributs");
+        System.out.println("masquer les attributs");
         notifierObservateurs();
     }
 
@@ -1107,7 +1109,7 @@ public class ModelUML implements Sujet {
      */
     public void afficherDependances() {
         //TODO
-        //System.out.println("afficher les dépendances");
+        System.out.println("afficher les dépendances");
         notifierObservateurs();
     }
 
@@ -1116,7 +1118,7 @@ public class ModelUML implements Sujet {
      */
     public void afficherHeritages() {
         //TODO
-        //System.out.println("afficher les héritages");
+        System.out.println("afficher les héritages");
         notifierObservateurs();
     }
 
@@ -1125,7 +1127,7 @@ public class ModelUML implements Sujet {
      */
     public void afficherAttributs() {
         //TODO
-        //System.out.println("afficher les attributs");
+        System.out.println("afficher les attributs");
         notifierObservateurs();
     }
 
@@ -1134,11 +1136,19 @@ public class ModelUML implements Sujet {
      */
     public void afficherMethodes() {
         //TODO
-        //System.out.println("afficher les méthodes");
+        System.out.println("afficher les méthodes");
         notifierObservateurs();
     }
 
-    public void setControlleurClickDroit(ControllerClickDroitClasse controlleurClickDroit) {
-        this.controlleurClickDroit = controlleurClickDroit;
+    public void setControllerClickDroit(ControllerClickDroitClasse controllerClickDroit) {
+        this.controllerClickDroit = controllerClickDroit;
+    }
+
+    public void setClasseSelectionne(Classe c) {
+        classeSelectionne = c;
+    }
+
+    public void setControlleurClickDroit(ControllerClickDroitClasse controllerClickDroitClasse) {
+        this.controllerClickDroit = controllerClickDroitClasse;
     }
 }
