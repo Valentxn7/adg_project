@@ -7,7 +7,7 @@
 - **Nom du projet** : ADG Project (Automatic Diagram Generator)
 - **Durée de l'itération** : 8 heures
 - **Membres** : HEUERTZ KNORST KORBAN GROS FUCHS
-- **Objectif principal** : L'objectif principal est globalement de rendre le code plus lisible et de corriger les bugs restants suite au gros merge qui a eu lieu.
+- **Objectif principal** : Après le gros merge, je dois faire fonctionner les flèches, ajouter des éléments graphiques, assurer le bon fonctionnement de la sauvegarde du projet et refactoriser les erreurs de conception.
 
 ---
 ## Fonctionnalités implémentées
@@ -41,6 +41,9 @@
   - Ajout de la possibilité d'enregistrer un projet dans un .adg.
   - Ajout de la possibilité de charger un projet depuis un .adg (permet de garder les positions des classes).
 - **Avancement** : ✅ Complétée
+
+
+## Éléments dont nous sommes fiers :
 
 **Ryan** :
 J'ai commencé à résoudre un problème de conception dans le programme : les coordonnées des classes étaient stockées dans le modèle, alors qu'elles devraient l'être directement dans l'objet Classe. Cette mauvaise répartition des responsabilités causait des problèmes, notamment lors de l'utilisation du clic droit. J'ai donc entrepris un refactoring pour corriger et améliorer cet aspect. Cependant, le même problème persiste avec les flèches, mais je n'aurai pas le temps de le traiter dans cette itération.
