@@ -204,7 +204,7 @@ public class ModelUML implements Sujet {
         Classe classeExt = containsClasse(s);
         if (classeExt != null) {
             VueClasse vueClasseExt = vues.get(classeExt.getClassName());
-            if (!this.verifExistanceFleche(vueClasse, vues.get(classeExt.getClassName()))) {
+            if (!this.verifExistanceFleche(vueClasse, vues.get(classeExt.getClassName()), Fleche.HERITAGE)) {
                 Fleche f = new Fleche(classe, classeExt, Fleche.HERITAGE);
                 f.setPos();
                 ajouterFleches(f);
@@ -220,7 +220,16 @@ public class ModelUML implements Sujet {
             }
         }
     }
-
+    private boolean rechercherFlecheInverse(VueClasse c1, VueClasse c2) {
+        boolean res = false;
+        for (VueFleche f : coordonneesFleche.keySet()) {
+            VueClasse[] classes = coordonneesFleche.get(f);
+            if (classes[0] == c2 && classes[1] == c1) {
+               res = true;
+            }
+        }
+        return res;
+    }
     /**
      * Ajoute une flèche d'implémentation à la vue diagramme
      *
@@ -233,7 +242,14 @@ public class ModelUML implements Sujet {
             Classe classeImp = containsClasse(i);
             if (classeImp != null) {
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
-                if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
+                if (!this.verifExistanceFleche(vueClasse, vueClasseImp, Fleche.HERITAGE)) {
+                    int d =0;
+                    if(rechercherFlecheInverse(vueClasse,vueClasseImp)){
+                        d = 50;
+                    }
+                    if(rechercherFlecheInverse(vueClasseImp,vueClasse)){
+                        d = -50;
+                    }
                     Fleche f = new Fleche(classe, classeImp, Fleche.HERITAGE);
                     f.setPos();
                     ajouterFleches(f);
@@ -260,10 +276,12 @@ public class ModelUML implements Sujet {
         List<String[]> s = classe.getFields();
         for (String[] i : s) {
             String type = i[Analyser.FIELD_TYPE];
+            System.err.println("voici le type  : " + type);
             if (type.contains("<")) {
                 // Trouver les indices de < et >
                 int start = type.indexOf('<');
                 int end = type.indexOf('>');
+
 
                 // Vérifier que < et > existent
                 if (start != -1 && end != -1 && start < end) {
@@ -276,7 +294,16 @@ public class ModelUML implements Sujet {
 
             if (classeImp != null) {
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
-                if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
+                if (!this.verifExistanceFleche(vueClasse, vueClasseImp, Fleche.ASSOCIATION)) {
+
+                    int d =0;
+                    if(rechercherFlecheInverse(vueClasse,vueClasseImp)){
+                        d = 50;
+                    }
+                    if(rechercherFlecheInverse(vueClasseImp,vueClasse)){
+                        d = -50;
+                    }
+                    System.err.println("Fleche attribut : " + d);
                     Fleche f = new Fleche(classe, classeImp, Fleche.ASSOCIATION);
                     f.setPos();
                     ajouterFleches(f);
@@ -319,12 +346,13 @@ public class ModelUML implements Sujet {
      * @param vueClasse2
      * @return
      */
-    private boolean verifExistanceFleche(VueClasse vueClasse1, VueClasse vueClasse2) {
+    private boolean verifExistanceFleche(VueClasse vueClasse1, VueClasse vueClasse2, String type) {
         boolean res = false;
+        System.err.println(coordonneesFleche.size());
         if (vueClasse1 != null && vueClasse2 != null) {
             for (VueFleche f : coordonneesFleche.keySet()) {
                 VueClasse[] vues = coordonneesFleche.get(f);
-                if (vues[0] == vueClasse1 && vues[1] == vueClasse2) {
+                if (vues[0] == vueClasse1 && vues[1] == vueClasse2 && type.equals(f.getFleche().getType().equals(type))) {
                     res = true;
                     break;
                 }
@@ -343,10 +371,14 @@ public class ModelUML implements Sujet {
     private Classe containsClasse(String s) {
         Classe res = null;
         for (Classe classe : classes) {
-            if (classe.getClassName().equals(s)) {
+            System.err.println("classe : " + classe.getClassNameWithoutPackages());
+            System.err.println("classe : " + classe.getClassName());
+            System.err.println("s : " + s);
+            if (classe.getClassNameWithoutPackages().equals(s) || classe.getClassName().equals(s)) {
                 res = classe;
             }
         }
+        System.err.println("res : " + res!=null);
         return res;
     }
 
@@ -1472,6 +1504,33 @@ public class ModelUML implements Sujet {
         classeSelectionne.setShowConstructors(true);
         notifierObservateurs();
     }
+
+
+    public void setFont(String font, Stage stage) {
+        stage.getScene().getRoot().setStyle("-fx-font-family: '" + font + "';");
+        System.out.println("Font changed to " + font);
+    }
+
+    public void setNightMode(boolean selected, Stage stage) {
+        String rootStyle;
+        String menuStyle;
+
+        if (selected) {
+            rootStyle = "-fx-base: #333333; -fx-control-inner-background: #333333; -fx-background: #333333; -fx-text-fill: white;";
+            menuStyle = "-fx-background-color: #444444; -fx-text-fill: white;";
+        } else {
+            rootStyle = "-fx-base: white; -fx-control-inner-background: white; -fx-background: white; -fx-text-fill: black;";
+            menuStyle = "-fx-background-color: white; -fx-text-fill: black;";
+        }
+
+        stage.getScene().getRoot().setStyle(rootStyle);
+        stage.getScene().lookup(".menuBar").setStyle(menuStyle);
+        stage.getScene().lookup(".partieDroite").setStyle(menuStyle);
+    }
+
+
+
+
 
     private void creerFichierAideEnLigne() {
         String path = getADGFolferPath();
