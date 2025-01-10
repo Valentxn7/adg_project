@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import adg.vues.*;
 
@@ -36,6 +37,8 @@ public class MainUML extends Application {
         VuePartieGauche partieGauche = new VuePartieGauche(0);  // TreeView et MenuBar
         modelUML.enregistrerObservateur(partieGauche);
         VueDiagramme partieDroite = new VueDiagramme();  // bouton add projet
+        partieDroite.setId("partieDroite");
+
         modelUML.setVueDiagramme(partieDroite);
         modelUML.enregistrerObservateur(partieDroite);
         ControllerDragDrop controllerDragDrop = new ControllerDragDrop(modelUML);
@@ -51,6 +54,7 @@ public class MainUML extends Application {
         /*     MENU       **/
 
         VueMenu menuBar = new VueMenu();  // barre menu contenante
+        menuBar.setId("menuBar");
         modelUML.enregistrerObservateur(menuBar);
 
         Menu fileMenu = new Menu("Fichier");  // contenue
@@ -110,9 +114,10 @@ public class MainUML extends Application {
         Label comboBoxLabel = new Label("Police :");
         comboBoxLabel.setStyle("-fx-text-fill: black;"); // Définit la couleur du texte
         ComboBox<String> comboBox = new ComboBox<>();
-        comboBox.getItems().addAll("Lexend", "Sans Serif", "...");
-        comboBox.setValue("Lexend");
+        comboBox.getItems().addAll(Font.getFamilies());
+        comboBox.setValue("Sans Serif");
         comboBoxLabel.setLabelFor(comboBox);
+        comboBox.setStyle("-fx-font-family: 'Sans Serif';");
 
 
         HBox labeledComboBox = new HBox(10, comboBoxLabel, comboBox); // Espacement de 10px
@@ -147,7 +152,11 @@ public class MainUML extends Application {
         enregistrer.setOnAction(new ControllerSave(modelUML, stage));
         supprimer.setOnAction(new ControllerDeleteSave(modelUML));
 
+        //police
+        comboBox.setOnAction(new ControllerPolice(modelUML, stage));
 
+        //nuit
+        modeNuit.setOnAction(new ControllerNightMode(modelUML, stage));
 
         accueil.setOnAction(new ControllerAccueil(modelUML));
         quitter.setOnAction(new ControleurQuitter(modelUML));
@@ -169,7 +178,7 @@ public class MainUML extends Application {
         rootRecent.setValue("Projets récents:");
         rootRecent.setExpanded(true);
 
-        VueRecent vueRecent = new VueRecent();  // la TreeView affiche les TreeItem
+        VueRecent vueRecent = new VueRecent(new ControllerDoubleClicTreeRec(modelUML));  // la TreeView affiche les TreeItem
         vueRecent.setRoot(rootRecent);
         modelUML.enregistrerObservateur(vueRecent);
 
@@ -236,7 +245,7 @@ public class MainUML extends Application {
         titre.getStyleClass().add("label-titre");
         addProjectButton.getStyleClass().add("addButton");
         menuBar.getStyleClass().add("menuBar");
-        partieDroite.getStyleClass().add("menuBar");
+        partieDroite.getStyleClass().add("partieDroite");
         vueArborescence.getStyleClass().add("treeView");
         vueRecent.getStyleClass().add("treeView");
         fin.getStyleClass().add("label-fin");
@@ -304,7 +313,6 @@ public class MainUML extends Application {
             String basePath = "ressource/";
 
             File file = new File(basePath + ressource + ".png");
-            System.out.println("Chemin absolu testé : " + file.getAbsolutePath());
 
             if (!file.exists()) {
                 System.err.println("Fichier non trouvé : " + file.getAbsolutePath());

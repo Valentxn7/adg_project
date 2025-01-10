@@ -1,14 +1,10 @@
-package adg;
+package adg.vues;
 
+import adg.ModelUML;
+import adg.Observateur;
+import adg.Sujet;
 import adg.data.Fleche;
-import adg.vues.VueClasse;
-import javafx.geometry.Point2D;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
-
-import java.awt.*;
 
 public abstract class VueFleche extends Line implements Observateur {
     private Fleche fleche;
@@ -29,6 +25,7 @@ public abstract class VueFleche extends Line implements Observateur {
 
 
         // Mettre à jour la ligne et la tête de flèche
+        System.err.println("Actualisation de la flèche");
         System.out.println("Visibilité : " +fleche.getVisible() );
         if(fleche.getVisible()){
             this.setVisible(true);
@@ -36,6 +33,7 @@ public abstract class VueFleche extends Line implements Observateur {
             this.setStartY(fleche.getStartIntersection().getY());
             this.setEndX(fleche.getEndIntersection().getX());
             this.setEndY(fleche.getEndIntersection().getY());
+            this.setLine();
         } else{
             this.setVisible(false);
         }
@@ -51,5 +49,4 @@ public abstract class VueFleche extends Line implements Observateur {
     public Fleche getFleche(){
         return fleche;
     }
-
 }

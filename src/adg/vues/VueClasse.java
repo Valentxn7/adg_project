@@ -134,7 +134,7 @@ public class VueClasse extends VBox implements Observateur {
      */
     private HBox creerConstructeur(String[] constructor) {
         String params = constructor[Analyser.CONSTRUCTOR_PARAMETERS_TYPE];
-        return creerHBox(getVisibilityCircle(constructor[Analyser.CONSTRUCTOR_MODIFIER]), new Label(classe.getClassName() + "(" + String.join(", ", params) + ")"));
+        return creerHBox(getVisibilityCircle(constructor[Analyser.CONSTRUCTOR_MODIFIER]), new Label(classe.getClassNameWithoutPackages()+ "(" + String.join(", ", params) + ")"));
     }
 
     /**

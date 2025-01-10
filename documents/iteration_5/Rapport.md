@@ -37,16 +37,37 @@
   - Ajout de la Classe VuePointe avec PointePleine et PointeCreuse
   - Refonte du code de VueFleche VuePointe
 - **Avancement** : ✅ Complétée
+- 
 ### Fonctionnalité 4 : Correction des bugs liée à l'affichage de la classe
 - **Responsable** : Gros Geoffrey
 - **Description** :
   - Modification de la classe Classe afin d'améliorer le texte de l'affichage
   - Modification de la classe VueClasse afin d'améliorer le texte de l'affichage
 - **Avancement** : ✅ Complétée
+- 
+### Fonctionnalité 5 : Renforcement de l'écriture pour UML et ADG
+- **Responsable** : HEUERTZ Zacharie
+- **Description** :
+  - Modification de la classe Load et Model pour renforcer l'écriture et le chargement des projets
+- **Avancement** : ✅ Complétée
+
+### Fonctionnalité 6 : Mises à jour Analyser
+- **Responsable** : HEUERTZ Zacharie
+- **Description** :
+- Modification de la classe Analyser afin de récupérer les informations :
+  - Des noms des parametres (uniquement si .class compilés avec -parameters)
+  - Le type de la classe (interface ou classe)
+- **Avancement** : ✅ Complétée
+- 
+### Fonctionnalité 7 : Ajouts des icones et logo
+- **Responsable** : HEUERTZ Zacharie
+- **Description** :
+- Ajout des icones pour les parametres d'affichage (afficher / cacher)
+- **Avancement** : ✅ Complétée
 
 ## Conclusion
 
-- Plan pour l'itération suivante :
+Malgré de nombreuses fonctionnalités implémentées et un projet qui semble réussi, le groupe ressent un sentiment d'imcomplet dans le projet. Le code n'est pas aussi propre que l'on aurait voulu, et les problèmes de communication et de gestion du temps ont été un frein à l'avancement du projet. Cependant, le groupe est fier de ce qu'il a accompli et est plutôt satisfait du résultat final.
 
   
 ## Éléments dont nous sommes fiers :
@@ -56,5 +77,6 @@
 **Valentin** :
 
 **Zacharie**:
+Les fonctionnalités de l'itération 5 sont en bonne voie, les dernières fonctionnalités sont en cours de finalisation. Les derniers bugs sont en cours de correction.
 
 **Geoffrey** : L'affichage de la classe fonctionne enfin parfaitement. Les Types sont claires et les flèches sont bien placées.
