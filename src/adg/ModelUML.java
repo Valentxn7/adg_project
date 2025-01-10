@@ -93,6 +93,7 @@ public class ModelUML implements Sujet {
         put("Exporter en Java", false);
         put("Personnalisation", false);
         put("Accueil", false);
+        put("Quitter", false);
     }};
 
     private final ControleurDeplacerClasse controleurDeplacerClasse = new ControleurDeplacerClasse(this);
@@ -1550,8 +1551,6 @@ public class ModelUML implements Sujet {
 
 
 
-
-
     private void creerFichierAideEnLigne() {
         String path = getADGFolferPath();
         System.out.println("Création du fichier d'aide en ligne : " + path + HELP_FILE);
@@ -1743,6 +1742,10 @@ public class ModelUML implements Sujet {
                 """;
         ecrireFichier(html, path, HELP_FILE);
         ouvrirPageAide(0);
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 
 }
