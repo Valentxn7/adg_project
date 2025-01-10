@@ -72,6 +72,8 @@ public class ModelUML implements Sujet {
     private int vueRecent_y;
     private String vueRecent_style;
     private boolean vueRecent_visible;
+
+
     private Stage stage;
     private int vueDiagramme_x;
     private int vueDiagramme_y;
@@ -101,6 +103,7 @@ public class ModelUML implements Sujet {
         put("Exporter en Java", false);
         put("Personnalisation", false);
         put("Accueil", false);
+        put("Quitter", false);
     }};
 
     private final ControleurDeplacerClasse controleurDeplacerClasse = new ControleurDeplacerClasse(this);
@@ -1156,6 +1159,7 @@ public class ModelUML implements Sujet {
         return coordonneesClickDroit[1];
     }
 
+
     /**
      * Masque toutes les dépendances.
      */
@@ -1444,4 +1448,9 @@ public class ModelUML implements Sujet {
         }
         return ""; // Pas d'extension
     }
+
+    public Stage getStage() {
+        return stage;
+    }
+
 }
