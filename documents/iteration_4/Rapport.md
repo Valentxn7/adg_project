@@ -58,6 +58,17 @@
   - correction de bugs liés aux flèches.
 - **Avancement** : ✅ Complétée
 
+### Fonctionnalité 7 : Amélioration du code MVC
+- **Responsable** : Valentin Knorst
+- **Description** :
+  - Optimisation des fonctions et des traitements inutiles
+- **Avancement** : ✅ Complétée
+
+- ### Fonctionnalité 8 : Factorisation du code MVC
+- **Responsable** : Valentin Knorst
+- **Description** :
+  - Factorisation des fonctions en fonction servant à plusieurs utilité et donc la réduction de la taille du modele
+- **Avancement** : ✅ Complétée (mais se travail ce fait en continue)
 
 ## Conclusion
 
@@ -70,13 +81,16 @@
   - Continuer a corriger les coordonnées qui sont mal stoquées
   - Améliorer l'analyser pour récupérer les sous-types des classes
   - implémentation de la fonctionnalité squelette des classes 
+  - Finir les fonctionnalités attendue sur la partie graphique 
 
 ## Éléments dont nous sommes fiers :
 
 **Ryan** :
 J'ai commencé à résoudre un problème de conception dans le programme : les coordonnées des classes étaient stockées dans le modèle, alors qu'elles devraient l'être directement dans l'objet Classe. Cette mauvaise répartition des responsabilités causait des problèmes, notamment lors de l'utilisation du clic droit. J'ai donc entrepris un refactoring pour corriger et améliorer cet aspect. Cependant, le même problème persiste avec les flèches, mais je n'aurai pas le temps de le traiter dans cette itération.
 
-**Valentin** :
+**Valentin** : 
+Le modèle MVC prend une forme réellement appréciable et le code commence à bien se mélanger aux autres branches.
+Ce travail bien que très chronophage nous assure l'ensemble de nos fonctionnalités grâce à notre communication.
 
 **Zacharie**:
 Après de grosses phases de fix dans le model, j'ai pu implémenter les controllers pour l'exportation et le système de sauvegarde. Malgré quelques difficultés de conception, le système est désormais fonctionnel et permet d'enregistrer le projet sans passer par une simple sérialisation mais par un vrai fichier de sauvegarde.
