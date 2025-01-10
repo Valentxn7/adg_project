@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import adg.vues.*;
 
@@ -51,6 +52,7 @@ public class MainUML extends Application {
         /*     MENU       **/
 
         VueMenu menuBar = new VueMenu();  // barre menu contenante
+        menuBar.setId("menu-bar");
         modelUML.enregistrerObservateur(menuBar);
 
         Menu fileMenu = new Menu("Fichier");  // contenue
@@ -110,9 +112,10 @@ public class MainUML extends Application {
         Label comboBoxLabel = new Label("Police :");
         comboBoxLabel.setStyle("-fx-text-fill: black;"); // Définit la couleur du texte
         ComboBox<String> comboBox = new ComboBox<>();
-        comboBox.getItems().addAll("Lexend", "Sans Serif", "...");
-        comboBox.setValue("Lexend");
+        comboBox.getItems().addAll(Font.getFamilies());
+        comboBox.setValue("Sans Serif");
         comboBoxLabel.setLabelFor(comboBox);
+        comboBox.setStyle("-fx-font-family: 'Sans Serif';");
 
 
         HBox labeledComboBox = new HBox(10, comboBoxLabel, comboBox); // Espacement de 10px
@@ -147,7 +150,11 @@ public class MainUML extends Application {
         enregistrer.setOnAction(new ControllerSave(modelUML, stage));
         supprimer.setOnAction(new ControllerDeleteSave(modelUML));
 
+        //police
+        comboBox.setOnAction(new ControllerPolice(modelUML, stage));
 
+        //nuit
+        modeNuit.setOnAction(new ControllerNightMode(modelUML, stage));
 
         accueil.setOnAction(new ControllerAccueil(modelUML));
         quitter.setOnAction(new ControleurQuitter());
@@ -319,5 +326,26 @@ public class MainUML extends Application {
             System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
             return null;
         }
+    }
+
+    public static void setFont(String font, Stage stage) {
+        stage.getScene().getRoot().setStyle("-fx-font-family: '" + font + "';");
+        System.out.println("Font changed to " + font);
+    }
+
+    public static void setNightMode(boolean selected, Stage stage) {
+        String rootStyle;
+        String menuStyle;
+
+        if (selected) {
+            rootStyle = "-fx-base: #333333; -fx-control-inner-background: #333333; -fx-background: #333333; -fx-text-fill: white;";
+            menuStyle = "-fx-background-color: #444444; -fx-text-fill: white;";
+        } else {
+            rootStyle = "-fx-base: white; -fx-control-inner-background: white; -fx-background: white; -fx-text-fill: black;";
+            menuStyle = "-fx-background-color: white; -fx-text-fill: black;";
+        }
+
+        stage.getScene().getRoot().setStyle(rootStyle);
+        stage.getScene().lookup(".menu-bar").setStyle(menuStyle);
     }
 }
