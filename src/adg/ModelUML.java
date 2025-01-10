@@ -172,6 +172,14 @@ public class ModelUML implements Sujet {
         this.ajoutFlecheCorrespondant();
     }
 
+    public static String getFileExtensionByName(String fileName) {
+        int indexpoint = fileName.lastIndexOf('.');
+
+        if (indexpoint > 0 && indexpoint < fileName.length() - 1) {
+            return fileName.substring(indexpoint + 1); // l'extension
+        }
+        return ""; // Pas d'extension
+    }
 
 
     private boolean verifExistanceClasse(Classe classe) {
@@ -200,7 +208,7 @@ public class ModelUML implements Sujet {
                 Fleche f = new Fleche(classe, classeExt, Fleche.HERITAGE);
                 f.setPos();
                 ajouterFleches(f);
-                VueFlecheExt fleche = new VueFlecheExt(this,f);
+                VueFlecheExt fleche = new VueFlecheExt(this, f);
 
                 VuePointe pointe = new PointePleine(fleche);
                 fleche.toBack();
@@ -215,6 +223,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Ajoute une flèche d'implémentation à la vue diagramme
+     *
      * @param classe
      * @param vueClasse
      */
@@ -228,7 +237,7 @@ public class ModelUML implements Sujet {
                     Fleche f = new Fleche(classe, classeImp, Fleche.HERITAGE);
                     f.setPos();
                     ajouterFleches(f);
-                    VueFlecheImp fleche = new VueFlecheImp(this,f);
+                    VueFlecheImp fleche = new VueFlecheImp(this, f);
 
                     VuePointe pointe = new PointePleine(fleche);
                     vueDiagramme.getChildren().add(fleche);
@@ -243,6 +252,7 @@ public class ModelUML implements Sujet {
 
     /**
      * creer une flèche d'attribut
+     *
      * @param classe
      * @param vueClasse
      */
@@ -270,7 +280,7 @@ public class ModelUML implements Sujet {
                     Fleche f = new Fleche(classe, classeImp, Fleche.ASSOCIATION);
                     f.setPos();
                     ajouterFleches(f);
-                    VueFlecheAttri fleche = new VueFlecheAttri(this,f,new Text(i[Analyser.FIELD_MODIFIER] + i[Analyser.FIELD_NAME]));
+                    VueFlecheAttri fleche = new VueFlecheAttri(this, f, new Text(i[Analyser.FIELD_MODIFIER] + i[Analyser.FIELD_NAME]));
                     VuePointe pointe = new PointeCreuse(fleche);
                     vueDiagramme.getChildren().add(fleche);
                     vueDiagramme.getChildren().add(pointe);
@@ -421,7 +431,7 @@ public class ModelUML implements Sujet {
     }
 
     public void sauvegarderSousProjet(String path) {
-        System.out.println("Sauvegarde du projet : " + windowsTitle  + " dans " + path + "...");
+        System.out.println("Sauvegarde du projet : " + windowsTitle + " dans " + path + "...");
         ecrireFichier(Save.save(classes), path, windowsTitle);
         System.out.println("Projet sauvegardé.");
     }
@@ -509,6 +519,7 @@ public class ModelUML implements Sujet {
             vueDiagramme.getChildren().clear();
 
             setWindowsTitle("Home");
+            setFolder(new File(ADGFolfer));
             stage.setResizable(false);
 
         } else {  // diagramme
@@ -557,6 +568,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la liste des classes
+     *
      * @return
      */
     public ArrayList<Classe> getClasses() {
@@ -565,6 +577,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la liste des observateurs
+     *
      * @return
      */
     public ArrayList<Observateur> getObservers() {
@@ -573,6 +586,7 @@ public class ModelUML implements Sujet {
 
     /**
      * retourne la vue diagramme
+     *
      * @return
      */
     public VueDiagramme getVueDiagramme() {
@@ -593,6 +607,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne le dossier du projet
+     *
      * @return
      */
     public File getFolder() {
@@ -601,6 +616,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne l'état de l'application
+     *
      * @return
      */
     public boolean getIsHome() {
@@ -609,41 +625,52 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la coordonnée x de la vue arborescence
+     *
      * @return
      */
     public int getVueArbo_x() {
         return vueArbo_x;
     }
+
     /**
      * Retourne la coordonnée y de la vue arborescence
+     *
      * @return
      */
     public int getVueArbo_y() {
         return vueArbo_y;
     }
+
     /**
      * Retourne la coordonnée x de la vue récente
+     *
      * @return
      */
     public int getVueRecent_x() {
         return vueRecent_x;
     }
+
     /**
      * Retourne la coordonnée y de la vue récente
+     *
      * @return
      */
     public int getVueRecent_y() {
         return vueRecent_y;
     }
+
     /**
      * Retourne le style de la vue récente
+     *
      * @return
      */
     public String getVueRecent_style() {
         return vueRecent_style;
     }
+
     /**
      * Retourne la visibilité de la vue récente
+     *
      * @return
      */
     public boolean getVueRecentVisibility() {
@@ -652,41 +679,52 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la coordonnée x de la vue diagramme
+     *
      * @return
      */
     public int getVueDiagramme_x() {
         return vueDiagramme_x;
     }
+
     /**
      * Retourne la coordonnée y de la vue diagramme
+     *
      * @return
      */
     public int getVueDiagramme_y() {
         return vueDiagramme_y;
     }
+
     /**
      * Retourne la coordonnée x du bouton de la vue diagramme
+     *
      * @return
      */
     public int getVueDiagramme_bouton_x() {
         return vueDiagramme_bouton_x;
     }
+
     /**
      * Retourne la coordonnée y du bouton de la vue diagramme
+     *
      * @return
      */
     public int getVueDiagramme_bouton_y() {
         return vueDiagramme_bouton_y;
     }
+
     /**
      * Retourne le style du bouton de la vue diagramme
+     *
      * @return
      */
     public String getVueDiagramme_bouton_style() {
         return vueDiagramme_bouton_style;
     }
+
     /**
      * Retourne la visibilité du bouton de la vue diagramme
+     *
      * @return
      */
     public boolean getVueDiagramme_bouton_visibility() {
@@ -695,6 +733,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la coordonnée x de la partie gauche
+     *
      * @return
      */
     public int getPartieGaucheX() {
@@ -703,6 +742,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la coordonnée y de la partie gauche
+     *
      * @return
      */
     public int getPartieGaucheY() {
@@ -715,6 +755,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la liste MenuBar
+     *
      * @return
      */
     public ArrayList<String> getMenuBar() {
@@ -727,6 +768,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne les items du menu
+     *
      * @param index
      * @return
      */
@@ -761,6 +803,7 @@ public class ModelUML implements Sujet {
             }
         }
     }
+
     /**
      * Crée le dossier ADGProjects dans le répertoire utilisateur.
      */
@@ -801,6 +844,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Ajoute un dossier récent à la liste des dossiers récents.
+     *
      * @param folderPath
      */
     private static void addRecentFolder(String folderPath) {
@@ -822,6 +866,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Récupère la liste des dossiers récents à partir du fichier JSON.
+     *
      * @return
      */
     public static ArrayList<String> getRecentFolders() {
@@ -851,6 +896,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Sauvegarde la liste des dossiers récents dans le fichier JSON.
+     *
      * @param folders
      */
     private static void saveRecentFolders(List<String> folders) {
@@ -968,6 +1014,7 @@ public class ModelUML implements Sujet {
 
     /**
      * Trouve une place pour une classe
+     *
      * @param classe
      */
     public void trouverPlacePourClassess(Classe classe) {
@@ -1073,11 +1120,13 @@ public class ModelUML implements Sujet {
 
     /**
      * Recupère l'état du click droit
+     *
      * @return
      */
     public boolean getEtat() {
         return this.etatClickDroit;
     }
+
     /**
      * Recupère l'état du click droit sur la classe
      */
@@ -1155,7 +1204,7 @@ public class ModelUML implements Sujet {
         //TODO
         System.out.println("masquer toutes les dépendances");
         for (Fleche f : fleches) {
-            if(f.getType() == Fleche.ASSOCIATION){
+            if (f.getType() == Fleche.ASSOCIATION) {
                 f.setVisible(false);
             }
         }
@@ -1168,8 +1217,8 @@ public class ModelUML implements Sujet {
     public void masquerToutHeritages() {
         //TODO
         System.out.println("masquer tous les héritages");
-        for(Fleche f : fleches){
-            if(f.getType() == Fleche.HERITAGE){
+        for (Fleche f : fleches) {
+            if (f.getType() == Fleche.HERITAGE) {
                 f.setVisible(false);
             }
 
@@ -1196,7 +1245,7 @@ public class ModelUML implements Sujet {
         //TODO
         System.out.println("afficher toutes les dépendances");
         for (Fleche f : fleches) {
-            if(f.getType() == Fleche.ASSOCIATION){
+            if (f.getType() == Fleche.ASSOCIATION) {
                 f.setVisible(true);
             }
 
@@ -1210,7 +1259,7 @@ public class ModelUML implements Sujet {
     public void afficherTousHeritages() {
         //TODO
         System.out.println("afficher tous les héritages");
-        for(Fleche f : fleches){
+        for (Fleche f : fleches) {
             System.out.println("----------------------------AFFICHAGE-----------------------------------------------");
             f.setVisible(true);
         }
@@ -1243,8 +1292,6 @@ public class ModelUML implements Sujet {
     }
 
 
-
-
     /**
      * Masque les attributs
      */
@@ -1256,8 +1303,7 @@ public class ModelUML implements Sujet {
     }
 
     /**
-
-    /**
+     * /**
      * affiche les héritages
      */
     public void afficherHeritages() {
@@ -1314,6 +1360,7 @@ public class ModelUML implements Sujet {
     /**
      * Ouvre la page d'aide dans le navigateur par défaut.
      * Si le fichier d'aide n'est pas trouvé, affiche un message d'erreur.
+     *
      * @param choix le choix de l'aide à ouvrir.
      *              0: web 1: wiki
      */
@@ -1329,7 +1376,8 @@ public class ModelUML implements Sujet {
 
                     // Vérifier si le fichier existe
                     if (!aideFile.exists()) {
-                        System.err.println("Fichier d'aide introuvable : " + chemin);
+                        System.err.println("Fichier d'aide introuvable : " + path);
+                        creerFichierAideEnLigne();
                         return;
                     }
                     chemin = aideFile.toURI();
@@ -1356,7 +1404,13 @@ public class ModelUML implements Sujet {
         }
     }
 
-    public void loadADGbyPath(String path) {
+    /**
+     * Charge une sauvegarde de projet ADG.
+     *
+     * @param nom son nom, le path est créer avec le dossier courant
+     */
+    public void loadADGbyName(String nom) {
+        String path = getFolderPath() + DIRECTORY_SEPARATOR + nom;
         System.out.println("Ouverture de la sauvegarde : " + path);
 
         if (windowsTitle.equalsIgnoreCase("Home")) {
@@ -1389,7 +1443,7 @@ public class ModelUML implements Sujet {
         return res;
     }
 
-    public void deleteSave(){
+    public void deleteSave() {
         String filePath = folderPath + DIRECTORY_SEPARATOR + windowsTitle; // Remplace par le chemin de ton fichier
         System.out.println("Suppression du fichier : " + filePath + "...");
 
@@ -1407,15 +1461,6 @@ public class ModelUML implements Sujet {
         }
     }
 
-    public static String getFileExtension(String fileName) {
-        int indexpoint = fileName.lastIndexOf('.');
-
-        if (indexpoint > 0 && indexpoint < fileName.length() - 1) {
-            return fileName.substring(indexpoint + 1); // l'extension
-        }
-        return ""; // Pas d'extension
-    }
-
     public void masquerConstructeur() {
         System.out.println("masquer les constructeurs");
         classeSelectionne.setShowConstructors(false);
@@ -1426,5 +1471,198 @@ public class ModelUML implements Sujet {
         System.out.println("afficher les constructeurs");
         classeSelectionne.setShowConstructors(true);
         notifierObservateurs();
+    }
+
+    private void creerFichierAideEnLigne() {
+        String path = getADGFolferPath();
+        System.out.println("Création du fichier d'aide en ligne : " + path + HELP_FILE);
+        String html = """
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>ADG - Help Page</title>
+                    <style>
+                        /* Reset CSS */
+                        * {
+                            margin: 0;
+                            padding: 0;
+                            box-sizing: border-box;
+                        }
+
+                        body {
+                            font-family: 'Arial', sans-serif;
+                            background: linear-gradient(135deg, #1e1e2f, #3a3a5e);
+                            color: #fff;
+                            line-height: 1.6;
+                            overflow-x: hidden;
+                        }
+
+                        header {
+                            background: #222;
+                            padding: 1rem;
+                            text-align: center;
+                            position: sticky;
+                            top: 0;
+                            z-index: 1000;
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+                        }
+
+                        header h1 {
+                            font-size: 2.5rem;
+                            color: #ffcc00;
+                            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+                        }
+
+                        nav {
+                            margin-top: 1rem;
+                        }
+
+                        nav a {
+                            color: #ffcc00;
+                            text-decoration: none;
+                            margin: 0 15px;
+                            font-size: 1.2rem;
+                            transition: color 0.3s ease;
+                        }
+
+                        nav a:hover {
+                            color: #fff;
+                        }
+
+                        .container {
+                            padding: 2rem;
+                            max-width: 1200px;
+                            margin: 0 auto;
+                        }
+
+                        .section {
+                            margin-bottom: 2rem;
+                            background: rgba(255, 255, 255, 0.1);
+                            padding: 1.5rem;
+                            border-radius: 10px;
+                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+                            transition: transform 0.3s ease;
+                        }
+
+                        .section:hover {
+                            transform: translateY(-5px);
+                        }
+
+                        .section h2 {
+                            font-size: 2rem;
+                            margin-bottom: 1rem;
+                            border-bottom: 2px solid #ffcc00;
+                            display: inline-block;
+                            padding-bottom: 5px;
+                        }
+
+                        .section p {
+                            margin: 1rem 0;
+                            font-size: 1.1rem;
+                        }
+
+                        footer {
+                            text-align: center;
+                            padding: 1rem;
+                            background: #111;
+                            position: relative;
+                            bottom: 0;
+                            width: 100%;
+                            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
+                        }
+
+                        footer p {
+                            color: #ffcc00;
+                        }
+
+                        footer p a {
+                            color: #ffcc00;
+                            text-decoration: none;
+                        }
+
+                        footer p a:hover {
+                            text-decoration: underline;
+                        }
+
+                        /* Animations */
+                        @keyframes fadeIn {
+                            from { opacity: 0; }
+                            to { opacity: 1; }
+                        }
+
+                        .section {
+                            animation: fadeIn 1s ease-in-out;
+                        }
+
+                        /* Responsive */
+                        @media (max-width: 768px) {
+                            header h1 {
+                                font-size: 2rem;
+                            }
+
+                            nav a {
+                                font-size: 1rem;
+                                margin: 0 10px;
+                            }
+
+                            .section h2 {
+                                font-size: 1.5rem;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <header>
+                        <h1>ADG - Help Page</h1>
+                        <nav>
+                            <a href="#intro">Introduction</a>
+                            <a href="#usage">Usage</a>
+                            <a href="#faq">FAQ</a>
+                            <a href="#contact">Contact</a>
+                        </nav>
+                    </header>
+
+                    <div class="container">
+                        <section id="intro" class="section">
+                            <h2>Introduction</h2>
+                            <p>Welcome to the ADG help page! Here, you will find all the information you need to get started with our application. This page covers everything from basic usage to frequently asked questions.</p>
+                        </section>
+
+                        <section id="usage" class="section">
+                            <h2>Usage</h2>
+                            <p>To use ADG, simply follow these steps:</p>
+                            <ol>
+                                <li>Download and install the application.</li>
+                                <li>Open the app and log in with your credentials.</li>
+                                <li>Navigate through the menu to access different features.</li>
+                                <li>Need help? Click the "Aide" button to return to this page.</li>
+                            </ol>
+                        </section>
+
+                        <section id="faq" class="section">
+                            <h2>FAQ</h2>
+                            <p><strong>Q: Where can I find my account settings?</strong></p>
+                            <p>A: You can find your account settings in the top-right corner of the application under "Settings."</p>
+
+                            <p><strong>Q: How do I reset my password?</strong></p>
+                            <p>A: Click "Forgot Password" on the login screen and follow the instructions.</p>
+                        </section>
+
+                        <section id="contact" class="section">
+                            <h2>Contact</h2>
+                            <p>If you need further assistance, feel free to reach out to our support team at <a href="mailto:support@adg.com">support@adg.com</a>.</p>
+                        </section>
+                    </div>
+
+                    <footer>
+                        <p>&copy; 2025 ADG. All rights reserved. | <a href="#">Privacy Policy</a></p>
+                    </footer>
+                </body>
+                </html>
+                """;
+        ecrireFichier(html, path, HELP_FILE);
+        ouvrirPageAide(0);
     }
 }

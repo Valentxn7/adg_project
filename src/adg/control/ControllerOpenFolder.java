@@ -27,7 +27,7 @@ public class ControllerOpenFolder implements EventHandler<ActionEvent> {
         File selectedDirectory = directoryChooser.showDialog(rootStage);
 
         if (selectedDirectory != null) {
-            String path = selectedDirectory.getAbsolutePath();
+            //String path = selectedDirectory.getAbsolutePath();
 //            System.out.println("Ouverture du projet : " + path);
             modelUML.ouvrirProjet(selectedDirectory);
         }

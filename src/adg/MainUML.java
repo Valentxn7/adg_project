@@ -176,7 +176,7 @@ public class MainUML extends Application {
         rootRecent.setValue("Projets récents:");
         rootRecent.setExpanded(true);
 
-        VueRecent vueRecent = new VueRecent();  // la TreeView affiche les TreeItem
+        VueRecent vueRecent = new VueRecent(new ControllerDoubleClicTreeRec(modelUML));  // la TreeView affiche les TreeItem
         vueRecent.setRoot(rootRecent);
         modelUML.enregistrerObservateur(vueRecent);
 
