@@ -1543,12 +1543,10 @@ public class ModelUML implements Sujet {
         }
 
         stage.getScene().getRoot().setStyle(rootStyle);
-        stage.getScene().lookup(".menuBar").setStyle(menuStyle);
-        stage.getScene().lookup(".partieDroite").setStyle(menuStyle);
+        stage.getScene().lookup("#menuBar").setStyle(menuStyle);
+        stage.getScene().lookup("#partieDroite").setStyle(menuStyle);
+
     }
-
-
-
 
 
     private void creerFichierAideEnLigne() {
