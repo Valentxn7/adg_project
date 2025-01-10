@@ -147,7 +147,7 @@ public class ModelUML implements Sujet {
             this.ajouterFlecheAttri(classe, vue);
             this.ajoutFlecheCorrespondant();
         }
-        notifierObservateurs();
+
     }
 
 
