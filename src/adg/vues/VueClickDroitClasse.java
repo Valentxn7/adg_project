@@ -33,7 +33,7 @@ public class VueClickDroitClasse extends ContextMenu implements Observateur {
         MenuItem item2 = MainUML.createMenuItem("Afficher Constructeur", "c");
 
         // Ajout des items au menu
-        this.getItems().addAll(item1, item2, item3,item8,item6,item7);
+        this.getItems().addAll(item3, item8, item1,item6,item7,item2);
 
         // Ajouter des actions aux éléments
         item1.setOnAction(controllerChoixClickDroit);

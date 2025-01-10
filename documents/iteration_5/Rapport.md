@@ -65,6 +65,16 @@
 - Ajout des icones pour les parametres d'affichage (afficher / cacher)
 - **Avancement** : ✅ Complétée
 
+### Fonctionnalité 8 : Amélioration de du code du projet (conception)
+- **Responsable** : Ryan Korban
+- **Description** :
+  - Ajustement de la conception du projet car certaines partie de respectent pas la logique MVC
+    - Creer un objet fleche au lieu de tout stoker dans la vue fleche
+  - (Refactoring non fini  par manque de temps (pas push))
+    - Ajout d'arraylist de fleche dans la Classe Classe et mise en place d'un MVC valide pour VueClasse et VueFleche pour que ces vues s'occupent uniquement de l'affichage et non de la gestion des données et meme chose pour le model
+    
+- **Avancement** : ✅ Complétée
+
 ## Conclusion
 
 
@@ -72,6 +82,7 @@
 ## Éléments dont nous sommes fiers :
 
 **Ryan** :
+Refactoring du code pour permettre le clic droit sur les classes, corrigeant ainsi partiellement une conception initiale inadéquate.
 
 **Valentin** :
 

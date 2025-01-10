@@ -1665,4 +1665,20 @@ public class ModelUML implements Sujet {
         ecrireFichier(html, path, HELP_FILE);
         ouvrirPageAide(0);
     }
+
+    public void masquerTousConstructeurs() {
+        System.out.println("masquer tous les constructeurs");
+        for (Classe c : classes) {
+            c.setShowConstructors(false);
+        }
+        notifierObservateurs();
+    }
+
+    public void afficherTousConstructeurs() {
+        System.out.println("afficher tous les constructeurs");
+        for (Classe c : classes) {
+            c.setShowConstructors(true);
+        }
+        notifierObservateurs();
+    }
 }

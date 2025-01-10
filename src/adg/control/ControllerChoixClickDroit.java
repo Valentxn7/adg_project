@@ -35,8 +35,14 @@ public class ControllerChoixClickDroit implements EventHandler<ActionEvent> {
             modelUML.afficherTousAttributs();
         } else if (item.getId() == "7") {
             modelUML.afficherToutesMethodes();
-        } else if (item.getId() == "8") {
+        }
+        else if (item.getId() == "8") {
             modelUML.masquerToutesMethodes();
+        } else if (item.getId() == "9") {
+            modelUML.masquerTousConstructeurs();
+        } else if (item.getId() == "10") {
+            modelUML.afficherTousConstructeurs();
+
         } else if (item.getId() == "A") {
             modelUML.masquerConstructeur();
         } else if (item.getId() == "B") {

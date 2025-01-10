@@ -28,13 +28,15 @@ public class VueClickDroit extends ContextMenu implements Observateur {
         MenuItem item2 = MainUML.createMenuItem("Masquer héritages pour tous", "h_gray");
         MenuItem item3 = MainUML.createMenuItem("Masquer attributs pour tous", "a_gray");
         MenuItem item8 = MainUML.createMenuItem("Masquer méthodes pour tous", "m_gray");
+        MenuItem item9 = MainUML.createMenuItem("Masquer constructeurs pour tous", "c_gray");
         MenuItem item4 = MainUML.createMenuItem("Afficher dépendances pour tous", "d");
         MenuItem item5 = MainUML.createMenuItem("Afficher héritages pour tous", "h");
         MenuItem item6 = MainUML.createMenuItem("Afficher attributs pour tous", "a");
         MenuItem item7 = MainUML.createMenuItem("Afficher méthodes pour tous", "m");
+        MenuItem item10 = MainUML.createMenuItem("Afficher constructeurs pour tous", "c");
 
         // Ajout des items au menu
-        this.getItems().addAll(item1, item2, item3,item8,item4,item5,item6,item7);
+        this.getItems().addAll(item1, item2, item3,item8,item9,item4,item5,item6,item7,item10);
 
         // Ajouter des actions aux éléments
         item1.setOnAction(controllerChoixClickDroit);
@@ -53,6 +55,10 @@ public class VueClickDroit extends ContextMenu implements Observateur {
         item7.setId("7");
         item8.setOnAction(controllerChoixClickDroit);
         item8.setId("8");
+        item9.setOnAction(controllerChoixClickDroit);
+        item9.setId("9");
+        item10.setOnAction(controllerChoixClickDroit);
+        item10.setId("10");
     }
 
     /**
