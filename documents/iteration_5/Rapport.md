@@ -24,11 +24,10 @@
 - **Avancement** : ✅ Complétée
 
 
-### Fonctionnalité 2 : Export des diagrammes en squelette Java et bouton quitter
-- **Responsable** : Thomas Fuchs
+### Fonctionnalité 2 : Export des diagrammes en squelette Java et quitter 
 - **Description** :
   -ajout de la possibilité d'exporter le squelette Java du diagramme
-  -ajout d'un bouton quitter 
+  -ajout d'un bouton quitter qui demande si on veut enregistrer/sous avant de quitter
 - **Avancement** : ✅ Complétée
 
 ### Fonctionnalité 3 : Refactoring de la partie graphique des flèches
@@ -65,13 +64,25 @@
 - Ajout des icones pour les parametres d'affichage (afficher / cacher)
 - **Avancement** : ✅ Complétée
 
+### Fonctionnalité 8 : Amélioration de du code du projet (conception)
+- **Responsable** : Ryan Korban
+- **Description** :
+  - Ajustement de la conception du projet car certaines partie de respectent pas la logique MVC
+    - Creer un objet fleche au lieu de tout stoker dans la vue fleche
+  - (Refactoring non fini  par manque de temps (pas push))
+    - Ajout d'arraylist de fleche dans la Classe Classe et mise en place d'un MVC valide pour VueClasse et VueFleche pour que ces vues s'occupent uniquement de l'affichage et non de la gestion des données et meme chose pour le model
+    
+- **Avancement** : ✅ Complétée
+
 ## Conclusion
 
+Malgré de nombreuses fonctionnalités implémentées et un projet qui semble réussi, le groupe ressent un sentiment d'imcomplet dans le projet. Le code n'est pas aussi propre que l'on aurait voulu, et les problèmes de communication et de gestion du temps ont été un frein à l'avancement du projet. Cependant, le groupe est fier de ce qu'il a accompli et est plutôt satisfait du résultat final.
 
   
 ## Éléments dont nous sommes fiers :
 
 **Ryan** :
+Refactoring du code pour permettre le clic droit sur les classes, corrigeant ainsi partiellement une conception initiale inadéquate.
 
 **Valentin** :
 

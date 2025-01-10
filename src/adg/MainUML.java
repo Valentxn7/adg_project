@@ -82,7 +82,7 @@ public class MainUML extends Application {
         exporterJava.setDisable(true);
         personnalisation.setDisable(true);
         accueil.setDisable(true);
-        //quitter.setDisable(true);
+        quitter.setDisable(true);
 
         fileMenu.getItems().addAll(
                 nouveau, ouvrirP, ouvrirS, new SeparatorMenuItem(),
@@ -159,7 +159,7 @@ public class MainUML extends Application {
         modeNuit.setOnAction(new ControllerNightMode(modelUML, stage));
 
         accueil.setOnAction(new ControllerAccueil(modelUML));
-        quitter.setOnAction(new ControleurQuitter());
+        quitter.setOnAction(new ControleurQuitter(modelUML));
 
         /*     ARBORESCENCE       **/
 
