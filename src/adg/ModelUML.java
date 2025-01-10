@@ -3,8 +3,7 @@ package adg;
 import adg.control.ControleurDeplacerClasse;
 import adg.control.ControllerClickDroitClasse;
 import adg.data.*;
-import adg.vues.VueClasse;
-import adg.vues.VueDiagramme;
+import adg.vues.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import adg.data.Analyser;
@@ -76,6 +75,7 @@ public class ModelUML implements Sujet {
     private Map<VueClasse, int[]> coordonneesClasse;
     //coordonner pour les fleches
     private Map<VueFleche, VueClasse[]> coordonneesFleche;
+    private ArrayList<Fleche> fleches = new ArrayList<>();
 
     private ArrayList<String> menuBar = new ArrayList<>(Arrays.asList("Fichier"));
     // QUAND LE RESTE SERA DEVELOPPE
@@ -205,7 +205,11 @@ public class ModelUML implements Sujet {
         if (classeExt != null) {
             VueClasse vueClasseExt = vues.get(classeExt.getClassName());
             if (!this.verifExistanceFleche(vueClasse, vues.get(classeExt.getClassName()))) {
-                VueFlecheExt fleche = new VueFlecheExt();
+                Fleche f = new Fleche(classe, classeExt, Fleche.HERITAGE);
+                f.setPos();
+                ajouterFleches(f);
+                VueFlecheExt fleche = new VueFlecheExt(this,f);
+
                 VuePointe pointe = new PointePleine(fleche);
                 fleche.toBack();
                 vueDiagramme.getChildren().add(fleche);
@@ -219,7 +223,6 @@ public class ModelUML implements Sujet {
 
     /**
      * Ajoute une flèche d'implémentation à la vue diagramme
-     *
      * @param classe
      * @param vueClasse
      */
@@ -230,7 +233,11 @@ public class ModelUML implements Sujet {
             if (classeImp != null) {
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
                 if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
-                    VueFlecheImp fleche = new VueFlecheImp();
+                    Fleche f = new Fleche(classe, classeImp, Fleche.HERITAGE);
+                    f.setPos();
+                    ajouterFleches(f);
+                    VueFlecheImp fleche = new VueFlecheImp(this,f);
+
                     VuePointe pointe = new PointePleine(fleche);
                     vueDiagramme.getChildren().add(fleche);
                     vueDiagramme.getChildren().add(pointe);
@@ -244,7 +251,6 @@ public class ModelUML implements Sujet {
 
     /**
      * creer une flèche d'attribut
-     *
      * @param classe
      * @param vueClasse
      */
@@ -269,7 +275,10 @@ public class ModelUML implements Sujet {
             if (classeImp != null) {
                 VueClasse vueClasseImp = vues.get(classeImp.getClassName());
                 if (!this.verifExistanceFleche(vueClasse, vueClasseImp)) {
-                    VueFlecheAttri fleche = new VueFlecheAttri(new Text(i[Analyser.FIELD_MODIFIER] + i[Analyser.FIELD_NAME]));
+                    Fleche f = new Fleche(classe, classeImp, Fleche.ASSOCIATION);
+                    f.setPos();
+                    ajouterFleches(f);
+                    VueFlecheAttri fleche = new VueFlecheAttri(this,f,new Text(i[Analyser.FIELD_MODIFIER] + i[Analyser.FIELD_NAME]));
                     VuePointe pointe = new PointeCreuse(fleche);
                     vueDiagramme.getChildren().add(fleche);
                     vueDiagramme.getChildren().add(pointe);
@@ -280,6 +289,10 @@ public class ModelUML implements Sujet {
                 }
             }
         }
+    }
+
+    public void ajouterFleches(Fleche fleche) {
+        fleches.add(fleche);
     }
 
     /**
@@ -553,7 +566,6 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la liste des classes
-     *
      * @return
      */
     public ArrayList<Classe> getClasses() {
@@ -562,7 +574,6 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la liste des observateurs
-     *
      * @return
      */
     public ArrayList<Observateur> getObservers() {
@@ -571,7 +582,6 @@ public class ModelUML implements Sujet {
 
     /**
      * retourne la vue diagramme
-     *
      * @return
      */
     public VueDiagramme getVueDiagramme() {
@@ -592,7 +602,6 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne le dossier du projet
-     *
      * @return
      */
     public File getFolder() {
@@ -601,7 +610,6 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne l'état de l'application
-     *
      * @return
      */
     public boolean getIsHome() {
@@ -610,52 +618,41 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la coordonnée x de la vue arborescence
-     *
      * @return
      */
     public int getVueArbo_x() {
         return vueArbo_x;
     }
-
     /**
      * Retourne la coordonnée y de la vue arborescence
-     *
      * @return
      */
     public int getVueArbo_y() {
         return vueArbo_y;
     }
-
     /**
      * Retourne la coordonnée x de la vue récente
-     *
      * @return
      */
     public int getVueRecent_x() {
         return vueRecent_x;
     }
-
     /**
      * Retourne la coordonnée y de la vue récente
-     *
      * @return
      */
     public int getVueRecent_y() {
         return vueRecent_y;
     }
-
     /**
      * Retourne le style de la vue récente
-     *
      * @return
      */
     public String getVueRecent_style() {
         return vueRecent_style;
     }
-
     /**
      * Retourne la visibilité de la vue récente
-     *
      * @return
      */
     public boolean getVueRecentVisibility() {
@@ -664,52 +661,41 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la coordonnée x de la vue diagramme
-     *
      * @return
      */
     public int getVueDiagramme_x() {
         return vueDiagramme_x;
     }
-
     /**
      * Retourne la coordonnée y de la vue diagramme
-     *
      * @return
      */
     public int getVueDiagramme_y() {
         return vueDiagramme_y;
     }
-
     /**
      * Retourne la coordonnée x du bouton de la vue diagramme
-     *
      * @return
      */
     public int getVueDiagramme_bouton_x() {
         return vueDiagramme_bouton_x;
     }
-
     /**
      * Retourne la coordonnée y du bouton de la vue diagramme
-     *
      * @return
      */
     public int getVueDiagramme_bouton_y() {
         return vueDiagramme_bouton_y;
     }
-
     /**
      * Retourne le style du bouton de la vue diagramme
-     *
      * @return
      */
     public String getVueDiagramme_bouton_style() {
         return vueDiagramme_bouton_style;
     }
-
     /**
      * Retourne la visibilité du bouton de la vue diagramme
-     *
      * @return
      */
     public boolean getVueDiagramme_bouton_visibility() {
@@ -718,7 +704,6 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la coordonnée x de la partie gauche
-     *
      * @return
      */
     public int getPartieGaucheX() {
@@ -727,7 +712,6 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la coordonnée y de la partie gauche
-     *
      * @return
      */
     public int getPartieGaucheY() {
@@ -740,7 +724,6 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne la liste MenuBar
-     *
      * @return
      */
     public ArrayList<String> getMenuBar() {
@@ -753,7 +736,6 @@ public class ModelUML implements Sujet {
 
     /**
      * Retourne les items du menu
-     *
      * @param index
      * @return
      */
@@ -788,7 +770,6 @@ public class ModelUML implements Sujet {
             }
         }
     }
-
     /**
      * Crée le dossier ADGProjects dans le répertoire utilisateur.
      */
@@ -829,7 +810,6 @@ public class ModelUML implements Sujet {
 
     /**
      * Ajoute un dossier récent à la liste des dossiers récents.
-     *
      * @param folderPath
      */
     private static void addRecentFolder(String folderPath) {
@@ -851,7 +831,6 @@ public class ModelUML implements Sujet {
 
     /**
      * Récupère la liste des dossiers récents à partir du fichier JSON.
-     *
      * @return
      */
     public static ArrayList<String> getRecentFolders() {
@@ -881,7 +860,6 @@ public class ModelUML implements Sujet {
 
     /**
      * Sauvegarde la liste des dossiers récents dans le fichier JSON.
-     *
      * @param folders
      */
     private static void saveRecentFolders(List<String> folders) {
@@ -999,7 +977,6 @@ public class ModelUML implements Sujet {
 
     /**
      * Trouve une place pour une classe
-     *
      * @param classe
      */
     public void trouverPlacePourClassess(Classe classe) {
@@ -1105,13 +1082,11 @@ public class ModelUML implements Sujet {
 
     /**
      * Recupère l'état du click droit
-     *
      * @return
      */
     public boolean getEtat() {
         return this.etatClickDroit;
     }
-
     /**
      * Recupère l'état du click droit sur la classe
      */
@@ -1188,6 +1163,11 @@ public class ModelUML implements Sujet {
     public void masquerToutesDependances() {
         //TODO
         System.out.println("masquer toutes les dépendances");
+        for (Fleche f : fleches) {
+            if(f.getType() == Fleche.ASSOCIATION){
+                f.setVisible(false);
+            }
+        }
         notifierObservateurs();
     }
 
@@ -1197,6 +1177,12 @@ public class ModelUML implements Sujet {
     public void masquerToutHeritages() {
         //TODO
         System.out.println("masquer tous les héritages");
+        for(Fleche f : fleches){
+            if(f.getType() == Fleche.HERITAGE){
+                f.setVisible(false);
+            }
+
+        }
         notifierObservateurs();
     }
 
@@ -1218,6 +1204,12 @@ public class ModelUML implements Sujet {
     public void afficherToutesDependances() {
         //TODO
         System.out.println("afficher toutes les dépendances");
+        for (Fleche f : fleches) {
+            if(f.getType() == Fleche.ASSOCIATION){
+                f.setVisible(true);
+            }
+
+        }
         notifierObservateurs();
     }
 
@@ -1227,6 +1219,10 @@ public class ModelUML implements Sujet {
     public void afficherTousHeritages() {
         //TODO
         System.out.println("afficher tous les héritages");
+        for(Fleche f : fleches){
+            System.out.println("----------------------------AFFICHAGE-----------------------------------------------");
+            f.setVisible(true);
+        }
         notifierObservateurs();
     }
 
@@ -1255,23 +1251,8 @@ public class ModelUML implements Sujet {
         notifierObservateurs();
     }
 
-    /**
-     * Masque les dependances.
-     */
-    public void masquerDependances() {
-        //TODO
-        System.out.println("masquer les dépendances");
-        notifierObservateurs();
-    }
 
-    /**
-     * Masque les dépandances
-     */
-    public void masquerHeritages() {
-        //TODO
-        System.out.println("masquer les héritages");
-        notifierObservateurs();
-    }
+
 
     /**
      * Masque les attributs
@@ -1284,13 +1265,6 @@ public class ModelUML implements Sujet {
     }
 
     /**
-     * affiche les dépendances
-     */
-    public void afficherDependances() {
-        //TODO
-        System.out.println("afficher les dépendances");
-        notifierObservateurs();
-    }
 
     /**
      * affiche les héritages
@@ -1349,7 +1323,6 @@ public class ModelUML implements Sujet {
     /**
      * Ouvre la page d'aide dans le navigateur par défaut.
      * Si le fichier d'aide n'est pas trouvé, affiche un message d'erreur.
-     *
      * @param choix le choix de l'aide à ouvrir.
      *              0: web 1: wiki
      */
@@ -1446,5 +1419,17 @@ public class ModelUML implements Sujet {
         } else {
             System.err.println("Le fichier n'existe pas : " + filePath);
         }
+    }
+
+    public void masquerConstructeur() {
+        System.out.println("masquer les constructeurs");
+        classeSelectionne.setShowConstructors(false);
+        notifierObservateurs();
+    }
+
+    public void afficherConstructeur() {
+        System.out.println("afficher les constructeurs");
+        classeSelectionne.setShowConstructors(true);
+        notifierObservateurs();
     }
 }

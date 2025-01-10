@@ -38,14 +38,13 @@ public class ControllerChoixClickDroit implements EventHandler<ActionEvent> {
         } else if (item.getId() == "8") {
             modelUML.masquerToutesMethodes();
         } else if (item.getId() == "A") {
-            modelUML.masquerDependances();
+            modelUML.masquerConstructeur();
         } else if (item.getId() == "B") {
-            modelUML.masquerHeritages();
-        } else if (item.getId() == "C") {
+            modelUML.afficherConstructeur();
+        }
+        else if (item.getId() == "C") {
             modelUML.masquerAttributs();
-        } else if (item.getId() == "D") {
-            modelUML.afficherDependances();
-        } else if (item.getId() == "E") {
+        }  else if (item.getId() == "E") {
             modelUML.afficherHeritages();
         } else if (item.getId() == "F") {
             modelUML.afficherAttributs();

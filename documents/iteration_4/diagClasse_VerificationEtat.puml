@@ -1,0 +1,47 @@
+@startuml
+actor User as "Utilisateur"
+participant "ControllerClickDroit" as Ctrl
+participant "ModelUML" as Model
+
+
+User -> Ctrl : handle(MouseEvent)
+activate Ctrl
+activate User
+
+alt Clic droit sur le diagramme
+    Ctrl -> Model : afficherClickDroit(x, y)
+    activate Model
+    Model -> Model : etatClickDroit = vrai
+    Model -> Model : etatClickDroitClasse = faux
+    Model -> Model : notifierObservateurs()
+    Model --> Ctrl
+    deactivate Model
+    Ctrl -> Model : afficherClickDroitClasse(x, y)
+    activate Model
+    Model -> Model : etatClickDroitClasse = vrai
+    Model -> Model : etatClickDroit = faux
+    Model -> Model : notifierObservateurs()
+    Model --> Ctrl
+
+    deactivate Model
+
+else Clic gauche ou ailleurs
+    Ctrl -> Model : masquerClickDroit()
+    activate Model
+    Model -> Model : etatClickDroit = faux
+    Model -> Model : notifierObservateurs()
+    Model --> Ctrl
+    deactivate Model
+
+    Ctrl -> Model : masquerClickDroitClass()
+    activate Model
+    Model -> Model : etatClickDroitClasse = faux
+
+    Model -> Model : notifierObservateurs()
+    Model --> Ctrl
+    deactivate Model
+end
+Ctrl -> User
+deactivate User
+deactivate Ctrl
+@enduml

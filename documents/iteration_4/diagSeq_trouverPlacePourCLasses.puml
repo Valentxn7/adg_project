@@ -1,0 +1,37 @@
+@startuml
+participant "Actor" as Actor
+
+
+participant "ModelUML" as ModelUML
+
+participant "Classe" as Classe
+
+activate Actor
+Actor -> ModelUML : trouverPlacePourClassess(Classe)
+activate ModelUML
+
+
+
+    loop tant que placeLibre != vrai ou aucun emplacement trouvé
+        ModelUML -> ModelUML : estLibre(x, y)
+        activate ModelUML
+        ModelUML --> ModelUML : placeLibre
+        deactivate ModelUML
+        alt placeLibre trouvé ?
+            ModelUML -> Classe : setCoords(x, y)
+            activate Classe
+            Classe --> ModelUML
+            deactivate Classe
+        else aucun emplacement trouvé
+             ModelUML -> Classe : setCoords(0, 0)
+             activate Classe
+             Classe --> ModelUML
+             deactivate Classe
+    end
+end
+ModelUML -->Actor
+
+
+
+deactivate ModelUML
+@enduml
