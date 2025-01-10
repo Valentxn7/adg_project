@@ -25,7 +25,7 @@ public abstract class VueFleche extends Line implements Observateur {
 
 
         // Mettre à jour la ligne et la tête de flèche
-        System.err.println("Actualisation de la flèche");
+        System.out.println("Actualisation de la flèche");
         System.out.println("Visibilité : " +fleche.getVisible() );
         if(fleche.getVisible()){
             this.setVisible(true);

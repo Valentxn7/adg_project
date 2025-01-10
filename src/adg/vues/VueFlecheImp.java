@@ -14,7 +14,6 @@ public class VueFlecheImp extends VueFleche {
     public void setLine(){
         this.setStrokeWidth(2);
         this.setStroke(Color.BLACK);
-        System.out.println("BONJOURRRRRRRRRRRRRRRRRRRRRRRRR");
         this.getStrokeDashArray().addAll(10.0, 5.0);
     }
 }

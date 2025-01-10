@@ -278,7 +278,7 @@ public class ModelUML implements Sujet {
         List<String[]> s = classe.getFields();
         for (String[] i : s) {
             String type = i[Analyser.FIELD_TYPE];
-            System.err.println("voici le type  : " + type);
+            System.out.println("voici le type  : " + type);
             if (type.contains("<")) {
                 // Trouver les indices de < et >
                 int start = type.indexOf('<');
@@ -305,7 +305,7 @@ public class ModelUML implements Sujet {
                     if(rechercherFlecheInverse(vueClasseImp,vueClasse)){
                         d = -50;
                     }
-                    System.err.println("Fleche attribut : " + d);
+                    System.out.println("Fleche attribut : " + d);
                     Fleche f = new Fleche(classe, classeImp, Fleche.ASSOCIATION);
                     f.setPos();
                     ajouterFleches(f);
@@ -350,7 +350,7 @@ public class ModelUML implements Sujet {
      */
     private boolean verifExistanceFleche(VueClasse vueClasse1, VueClasse vueClasse2, String type) {
         boolean res = false;
-        System.err.println(coordonneesFleche.size());
+        System.out.println(coordonneesFleche.size());
         if (vueClasse1 != null && vueClasse2 != null) {
             for (VueFleche f : coordonneesFleche.keySet()) {
                 VueClasse[] vues = coordonneesFleche.get(f);
@@ -373,14 +373,14 @@ public class ModelUML implements Sujet {
     private Classe containsClasse(String s) {
         Classe res = null;
         for (Classe classe : classes) {
-            System.err.println("classe : " + classe.getClassNameWithoutPackages());
-            System.err.println("classe : " + classe.getClassName());
-            System.err.println("s : " + s);
+            System.out.println("classe : " + classe.getClassNameWithoutPackages());
+            System.out.println("classe : " + classe.getClassName());
+            System.out.println("s : " + s);
             if (classe.getClassNameWithoutPackages().equals(s) || classe.getClassName().equals(s)) {
                 res = classe;
             }
         }
-        System.err.println("res : " + res!=null);
+        System.out.println("res : " + res!=null);
         return res;
     }
 
