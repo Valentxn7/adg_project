@@ -432,7 +432,7 @@ public class ModelUML implements Sujet {
 
     public void sauvegarderSousProjet(String path) {
         System.out.println("Sauvegarde du projet : " + windowsTitle + " dans " + path + "...");
-        ecrireFichier(Save.save(classes), path, windowsTitle);
+        ecrireFichier(Save.save(classes), path, getWindowsTitle());
         System.out.println("Projet sauvegardé.");
     }
 
