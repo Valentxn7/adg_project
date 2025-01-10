@@ -10,7 +10,6 @@ public class VueFlecheAttri extends VueFleche {
     public VueFlecheAttri(ModelUML modelUML, Fleche fleche, Text attribut){
         super(modelUML, fleche);
         this.attribut = attribut;
-        System.out.println(" ergerfgoihzeqoifj "+fleche.getType());
     }
     public void setLine(){
 
