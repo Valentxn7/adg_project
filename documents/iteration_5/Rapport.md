@@ -74,6 +74,58 @@
     
 - **Avancement** : ✅ Complétée
 
+### Fonctionnalité 9 : Debugage (voir description)
+- **Responsable** : Valentin Knorst
+- **Description** :
+- fix size of vueRecent
+- fix footer not visible
+- fix incorrect name for deleteSave()
+- fix SaveAs
+- fix many many extensions and open files bug
+- add filter extension to VueArborescence.java
+- Fix SaveAs et surtout correction du Save.java
+- **Avancement** : ✅ Complétée
+
+### Fonctionnalité 10 : Nettoyage du code (voir description)
+- **Responsable** : Valentin Knorst
+- **Description** :
+- transformation des System.err inutile en System.out
+- enhanced method for switchstate
+- Fix anormal print
+- **Avancement** : ✅ Complétée
+
+### Fonctionnalité 11 : Auto création du fichier aide en ligne
+- **Responsable** : Valentin Knorst
+- **Description** :
+- Le fichier d'aide en ligne se créer automatique s'il n'est pas présent
+- **Avancement** : ✅ Complétée
+
+### Fonctionnalité 11 : add possibility to double click on recent tree view to open the directory and adg save 
+- **Responsable** : Valentin Knorst
+- **Description** :
+- Permet l'ouverture de projet récent directement sur le TreeView
+- Permet l'ouverture de sauvegarde adg directement sur le TreeView
+- **Avancement** : ✅ Complétée
+
+### Fonctionnalité 12 : Ajout des aides via le MenuBar Aide
+- **Responsable** : Valentin Knorst
+- **Description** :
+- add open help web page and help wiki page
+- **Avancement** : ✅ Complétée
+
+### Fonctionnalité 13 : Retour à l'acceuil et remise à l'état inital de l'application
+- **Responsable** : Valentin Knorst
+- **Description** :
+- Permet un retour à l'acceuil sans devoir quitter et relancer l'application
+- **Avancement** : ✅ Complétée
+
+- ### Fonctionnalité 14 : Faire devenir responsive l'application
+- **Responsable** : Valentin Knorst
+- **Description** :
+- Avant cela la taille de l'application était fixe, maintenant les éléments graphiques savent comment s'agrandir et dans quelle priorité qui permet d'agrandir et de rétrécir la page avec les éléments responsive (hormis les classes).
+- **Avancement** : ✅ Complétée
+
+
 ## Conclusion
 
 Malgré de nombreuses fonctionnalités implémentées et un projet qui semble réussi, le groupe ressent un sentiment d'imcomplet dans le projet. Le code n'est pas aussi propre que l'on aurait voulu, et les problèmes de communication et de gestion du temps ont été un frein à l'avancement du projet. Cependant, le groupe est fier de ce qu'il a accompli et est plutôt satisfait du résultat final.
@@ -85,6 +137,7 @@ Malgré de nombreuses fonctionnalités implémentées et un projet qui semble r�
 Refactoring du code pour permettre le clic droit sur les classes, corrigeant ainsi partiellement une conception initiale inadéquate.
 
 **Valentin** :
+Fier de la finalité de cette application, son ergonomie visuel et le backend derrière rend toutes les autres fonctionnalités encore plus appréciable
 
 **Zacharie**:
 Les fonctionnalités de l'itération 5 sont en bonne voie, les dernières fonctionnalités sont en cours de finalisation. Les derniers bugs sont en cours de correction.
