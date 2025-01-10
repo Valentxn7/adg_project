@@ -77,6 +77,7 @@
 
 ## Conclusion
 
+Malgré de nombreuses fonctionnalités implémentées et un projet qui semble réussi, le groupe ressent un sentiment d'imcomplet dans le projet. Le code n'est pas aussi propre que l'on aurait voulu, et les problèmes de communication et de gestion du temps ont été un frein à l'avancement du projet. Cependant, le groupe est fier de ce qu'il a accompli et est plutôt satisfait du résultat final.
 
   
 ## Éléments dont nous sommes fiers :

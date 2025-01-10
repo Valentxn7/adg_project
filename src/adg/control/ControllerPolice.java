@@ -22,7 +22,7 @@ public class ControllerPolice implements EventHandler<ActionEvent> {
 
             String selectedFont = comboBox.getValue();
 
-            MainUML.setFont(selectedFont, rootStage);
+            modelUML.setFont(selectedFont, rootStage);
         }
     }
 }

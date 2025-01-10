@@ -37,6 +37,8 @@ public class MainUML extends Application {
         VuePartieGauche partieGauche = new VuePartieGauche(0);  // TreeView et MenuBar
         modelUML.enregistrerObservateur(partieGauche);
         VueDiagramme partieDroite = new VueDiagramme();  // bouton add projet
+        partieDroite.setId("partieDroite");
+
         modelUML.setVueDiagramme(partieDroite);
         modelUML.enregistrerObservateur(partieDroite);
         ControllerDragDrop controllerDragDrop = new ControllerDragDrop(modelUML);
@@ -52,7 +54,7 @@ public class MainUML extends Application {
         /*     MENU       **/
 
         VueMenu menuBar = new VueMenu();  // barre menu contenante
-        menuBar.setId("menu-bar");
+        menuBar.setId("menuBar");
         modelUML.enregistrerObservateur(menuBar);
 
         Menu fileMenu = new Menu("Fichier");  // contenue
@@ -243,7 +245,7 @@ public class MainUML extends Application {
         titre.getStyleClass().add("label-titre");
         addProjectButton.getStyleClass().add("addButton");
         menuBar.getStyleClass().add("menuBar");
-        partieDroite.getStyleClass().add("menuBar");
+        partieDroite.getStyleClass().add("partieDroite");
         vueArborescence.getStyleClass().add("treeView");
         vueRecent.getStyleClass().add("treeView");
         fin.getStyleClass().add("label-fin");
@@ -325,26 +327,5 @@ public class MainUML extends Application {
             System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
             return null;
         }
-    }
-
-    public static void setFont(String font, Stage stage) {
-        stage.getScene().getRoot().setStyle("-fx-font-family: '" + font + "';");
-        System.out.println("Font changed to " + font);
-    }
-
-    public static void setNightMode(boolean selected, Stage stage) {
-        String rootStyle;
-        String menuStyle;
-
-        if (selected) {
-            rootStyle = "-fx-base: #333333; -fx-control-inner-background: #333333; -fx-background: #333333; -fx-text-fill: white;";
-            menuStyle = "-fx-background-color: #444444; -fx-text-fill: white;";
-        } else {
-            rootStyle = "-fx-base: white; -fx-control-inner-background: white; -fx-background: white; -fx-text-fill: black;";
-            menuStyle = "-fx-background-color: white; -fx-text-fill: black;";
-        }
-
-        stage.getScene().getRoot().setStyle(rootStyle);
-        stage.getScene().lookup(".menu-bar").setStyle(menuStyle);
     }
 }
