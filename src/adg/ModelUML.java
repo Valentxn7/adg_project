@@ -459,14 +459,22 @@ public class ModelUML implements Sujet {
         if (folder != null) {
             System.out.println("Sauvegarde du projet : " + folder.getName() + "...");
             String path = folder.getAbsolutePath();
-            ecrireFichier(Save.save(classes), path, windowsTitle);
+            if (getFileExtensionByName(windowsTitle).equalsIgnoreCase("")) {
+                ecrireFichier(Save.save(classes), path, windowsTitle + ".adg");
+            } else {
+                ecrireFichier(Save.save(classes), path, windowsTitle);
+            }
             System.out.println("Projet sauvegardé.");
         }
     }
 
     public void sauvegarderSousProjet(String path) {
         System.out.println("Sauvegarde du projet : " + windowsTitle + " dans " + path + "...");
-        ecrireFichier(Save.save(classes), path, getWindowsTitle());
+        if (getFileExtensionByName(windowsTitle).equalsIgnoreCase("")) {
+            ecrireFichier(Save.save(classes), path, windowsTitle + ".adg");
+        } else {
+            ecrireFichier(Save.save(classes), path, windowsTitle);
+        }
         System.out.println("Projet sauvegardé.");
     }
 
@@ -1478,7 +1486,13 @@ public class ModelUML implements Sujet {
     }
 
     public void deleteSave() {
-        String filePath = folderPath + DIRECTORY_SEPARATOR + windowsTitle; // Remplace par le chemin de ton fichier
+        String filePath = null;
+        if (getFileExtensionByName(windowsTitle).equalsIgnoreCase("")) {
+            filePath = folderPath + DIRECTORY_SEPARATOR + windowsTitle + ".adg";
+        } else {
+            filePath = folderPath + DIRECTORY_SEPARATOR + windowsTitle;
+        }
+
         System.out.println("Suppression du fichier : " + filePath + "...");
 
         File file = new File(filePath);
@@ -1543,12 +1557,10 @@ public class ModelUML implements Sujet {
         }
 
         stage.getScene().getRoot().setStyle(rootStyle);
-        stage.getScene().lookup(".menuBar").setStyle(menuStyle);
-        stage.getScene().lookup(".partieDroite").setStyle(menuStyle);
+        stage.getScene().lookup("#menuBar").setStyle(menuStyle);
+        stage.getScene().lookup("#partieDroite").setStyle(menuStyle);
+
     }
-
-
-
 
 
     private void creerFichierAideEnLigne() {
