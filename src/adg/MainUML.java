@@ -245,7 +245,7 @@ public class MainUML extends Application {
         titre.getStyleClass().add("label-titre");
         addProjectButton.getStyleClass().add("addButton");
         menuBar.getStyleClass().add("menuBar");
-        partieDroite.getStyleClass().add("partieDroite");
+        partieDroite.getStyleClass().add("menuBar");
         vueArborescence.getStyleClass().add("treeView");
         vueRecent.getStyleClass().add("treeView");
         fin.getStyleClass().add("label-fin");
