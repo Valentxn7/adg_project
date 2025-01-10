@@ -215,8 +215,8 @@ public class MainUML extends Application {
 
         menuBar.setPrefHeight(ModelUML.MENU_BAR_Y);
 
-        vueArborescence.setMinSize(modelUML.getPartieGaucheX(), (double) (stage.getMinHeight() - 100) / 2);  // (380 - 20) / 2
-        vueArborescence.setPrefSize(modelUML.getPartieGaucheX(), (double) (stage.getMinHeight() - 100) / 2);  // (380 - 20) / 2
+        vueArborescence.setMinSize(modelUML.getPartieGaucheX(), (double) (stage.getMinHeight() - 150) / 2);  // (380 - 20) / 2
+        vueArborescence.setPrefSize(modelUML.getPartieGaucheX(), (double) (stage.getMinHeight() - 150) / 2);  // (380 - 20) / 2
         //vueRecent.setMinSize(modelUML.getPartieGaucheX(), 180);  // (380 - 20) / 2
         /*System.out.println("h: " + stage.getWidth() + " " + stage.getHeight());
         System.out.println("h: " + stage.getMaxWidth() + " " + stage.getMaxHeight());
