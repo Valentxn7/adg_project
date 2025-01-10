@@ -311,7 +311,6 @@ public class MainUML extends Application {
             String basePath = "ressource/";
 
             File file = new File(basePath + ressource + ".png");
-            System.out.println("Chemin absolu testé : " + file.getAbsolutePath());
 
             if (!file.exists()) {
                 System.err.println("Fichier non trouvé : " + file.getAbsolutePath());
