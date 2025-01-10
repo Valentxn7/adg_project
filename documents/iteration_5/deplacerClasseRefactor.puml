@@ -1,0 +1,20 @@
+@startuml
+
+activate ControleurDeplacerClasse
+ControleurDeplacerClasse -> ModelUML : changerPositionClasse
+activate ModelUML
+ModelUML -> Classe : setCoords
+activate Classe
+Classe --> ModelUML
+deactivate Classe
+ModelUML -> ModelUML : notifierObservateurs
+activate ModelUML
+ModelUML -> Observateur : actualiser
+activate Observateur
+Observateur --> ModelUML
+deactivate Observateur
+ModelUML --> ModelUML
+deactivate ModelUML
+ModelUML --> ControleurDeplacerClasse
+
+@enduml
