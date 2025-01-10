@@ -112,6 +112,18 @@ public class Classe {
         } else {
             java.append("public interface ").append(this.class_name);
         }
+
+
+        if (this.superclass != null && !this.superclass.isEmpty()) {
+            java.append(" extends ").append(this.superclass);
+        }
+
+        if (this.interfaces != null && !this.interfaces.isEmpty()) {
+            java.append(" implements ").append(String.join(", ", this.interfaces));
+        }
+
+
+
         java.append(" {\n");
 
 

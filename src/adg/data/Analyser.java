@@ -31,7 +31,7 @@ public class Analyser {
      * @return class data map
      */
     public Classe analyse() {
-        Classe classe = new Classe(row_class.getName());
+        Classe classe = new Classe(row_class.getSimpleName());
 
         checkInterface(classe);
         buildSuperClass(classe);
@@ -58,7 +58,7 @@ public class Analyser {
     private void buildSuperClass(Classe classe) {
         Class<?> superClass = row_class.getSuperclass();
         if(superClass != null)
-            classe.setSuperclass(superClass.getName());
+            classe.setSuperclass(superClass.getSimpleName());
     }
 
 
@@ -69,7 +69,7 @@ public class Analyser {
         List<String> nomsInterfaces = new ArrayList<>();
 
         for (Class<?> iface : row_class.getInterfaces()) {
-            nomsInterfaces.add(iface.getName());
+            nomsInterfaces.add(iface.getSimpleName());
         }
         classe.setInterfaces(nomsInterfaces);
     }
@@ -83,7 +83,7 @@ public class Analyser {
         for (Field field : row_class.getDeclaredFields()) {
             String[] attributInfo = new String[3];
 
-            attributInfo[FIELD_NAME] = field.getName();
+            attributInfo[FIELD_NAME] = field.getType().getSimpleName();
             attributInfo[FIELD_TYPE] = getFieldType(field);
             attributInfo[FIELD_MODIFIER] = Modifier.toString(field.getModifiers());
 
@@ -116,7 +116,7 @@ public class Analyser {
             sb.append(">");
             return sb.toString();
         }
-        return field.getType().getName();
+        return field.getType().getSimpleName();
     }
 
     /** Build the fields for the class
@@ -148,7 +148,7 @@ public class Analyser {
             Object[] methodeInfo = new Object[5];
 
             methodeInfo[METHOD_NAME] = method.getName();
-            methodeInfo[METHOD_RETURN_TYPE] = method.getReturnType().getName();
+            methodeInfo[METHOD_RETURN_TYPE] = method.getReturnType().getSimpleName();
             methodeInfo[METHOD_MODIFIER] = Modifier.toString(method.getModifiers());
 
             methodeInfo[METHOD_PARAMETERS_TYPE] = getParameterTypeNames(method.getParameterTypes());
@@ -174,8 +174,8 @@ public class Analyser {
     private List<String> getParameterNames(Parameter[] parameters) {
         List<String> res = new ArrayList<>();
         for (Parameter parameter : parameters) {
-            res.add(parameter.getName());
-            System.out.println("NOM RECUPERE : " + parameter.getName());
+            res.add(parameter.getType().getSimpleName());
+            System.out.println("NOM RECUPERE : " + parameter.getType().getSimpleName());
         }
         return res;
     }
@@ -189,7 +189,7 @@ public class Analyser {
         List<String> res = new ArrayList<>();
 
         for (Class<?> paramType : parameterTypes) {
-            res.add(paramType.getName());
+            res.add(paramType.getSimpleName());
         }
         return res;
     }
