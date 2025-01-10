@@ -55,7 +55,7 @@ class ControllerAccueil {
   + ControllerAccueil(ModelUML): 
   + handle(ActionEvent): void
 }
-class ControllerAide {
+class ControllerAide #lightblue {
   + ControllerAide(ModelUML): 
   + handle(ActionEvent): void
 }
@@ -75,7 +75,7 @@ class ControllerCreateProject {
   + ControllerCreateProject(ModelUML): 
   + handle(ActionEvent): void
 }
-class ControllerDeleteSave {
+class ControllerDeleteSave #lightblue {
   + ControllerDeleteSave(ModelUML): 
   + handle(ActionEvent): void
 }
@@ -83,7 +83,7 @@ class ControllerDoubleClicTreeAdg {
   + ControllerDoubleClicTreeAdg(ModelUML): 
   + handle(MouseEvent): void
 }
-class ControllerDoubleClicTreeRec {
+class ControllerDoubleClicTreeRec #lightblue {
   + ControllerDoubleClicTreeRec(ModelUML): 
   + handle(MouseEvent): void
 }
@@ -108,7 +108,7 @@ class ControllerNewProject {
   + ControllerNewProject(ModelUML, Stage): 
   + handle(ActionEvent): void
 }
-class ControllerNightMode {
+class ControllerNightMode #lightblue {
   + ControllerNightMode(ModelUML, Stage): 
   + handle(ActionEvent): void
 }
@@ -120,15 +120,15 @@ class ControllerOpenFolder {
   + ControllerOpenFolder(ModelUML, Stage): 
   + handle(ActionEvent): void
 }
-class ControllerPolice {
+class ControllerPolice #lightblue{
   + ControllerPolice(ModelUML, Stage): 
   + handle(ActionEvent): void
 }
-class ControllerSave {
+class ControllerSave #lightblue {
   + ControllerSave(ModelUML, Stage): 
   + handle(ActionEvent): void
 }
-class ControllerSaveAs {
+class ControllerSaveAs #lightblue{
   + ControllerSaveAs(ModelUML, Stage): 
   + handle(ActionEvent): void
 }
@@ -141,7 +141,7 @@ class Export {
   + getJava(List<Classe>): String
   + exportUML(List<Classe>, String, String): void
 }
-class Fleche {
+class Fleche #lightblue {
   + Fleche(Classe, Classe, String): 
   + Fleche(double, double, double, double, double, double, Point2D, Point2D, Point2D, Point2D): 
   + calculerIntersectionDebut(double, double): void
@@ -287,10 +287,10 @@ class PathToClass {
   + extraireNomClasse(String): String
   + indiceDernierSlash(String): int
 }
-class PointeCreuse {
+class PointeCreuse #lightblue {
   + PointeCreuse(VueFleche): 
 }
-class PointePleine {
+class PointePleine #lightblue {
   + PointePleine(VueFleche): 
 }
 class Save {
