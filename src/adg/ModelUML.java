@@ -146,6 +146,7 @@ public class ModelUML implements Sujet {
             this.ajouterFlecheAttri(classe, vue);
             this.ajoutFlecheCorrespondant();
         }
+        notifierObservateurs();
     }
 
 
@@ -1506,6 +1507,23 @@ public class ModelUML implements Sujet {
     }
 
 
+    public void masquerTousConstructeurs() {
+        System.out.println("masquer tous les constructeurs");
+        for (Classe c : classes) {
+            c.setShowConstructors(false);
+        }
+        notifierObservateurs();
+    }
+
+    public void afficherTousConstructeurs() {
+        System.out.println("afficher tous les constructeurs");
+        for (Classe c : classes) {
+            c.setShowConstructors(true);
+        }
+        notifierObservateurs();
+    }
+
+
     public void setFont(String font, Stage stage) {
         stage.getScene().getRoot().setStyle("-fx-font-family: '" + font + "';");
         System.out.println("Font changed to " + font);
@@ -1527,6 +1545,8 @@ public class ModelUML implements Sujet {
         stage.getScene().lookup(".menuBar").setStyle(menuStyle);
         stage.getScene().lookup(".partieDroite").setStyle(menuStyle);
     }
+
+
 
 
 
@@ -1725,19 +1745,4 @@ public class ModelUML implements Sujet {
         ouvrirPageAide(0);
     }
 
-    public void masquerTousConstructeurs() {
-        System.out.println("masquer tous les constructeurs");
-        for (Classe c : classes) {
-            c.setShowConstructors(false);
-        }
-        notifierObservateurs();
-    }
-
-    public void afficherTousConstructeurs() {
-        System.out.println("afficher tous les constructeurs");
-        for (Classe c : classes) {
-            c.setShowConstructors(true);
-        }
-        notifierObservateurs();
-    }
 }
