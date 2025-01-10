@@ -47,7 +47,6 @@ public class Load {
         ArrayList<Classe> classesList = new ArrayList<>();
         for (Classe c : classesArray) {
             classesList.add(c);
-            System.out.println("LOAD: " + c.getCoords());
         }
 
         return classesList;

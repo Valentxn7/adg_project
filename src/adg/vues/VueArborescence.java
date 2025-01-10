@@ -77,7 +77,7 @@ public class VueArborescence extends TreeView<String> implements Observateur {
      */
     private boolean RefreshArboresencev2(TreeItem<String> base, File file, ArrayList<String> extensions) {
         if (file.isFile()) {  // si on a une feuille
-            if (extensions.contains(ModelUML.getFileExtension(file.getName()))) { // vérifier si le fichier a une extension valide
+            if (extensions.contains(ModelUML.getFileExtensionByName(file.getName()))) { // vérifier si le fichier a une extension valide
                 base.getChildren().add(new TreeItem<>(file.getName()));
                 return true;
             }
@@ -101,3 +101,4 @@ public class VueArborescence extends TreeView<String> implements Observateur {
         return false;
     }
 }
+

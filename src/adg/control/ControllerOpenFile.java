@@ -1,16 +1,12 @@
 package adg.control;
 
 import adg.ModelUML;
-import adg.data.Classe;
-import adg.data.Load;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.util.ArrayList;
 
 public class ControllerOpenFile implements EventHandler<ActionEvent> {
     private ModelUML modelUML;
@@ -34,7 +30,7 @@ public class ControllerOpenFile implements EventHandler<ActionEvent> {
 
         if (selectedFile != null) {
             modelUML.setFolderPath(selectedFile.getAbsolutePath());
-            modelUML.loadADGbyPath(selectedFile.getAbsolutePath());
+            modelUML.loadADGbyName(selectedFile.getAbsolutePath());
         } else
             System.out.println("Aucun fichier sélectionné.");
     }
