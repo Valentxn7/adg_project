@@ -24,11 +24,10 @@
 - **Avancement** : ✅ Complétée
 
 
-### Fonctionnalité 2 : Export des diagrammes en squelette Java et bouton quitter
-- **Responsable** : Thomas Fuchs
+### Fonctionnalité 2 : Export des diagrammes en squelette Java et quitter 
 - **Description** :
   -ajout de la possibilité d'exporter le squelette Java du diagramme
-  -ajout d'un bouton quitter 
+  -ajout d'un bouton quitter qui demande si on veut enregistrer/sous avant de quitter
 - **Avancement** : ✅ Complétée
 
 ### Fonctionnalité 3 : Refactoring de la partie graphique des flèches
