@@ -1473,6 +1473,33 @@ public class ModelUML implements Sujet {
         notifierObservateurs();
     }
 
+
+    public void setFont(String font, Stage stage) {
+        stage.getScene().getRoot().setStyle("-fx-font-family: '" + font + "';");
+        System.out.println("Font changed to " + font);
+    }
+
+    public void setNightMode(boolean selected, Stage stage) {
+        String rootStyle;
+        String menuStyle;
+
+        if (selected) {
+            rootStyle = "-fx-base: #333333; -fx-control-inner-background: #333333; -fx-background: #333333; -fx-text-fill: white;";
+            menuStyle = "-fx-background-color: #444444; -fx-text-fill: white;";
+        } else {
+            rootStyle = "-fx-base: white; -fx-control-inner-background: white; -fx-background: white; -fx-text-fill: black;";
+            menuStyle = "-fx-background-color: white; -fx-text-fill: black;";
+        }
+
+        stage.getScene().getRoot().setStyle(rootStyle);
+        stage.getScene().lookup(".menuBar").setStyle(menuStyle);
+        stage.getScene().lookup(".partieDroite").setStyle(menuStyle);
+    }
+
+
+
+
+
     private void creerFichierAideEnLigne() {
         String path = getADGFolferPath();
         System.out.println("Création du fichier d'aide en ligne : " + path + HELP_FILE);

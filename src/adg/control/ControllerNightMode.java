@@ -23,7 +23,7 @@ public class ControllerNightMode implements EventHandler<ActionEvent> {
 
             boolean selected = checkMenuItem.isSelected();
 
-            MainUML.setNightMode(selected, rootStage);
+            modelUML.setNightMode(selected, rootStage);
         }
     }
 }
